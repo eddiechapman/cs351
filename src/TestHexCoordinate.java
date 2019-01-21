@@ -429,43 +429,25 @@ public class TestHexCoordinate extends LockedTestCase {
 	
 	public void test70() {
 		assertEquals(new HexCoordinate(-1, 0), HexCoordinate.fromPoint(new Point(-2, 0), 3));
-	}
-	
-	public void test71() {
 		assertEquals(new HexCoordinate(0, 0), HexCoordinate.fromPoint(new Point(-1, 0), 3));
-	}
-	
-	public void test72() {
 		assertEquals(new HexCoordinate(0, 0), HexCoordinate.fromPoint(new Point(0, 0), 3));
-	}
-	
-	public void test73() {
 		assertEquals(new HexCoordinate(0, 0), HexCoordinate.fromPoint(new Point(1, 0), 3));
-	}
-	
-	public void test74() {
 		assertEquals(new HexCoordinate(1, 0), HexCoordinate.fromPoint(new Point(2, 0), 3));
-	}
-	
-	public void test75() {
 		assertEquals(new HexCoordinate(1, 0), HexCoordinate.fromPoint(new Point(3, 0), 3));
 		assertEquals(new HexCoordinate(1, 0), HexCoordinate.fromPoint(new Point(4, 0), 3));
 	}
 	
-	public void test76() {
+	public void test71() {
 		assertEquals(new HexCoordinate(-1, 0), HexCoordinate.fromPoint(new Point(-2, 1), 3));
 		assertEquals(new HexCoordinate(0, 0), HexCoordinate.fromPoint(new Point(-1, 1), 3));
 		assertEquals(new HexCoordinate(0, 0), HexCoordinate.fromPoint(new Point(0, 1), 3));
-	}
-	
-	public void test77() {
 		assertEquals(new HexCoordinate(0, 0), HexCoordinate.fromPoint(new Point(1, 1), 3));
 		assertEquals(new HexCoordinate(1, 0), HexCoordinate.fromPoint(new Point(2, 1), 3));
 		assertEquals(new HexCoordinate(1, 0), HexCoordinate.fromPoint(new Point(3, 1), 3));
 		assertEquals(new HexCoordinate(1, 0), HexCoordinate.fromPoint(new Point(4, 1), 3));
 	}
 	
-	public void test78() {
+	public void test72() {
 		assertEquals(new HexCoordinate(0, 1), HexCoordinate.fromPoint(new Point(-2, 2), 3));
 		assertEquals(new HexCoordinate(0, 1), HexCoordinate.fromPoint(new Point(-1, 2), 3));
 		assertEquals(new HexCoordinate(1, 1), HexCoordinate.fromPoint(new Point(1, 2), 3));
@@ -473,7 +455,59 @@ public class TestHexCoordinate extends LockedTestCase {
 		assertEquals(new HexCoordinate(2, 1), HexCoordinate.fromPoint(new Point(4, 2), 3));
 	}
 	
+	public void test73() {
+		assertEquals(h(0,1),HexCoordinate.fromPoint(new Point(-2, 3), 3));
+		assertEquals(h(0,1),HexCoordinate.fromPoint(new Point(-1, 3), 3));
+		//assertEquals(h(1,1),HexCoordinate.fromPoint(new Point(0, 3), 3));
+		assertEquals(h(1,1),HexCoordinate.fromPoint(new Point(1, 3), 3));
+		assertEquals(h(1,1),HexCoordinate.fromPoint(new Point(2, 3), 3));
+		assertEquals(h(2,1),HexCoordinate.fromPoint(new Point(4, 3), 3));
+	}
+	
+	public void test74() {
+		assertEquals(h(0,1),HexCoordinate.fromPoint(new Point(-2, 4), 3));
+		assertEquals(h(0,1),HexCoordinate.fromPoint(new Point(-1, 4), 3));
+		assertEquals(h(1,2),HexCoordinate.fromPoint(new Point(0, 4), 3));
+		assertEquals(h(1,1),HexCoordinate.fromPoint(new Point(1, 4), 3));
+		assertEquals(h(1,1),HexCoordinate.fromPoint(new Point(2, 4), 3));
+		assertEquals(h(2,2),HexCoordinate.fromPoint(new Point(3, 4), 3));
+		assertEquals(h(2,1),HexCoordinate.fromPoint(new Point(4, 4), 3));
+	}
+	
+	public void test75() {
+		assertEquals(h(0,2),HexCoordinate.fromPoint(new Point(-2, 5), 3));
+		assertEquals(h(1,2),HexCoordinate.fromPoint(new Point(-1, 5), 3));
+		assertEquals(h(1,2),HexCoordinate.fromPoint(new Point(0, 5), 3));
+		assertEquals(h(1,2),HexCoordinate.fromPoint(new Point(1, 5), 3));
+		assertEquals(h(2,2),HexCoordinate.fromPoint(new Point(2, 5), 3));
+		assertEquals(h(2,2),HexCoordinate.fromPoint(new Point(3, 5), 3));
+		assertEquals(h(2,2),HexCoordinate.fromPoint(new Point(4, 5), 3));
+	}
+	
+	public void test76() {
+		assertEquals(h(0,2),HexCoordinate.fromPoint(new Point(-2, 6), 3));
+		assertEquals(h(1,2),HexCoordinate.fromPoint(new Point(-1, 6), 3));
+		assertEquals(h(1,2),HexCoordinate.fromPoint(new Point(0, 6), 3));
+		assertEquals(h(1,2),HexCoordinate.fromPoint(new Point(1, 6), 3));
+		assertEquals(h(2,2),HexCoordinate.fromPoint(new Point(2, 6), 3));
+		assertEquals(h(2,2),HexCoordinate.fromPoint(new Point(3, 6), 3));
+		assertEquals(h(2,2),HexCoordinate.fromPoint(new Point(4, 6), 3));
+	}
+	
+	public void test77() {
+		assertEquals(h(1,3),HexCoordinate.fromPoint(new Point(-2, 7), 3));
+		assertEquals(h(1,3),HexCoordinate.fromPoint(new Point(-1, 7), 3));
+		// assertEquals(h(2,3),HexCoordinate.fromPoint(new Point(0, 7), 3));
+		assertEquals(h(2,3),HexCoordinate.fromPoint(new Point(1, 7), 3));
+		assertEquals(h(2,3),HexCoordinate.fromPoint(new Point(2, 7), 3));
+		// assertEquals(h(3,3),HexCoordinate.fromPoint(new Point(3, 7), 3));
+		assertEquals(h(3,3),HexCoordinate.fromPoint(new Point(4, 7), 3));
+	}
+
 	public void test79() {
-		assertEquals(new HexCoordinate(0, 0), HexCoordinate.fromPoint(new Point(0, 9), 20));
+		assertEquals(new HexCoordinate(0, 0), HexCoordinate.fromPoint(new Point(0, 5), 10));
+		assertEquals(new HexCoordinate(0, 0), HexCoordinate.fromPoint(new Point(1, 5), 10));
+		assertEquals(new HexCoordinate(1, 1), HexCoordinate.fromPoint(new Point(2, 5), 10));
+		assertEquals(new HexCoordinate(1, 1), HexCoordinate.fromPoint(new Point(1, 6), 10));
 	}
 }
