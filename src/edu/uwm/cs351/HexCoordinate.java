@@ -37,7 +37,12 @@ public class HexCoordinate {
 	 * @exception IllegalArgumentException if the coordinates are not consistent.
 	 */
 	public HexCoordinate(int a, int b, int c) throws IllegalArgumentException {
-		// TODO: Check consistency and then assign fields.
+		if (!(c == a - b)) {
+			throw new IllegalArgumentException("the third coordinate must equal the first minus the second.")
+		}
+		this.a = a;
+		this.b = b;
+		this.c = c;
 	}
 	
 	/// three simple accessors
