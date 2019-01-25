@@ -65,6 +65,7 @@ public class HexCoordinate {
 	 */
 	public int c() { return c; }
 	
+	
 	@Override
 	public boolean equals(Object x) {
 		if (!(x instanceof HexCoordinate)) {
@@ -78,7 +79,6 @@ public class HexCoordinate {
 	public int hashCode() {
 		// TODO: Return some combination of a, b and c that distinguishes similar coordinates
 	}
-	
 	
 	@Override
 	public String toString() {
@@ -119,4 +119,56 @@ public class HexCoordinate {
 	// In particular you should avoids performing very similar computations over and over.
 	// (We use a private static method to generalize {@link #toPoint()}
 	// that can be used when making the polygon.)
+	 
+	/**
+ 	 * Return the (x,y) center of the hexagon at this coordinate using
+	 * the given width.
+	 * @param width
+	 *   the size of the polygon when plotted on a square grid
+	 * @precondition
+	 *   width > 0
+	 * @returns
+	 *   the (x,y) coordinates of the center of this hexagon as plotted
+	 *   on a square grid, given a specified hexagon width
+	 * @throws IllegalArgumentException
+	 *   indicates that width is 0 or less
+	 */
+	public int[] toPoint(int width) throws IllegalArgumentException {
+		
+	} 
+
+	/**
+	 * Return an AWT Polygon using hex coordinates and the given width.
+	 * @param width
+	 *   the size of the Polygon when plotted on a square grid
+	 * @param precondition
+	 *   width > 0
+	 * @param returns
+	 *   an AWT Polygon with point coordinates that reflect the width
+	 * @throws IllegalArgumentException
+	 *   indicates that width is 0 or less
+	 */
+	public Polygon toPolygon(int width) throws IllegalArgumentException {
+		
+	}
+
+	/**
+	 * Return the number of moves required to travel from this hex
+	 * coordinate to a different hex coordinate.
+	 * @param destination 
+	 *   a HexCoordinate whose distance from the calling instance can 
+	 *   be measured in a discreet number of "moves". 
+	 * @param precondition
+	 *   this != destination
+	 * @param returns
+	 *   the number of "moves" required to travel from this hex
+	 *   coordinate to a different hex coordinate
+	 * @throws IllegalArgumentException
+	 *   indicates that the hex coordinate of the destination parameter
+	 *   is equal to the hex coordinate of the instance that calls the
+	 *   operation 
+	 */
+	public int distance(HexCoordinate destination) throws IllegalArgumentException {
+		
+	}
 }
