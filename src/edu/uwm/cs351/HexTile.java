@@ -11,8 +11,8 @@ public class HexTile {
 
 	public static final int WIDTH = 50; // subject to change
 	
-	private final Terrain _terrain;
-	private final HexCoordinate _location;
+	private final Terrain terrain;
+	private final HexCoordinate location;
 	
 	/**
 	 * Create a hexagonal tile for the given terrain and location in hex coordinates.
@@ -22,26 +22,26 @@ public class HexTile {
 	 */
 	public HexTile(Terrain t, HexCoordinate loc) {
 		if (t == null || loc == null) throw new IllegalArgumentException("neither terrain nor location may be null");
-		_terrain = t;
-		_location = loc;
+		terrain = t;
+		location = loc;
 	}
 	
 	@Override
 	public String toString() {
-		return _terrain.toString() + _location.toString();
+		return terrain.toString() + location.toString();
 	}
 	
 	/**
 	 * Return terrain of this tile.
 	 * @return terrain of this tile
 	 */
-	public Terrain getTerrain() { return _terrain; }
+	public Terrain getTerrain() { return terrain; }
 	
 	/**
 	 * Return location of this tile.
 	 * @return location of this tile
 	 */
-	public HexCoordinate getLocation() { return _location; }
+	public HexCoordinate getLocation() { return location; }
 	
 	/**
 	 * Render the tile in a graphics context.
@@ -50,8 +50,8 @@ public class HexTile {
 	 * @param g context to use.
 	 */
 	public void draw(Graphics g) {
-		Polygon hexagon = _location.toPolygon(WIDTH);
-		g.setColor(_terrain.getColor());
+		Polygon hexagon = location.toPolygon(WIDTH);
+		g.setColor(terrain.getColor());
 		g.fillPolygon(hexagon);
 		g.setColor(Color.BLACK);
 		g.drawPolygon(hexagon);
