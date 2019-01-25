@@ -21,7 +21,9 @@ public class HexTile {
 	 * @exception IllegalArgumentException if either argument is null
 	 */
 	public HexTile(Terrain t, HexCoordinate loc) {
-		if (t == null || loc == null) throw new IllegalArgumentException("neither terrain nor location may be null");
+		if (t == null || loc == null) {
+			throw new IllegalArgumentException("neither terrain nor location may be null");
+		}
 		terrain = t;
 		location = loc;
 	}
