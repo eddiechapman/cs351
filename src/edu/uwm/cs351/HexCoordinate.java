@@ -22,8 +22,11 @@ public class HexCoordinate {
 	 * @param b second coordinate
 	 */
 	public HexCoordinate(int a, int b) {
-		// TODO: Very easy
+        this.a = a;
+        this.b = b;
+        this.c = a - b;
 	}
+
 	
 	/**
 	 * Create a hexagonal coordinate by specifying all three coordinates,
