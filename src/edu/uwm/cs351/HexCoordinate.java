@@ -13,7 +13,7 @@ import java.awt.Polygon;
  * The {@link #c()} coordinate is always the difference of the first two.
  */
 public class HexCoordinate {
-	private final int _a, _b, _c;
+	private final int a, b, c;
 	
 	/**
 	 * Create a hexagonal coordinate by specifying the first two coordinates
@@ -43,20 +43,20 @@ public class HexCoordinate {
 	 * plus more every line).
 	 * @return the first coordinate
 	 */
-	public int a() { return _a; }
+	public int a() { return a; }
 	
 	/**
 	 * Return the second coordinate (how far from top).
 	 * @return the second coordinate
 	 */
-	public int b() { return _b; }
+	public int b() { return b; }
 
 	/**
 	 * Return the third coordinate (how far from left
 	 * minus more very line).
 	 * @return the third coordinate
 	 */
-	public int c() { return _c; }
+	public int c() { return c; }
 	
 	
 	/// Overrides
