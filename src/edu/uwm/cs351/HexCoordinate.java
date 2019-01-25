@@ -27,7 +27,6 @@ public class HexCoordinate {
         this.c = a - b;
 	}
 
-	
 	/**
 	 * Create a hexagonal coordinate by specifying all three coordinates,
 	 * which must be consistent.
@@ -83,7 +82,7 @@ public class HexCoordinate {
 	
 	@Override
 	public String toString() {
-		// TODO: Return a string of the form <3,2,1>
+		return String.format("<%d, %d, %d>", a, b, c);
 	}
 
 	/**
