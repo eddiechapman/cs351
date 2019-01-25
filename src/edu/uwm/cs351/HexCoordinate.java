@@ -66,13 +66,13 @@ public class HexCoordinate {
 	 */
 	public int c() { return c; }
 	
-	
-	/// Overrides
-	// no need to give a documentation comment if overridden documentation still is valid.
-	
 	@Override
 	public boolean equals(Object x) {
-		// TODO
+		if (!(x instanceof HexCoordinate)) {
+			return false;
+		}
+		HexCoordinate hc = (HexCoordinate) x;
+		return (hc.a == a) && (hc.b == b);
 	}
 	
 	@Override
