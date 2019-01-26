@@ -173,15 +173,10 @@ public class HexCoordinate
      * 
      * @param destination  a HexCoordinate whose distance from the calling instance
      *                     can be measured in a discreet number of "moves".
-     * @param precondition this != destination
      * @param returns      the number of "moves" required to travel from this hex
      *                     coordinate to a different hex coordinate
-     * @throws IllegalArgumentException indicates that the hex coordinate of the
-     *                                  destination parameter is equal to the hex
-     *                                  coordinate of the instance that calls the
-     *                                  operation
      */
-    public int distance(HexCoordinate destination) throws IllegalArgumentException {
-
+    public int distance(HexCoordinate destination) {
+      
     }
   }
