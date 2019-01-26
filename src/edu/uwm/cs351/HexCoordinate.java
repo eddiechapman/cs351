@@ -17,7 +17,10 @@ import java.awt.Polygon;
  */
 public class HexCoordinate
   {
-    private final int a, b, c;
+    private static final float HEIGHT_RATIO = (float) Math.sqrt(3) / 2;
+    private final int a;
+    private final int b;
+    private final int c;
 
     /**
      * Create a hexagonal coordinate by specifying the first two coordinates and
@@ -97,7 +100,7 @@ public class HexCoordinate
 
     @Override
     public String toString() {
-      return String.format("<%d, %d, %d>", a, b, c);
+      return String.format("<%d,%d,%d>", a, b, c);
     }
 
     /**
