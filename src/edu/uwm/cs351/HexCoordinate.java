@@ -168,15 +168,36 @@ public class HexCoordinate
     }
 
     /**
-     * Return the number of moves required to travel from this hex coordinate to a
-     * different hex coordinate.
+     * The minimum number of moves needed to reach another hex coordinate.
      * 
-     * @param destination  a HexCoordinate whose distance from the calling instance
-     *                     can be measured in a discreet number of "moves".
-     * @param returns      the number of "moves" required to travel from this hex
-     *                     coordinate to a different hex coordinate
+     * @param hc        a HexCoordinate to measure the distance to
+     * @param returns   the number of moves needed to reach the hc coordinate
      */
-    public int distance(HexCoordinate destination) {
+    public int distance(HexCoordinate hc) {
+      // Coordinate differences in absolute value
+      int aDiff = Math.abs(a - hc.a);
+      int bDiff = Math.abs(b - hc.b);
+      int cDiff = Math.abs(c - hc.c);
       
+      // The distance is the sum of the two smallest differences
+      if ((aDiff > bDiff) && (aDiff > cDiff)) {
+        return bDiff + cDiff;
+      } else {
+        return aDiff + Math.min(bDiff, cDiff);
+      }
     }
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
