@@ -145,13 +145,16 @@ public class HexCoordinate
      * width.
      * 
      * @param width the size of the polygon when plotted on a square grid
-     * @precondition width > 0
      * @returns the (x,y) coordinates of the center of this hexagon as plotted on a
      *          square grid, given a specified hexagon width
-     * @throws IllegalArgumentException indicates that width is 0 or less
      */
-    public int[] toPoint(int width) throws IllegalArgumentException {
-
+    public Point toPoint(int width) {
+      float height = width * HEIGHT_RATIO;
+      
+      int dx = (int) Math.ceil((a - b * 0.5) * width);
+      int dy = Math.round(b * height);
+      
+      return new Point(dx, dy);
     }
 
     /**
