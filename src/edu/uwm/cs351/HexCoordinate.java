@@ -112,7 +112,7 @@ public class HexCoordinate
      * @return closest hex coordinate
      */
     public static HexCoordinate fromPoint(Point p, int width) {
-      float db = p.y / HexCoordinate.height(width);
+      float db = p.y / getHeight(width);
       float da = (float) p.x / width + db / 2.0f;
       float dc = da - db;
 
@@ -148,9 +148,8 @@ public class HexCoordinate
      *          square grid, given a specified hexagon width
      */
     public Point toPoint(int width) {
-      
-      int dx = (int) Math.ceil((a - b * 0.5) * width);
-      int dy = Math.round(b * HexCoordinate.height(width));
+      int dx = xDisplacement(a, b, width);
+      int dy = yDisplacement(b, width);
       
       return new Point(dx, dy);
     }
@@ -160,8 +159,31 @@ public class HexCoordinate
      * @param width     the width of the hexagon
      * @returns         the height of the hexagon  
      */
-    private static float height(int width) {
+    private static float getHeight(int width) {
       return width * HEIGHT_RATIO;
+    }
+    
+    /**
+     * Compute the displacement along the x-axis of a hex coordinate compared to 0,0,0.
+     * 
+     * @param a         the "a" hex coordinate (of <a,b,c>)
+     * @param b         the "b" hex coordinate (of <a,b,c>)
+     * @param width     the width of a hexagon
+     * @return          the distance of a hex coordinate
+     */ 
+    private static int xDisplacement(int a, int b, int width) {
+      return (int) Math.ceil((a - b * 0.5) * width);
+    }
+    
+    /**
+     * Compute the displacement along the y-axis of a hex coordinate compared to 0,0,0.
+     * 
+     * @param b         the "b" hex coordinate (of <a,b,c>)
+     * @param width     the width of a hexagon
+     * @return          the distance of a hex coordinate
+     */ 
+    private static int yDisplacement(int b, int width) {
+      return Math.round(b * getHeight(width));
     }
 
     /**
