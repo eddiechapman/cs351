@@ -94,8 +94,10 @@ public class HexCoordinate
 
     @Override
     public int hashCode() {
-      // TODO: Return some combination of a, b and c that distinguishes similar
-      // coordinates
+      int result = 17;
+      result = 31 * result + a;
+      result = 31 * result + b;
+      return result;
     }
 
     @Override
