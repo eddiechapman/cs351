@@ -150,8 +150,8 @@ public class HexCoordinate
      *          square grid, given a specified hexagon width
      */
     public Point toPoint(int width) {
-      int dx = xDisplacement(a, b, width);
-      int dy = yDisplacement(b, width);
+      int dx = (int) Math.ceil(xDisplacement(a, b, width));
+      int dy = (int) Math.round(yDisplacement(b, width));
       
       return new Point(dx, dy);
     }
@@ -173,8 +173,8 @@ public class HexCoordinate
      * @param width     the width of a hexagon
      * @return          the distance of a hex coordinate
      */ 
-    private static int xDisplacement(int a, int b, int width) {
-      return (int) Math.ceil((a - b * 0.5) * width);
+    private static double xDisplacement(int a, int b, int width) {
+      return (a - b * 0.5) * width;
     }
     
     /**
@@ -184,8 +184,8 @@ public class HexCoordinate
      * @param width     the width of a hexagon
      * @return          the distance of a hex coordinate
      */ 
-    private static int yDisplacement(int b, int width) {
-      return Math.round(b * getHeight(width));
+    private static double yDisplacement(int b, int width) {
+      return b * getHeight(width);
     }
 
     /**
@@ -198,7 +198,8 @@ public class HexCoordinate
     public Polygon toPolygon(int width) {
 
     }
-
+    
+    
     /**
      * The minimum number of moves needed to reach another hex coordinate.
      * 
