@@ -190,12 +190,10 @@ public class HexCoordinate
      * Return an AWT Polygon using hex coordinates and the given width.
      * 
      * @param width        the size of the Polygon when plotted on a square grid
-     * @param precondition width > 0
      * @param returns      an AWT Polygon with point coordinates that reflect the
      *                     width
-     * @throws IllegalArgumentException indicates that width is 0 or less
      */
-    public Polygon toPolygon(int width) throws IllegalArgumentException {
+    public Polygon toPolygon(int width) {
 
     }
 
