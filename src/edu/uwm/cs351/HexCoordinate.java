@@ -18,6 +18,8 @@ import java.awt.Polygon;
 public class HexCoordinate
   {
     private static final float HEIGHT_RATIO = (float) Math.sqrt(3) / 2;
+    private static final float RADIUS_RATIO = (float) Math.sqrt(3) / 3;
+    private static final float RADIAN_RATIO = (float) Math.PI / 180;
     private final int a;
     private final int b;
     private final int c;
@@ -187,6 +189,18 @@ public class HexCoordinate
      *                     width
      */
     public Polygon toPolygon(int width) {
+      float radian;
+      int[] angles = new int[] {270, 330, 30, 90, 150, 210};
+      int[] xPoints = new int[6];
+      int[] yPoints = new int[6];
+      for (int i=0; i<=5; i++) {
+        radian = angles[i] * RADIAN_RATIO;
+        xPoints[i] = (int) Math.round(width * RADIUS_RATIO * Math.cos(radian));
+        yPoints[i] = (int) Math.round(width * RADIUS_RATIO * Math.sin(radian));
+      }
+      Polygon hexagon = new Polygon(xPoints, yPoints, 6);
+      hexagon.translate(xDisplacement(width), yDisplacement(width));
+      return hexagon;
     }
 
     
