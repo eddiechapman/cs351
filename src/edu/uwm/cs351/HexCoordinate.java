@@ -150,8 +150,8 @@ public class HexCoordinate
      *          square grid, given a specified hexagon width
      */
     public Point toPoint(int width) {
-      int dx = (int) Math.round(xDisplacement(a, b, width));
-      int dy = (int) Math.round(yDisplacement(b, width));
+      int dx = (int) Math.round(xDisplacement(width));
+      int dy = (int) Math.round(yDisplacement(width));
       return new Point(dx, dy);
     }
     
@@ -164,7 +164,7 @@ public class HexCoordinate
      * @param width     the width of a hexagon
      * @return          the distance of a hex coordinate
      */ 
-    private static double xDisplacement(int a, int b, int width) {
+    private double xDisplacement(int width) {
       return (a - b * 0.5) * width;
     }
     
@@ -175,7 +175,7 @@ public class HexCoordinate
      * @param width     the width of a hexagon
      * @return          the distance of a hex coordinate
      */ 
-    private static double yDisplacement(int b, int width) {
+    private double yDisplacement(int width) {
       return b * width * HEIGHT_RATIO;
     }
 
