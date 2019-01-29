@@ -18,8 +18,8 @@ import java.awt.Polygon;
 public class HexCoordinate
   {
     private static final float HEIGHT_RATIO = (float) Math.sqrt(3) / 2;
-    private static final float RADIUS_RATIO = (float) Math.sqrt(3) / 3;
-    private static final float RADIAN_RATIO = (float) Math.PI / 180;
+    private static final double RADIUS_RATIO = Math.sqrt(3) / 3;
+    private static final double RADIAN_RATIO = Math.PI / 180;
     private final int a;
     private final int b;
     private final int c;
@@ -152,11 +152,10 @@ public class HexCoordinate
      *          square grid, given a specified hexagon width
      */
     public Point toPoint(int width) {
-      Point p = new Point();
-      p.translate(xDisplacement(width), yDisplacement(width));
-      return p;
+      int dx = (int) Math.round(xDisplacement(width));
+      int dy = (int) Math.round(yDisplacement(width));
+      return new Point(dx, dy);
     }
-    
     
     /**
      * Compute the displacement along the x-axis of a hex coordinate compared to 0,0,0.
@@ -166,8 +165,8 @@ public class HexCoordinate
      * @param width     the width of a hexagon
      * @return          the distance of a hex coordinate
      */ 
-    private int xDisplacement(int width) {
-      return (int) Math.round((a - b * 0.5) * width);
+    private double xDisplacement(int width) {
+      return (a - b * 0.5) * width;
     }
     
     /**
@@ -177,8 +176,8 @@ public class HexCoordinate
      * @param width     the width of a hexagon
      * @return          the distance of a hex coordinate
      */ 
-    private int yDisplacement(int width) {
-      return (int) Math.round(b * width * HEIGHT_RATIO);
+    private double yDisplacement(int width) {
+      return b * width * HEIGHT_RATIO;
     }
 
     /**
@@ -189,18 +188,16 @@ public class HexCoordinate
      *                     width
      */
     public Polygon toPolygon(int width) {
-      float radian;
+      double radian;
       int[] angles = new int[] {270, 330, 30, 90, 150, 210};
       int[] xPoints = new int[6];
       int[] yPoints = new int[6];
       for (int i=0; i<=5; i++) {
         radian = angles[i] * RADIAN_RATIO;
-        xPoints[i] = (int) Math.round(width * RADIUS_RATIO * Math.cos(radian));
-        yPoints[i] = (int) Math.round(width * RADIUS_RATIO * Math.sin(radian));
+        xPoints[i] = (int) Math.round(width * RADIUS_RATIO * Math.cos(radian) + xDisplacement(width));
+        yPoints[i] = (int) Math.round(width * RADIUS_RATIO * Math.sin(radian) + yDisplacement(width));
       }
-      Polygon hexagon = new Polygon(xPoints, yPoints, 6);
-      hexagon.translate(xDisplacement(width), yDisplacement(width));
-      return hexagon;
+      return new Polygon(xPoints, yPoints, 6);
     }
 
     
