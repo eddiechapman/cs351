@@ -141,7 +141,7 @@ public class HexCoordinate {
 	
 	/**
 	 * Create a polygon (for rendering in AWT) for the hexagon around this
-	 * hex coordinate.  The hexagons so creates tile the plane.
+	 * hex coordinate.  The hexagons so created tile the plane.
 	 * @param width width of hexagon in pixels
 	 * @return polygon for hexagon
 	 */
