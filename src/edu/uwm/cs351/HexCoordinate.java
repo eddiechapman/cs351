@@ -5,21 +5,32 @@ import java.awt.Polygon;
 
 /**
  * Coordinates on a hexagon-filled game board.
- * <dl>
- * <dt>a
- * <dd>left to right (0 = left edge, moving left half a hex each line down)
- * <dt>b
- * <dd>top to bottom (0 = top edge)
- * <dt>c
- * <dd>left to right (0 = top edge, moving right half a hex each line down)
- * </dl>
- * The {@link #c()} coordinate is always the difference of the first two.
+ * 
+ * Hexagons can be plotted at various widths to an x-y grid such as a screen. 
+ * Distances between hexagons, hexagon pixel boundaries, and hexagon pixel centers
+ * can be calculated.
+ * 
+ * @author Eddie Chapman
+ * 
+ * I consulted the guide to hexagon grids on Red Blob Games. I found it useful in
+ * understanding the basics of hex grid systems: https://www.redblobgames.com/grids/hexagons/
+ * 
+ * My toPolygon is inspired by methods found in that guide for computing hexagon corner point 
+ * coordinates using sine and cosine. I adapted their method to our hex coordinate system with
+ * the help of my younger brother Louis Chapman who is a second year civil engineering student.
+ * He helped refresh my memory of trigonometry and double checked my work. He has no experience 
+ * with computer programming but I hope he takes it up soon.
+ * 
+ * I also reviewed the assignment instructions with my classmate Mason Baran at the beginning 
+ * of the week. We compared our general understanding of the method requirements but did not 
+ * discuss program or logic. 
  */
 public class HexCoordinate
   {
     private static final float HEIGHT_RATIO = (float) Math.sqrt(3) / 2;
     private static final double RADIUS_RATIO = Math.sqrt(3) / 3;
     private static final double RADIAN_RATIO = Math.PI / 180;
+    
     private final int a;
     private final int b;
     private final int c;
@@ -56,35 +67,34 @@ public class HexCoordinate
       this.c = c;
     }
 
-    /// three simple accessors
-
     /**
-     * Return the first coordinate (how far from left plus more every line).
+     * Return the first hex coordinate (how far from left plus more every line).
      * 
-     * @return the first coordinate
+     * @return a    the first hex coordinate
      */
     public int a() {
       return a;
     }
 
     /**
-     * Return the second coordinate (how far from top).
+     * Return the second hex coordinate (how far from top).
      * 
-     * @return the second coordinate
+     * @return b    the second hex coordinate
      */
     public int b() {
       return b;
     }
 
     /**
-     * Return the third coordinate (how far from left minus more very line).
+     * Return the third hex coordinate (how far from left minus more very line).
      * 
-     * @return the third coordinate
+     * @return c    the third hex coordinate
      */
     public int c() {
       return c;
     }
 
+    // I followed the "Effective Java" example linked to in the class Q&A page.
     @Override
     public boolean equals(Object x) {
       if (!(x instanceof HexCoordinate)) {
@@ -112,7 +122,7 @@ public class HexCoordinate
      * either may be returned.
      * 
      * @param p
-     * @param width width of grid (must NOT be negative or zero)
+     * @param width     width of grid (must NOT be negative or zero)
      * @return closest hex coordinate
      */
     public static HexCoordinate fromPoint(Point p, int width) {
@@ -129,27 +139,12 @@ public class HexCoordinate
       return new HexCoordinate(a, b);
     }
 
-    /// Other accessors
-
-    // TODO: define HEIGHT_RATIO, the amount down each row is from the last. (Not
-    // the height of a hexagon!)
-
-    // TODO: Add more public methods here.
-    // Each should have a documentation comment.
-    // You may also wish to add private methods and static final fields (named
-    // constants).
-    // In particular you should avoids performing very similar computations over and
-    // over.
-    // (We use a private static method to generalize {@link #toPoint()}
-    // that can be used when making the polygon.)
 
     /**
-     * Return the (x,y) center of the hexagon at this coordinate using the given
-     * width.
+     * Return an AWT Point object located at the center of this hex.
      * 
-     * @param width the size of the polygon when plotted on a square grid
-     * @returns the (x,y) coordinates of the center of this hexagon as plotted on a
-     *          square grid, given a specified hexagon width
+     * @param width     the size of the polygon when plotted on a square grid
+     * @returns point   an AWT Point object whose coordinates equal the center of the hex
      */
     public Point toPoint(int width) {
       int dx = (int) Math.round(xDisplacement(width));
@@ -158,49 +153,45 @@ public class HexCoordinate
     }
     
     /**
-     * Compute the displacement along the x-axis of a hex coordinate compared to 0,0,0.
+     * Compute the pixel displacement along the x-axis for the center of a hex coordinate.
      * 
-     * @param a         the "a" hex coordinate (of <a,b,c>)
-     * @param b         the "b" hex coordinate (of <a,b,c>)
      * @param width     the width of a hexagon
-     * @return          the distance of a hex coordinate
+     * @return          a hexagon center's distance from 0 along the x-axis  
      */ 
     private double xDisplacement(int width) {
       return (a - b * 0.5) * width;
     }
     
     /**
-     * Compute the displacement along the y-axis of a hex coordinate compared to 0,0,0.
+     * Compute the pixel displacement along the y-axis for the center of a hex coordinate.
      * 
-     * @param b         the "b" hex coordinate (of <a,b,c>)
      * @param width     the width of a hexagon
-     * @return          the distance of a hex coordinate
+     * @return          a hexagon center's distance from 0 along the y-axis  
      */ 
     private double yDisplacement(int width) {
       return b * width * HEIGHT_RATIO;
     }
 
     /**
-     * Return an AWT Polygon using hex coordinates and the given width.
+     * Create an AWT Polygon of six sides using the hex coordinates and a width.
      * 
      * @param width        the size of the Polygon when plotted on a square grid
      * @param returns      an AWT Polygon with point coordinates that reflect the
      *                     width
      */
     public Polygon toPolygon(int width) {
-      double radian;
-      int[] angles = new int[] {270, 330, 30, 90, 150, 210};
+      int[] angles = new int[] {270, 330, 30, 90, 150, 210};  // The angles of a hexagon's outer points along a circle.
       int[] xPoints = new int[6];
       int[] yPoints = new int[6];
+      double radian;
       for (int i=0; i<=5; i++) {
-        radian = angles[i] * RADIAN_RATIO;
+        radian = angles[i] * RADIAN_RATIO;  //Math.cos/sin use radians, not degrees.
         xPoints[i] = (int) Math.round(width * RADIUS_RATIO * Math.cos(radian) + xDisplacement(width));
         yPoints[i] = (int) Math.round(width * RADIUS_RATIO * Math.sin(radian) + yDisplacement(width));
       }
       return new Polygon(xPoints, yPoints, 6);
     }
 
-    
     /**
      * The minimum number of moves needed to reach another hex coordinate.
      * 
@@ -221,17 +212,3 @@ public class HexCoordinate
       }
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
