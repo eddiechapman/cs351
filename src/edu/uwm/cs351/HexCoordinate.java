@@ -164,8 +164,8 @@ public class HexCoordinate
      * @param width     the width of a hexagon
      * @return          the distance of a hex coordinate
      */ 
-    private double xDisplacement(int width) {
-      return (a - b * 0.5) * width;
+    private int xDisplacement(int width) {
+      return (int) Math.round((a - b * 0.5) * width);
     }
     
     /**
@@ -175,8 +175,8 @@ public class HexCoordinate
      * @param width     the width of a hexagon
      * @return          the distance of a hex coordinate
      */ 
-    private double yDisplacement(int width) {
-      return b * width * HEIGHT_RATIO;
+    private int yDisplacement(int width) {
+      return (int) Math.round(b * width * HEIGHT_RATIO);
     }
 
     /**
