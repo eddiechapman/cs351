@@ -114,7 +114,7 @@ public class HexCoordinate
      * @return closest hex coordinate
      */
     public static HexCoordinate fromPoint(Point p, int width) {
-      float db = p.y / getHeight(width);
+      float db = p.y / width * HEIGHT_RATIO;
       float da = (float) p.x / width + db / 2.0f;
       float dc = da - db;
 
@@ -150,20 +150,11 @@ public class HexCoordinate
      *          square grid, given a specified hexagon width
      */
     public Point toPoint(int width) {
-      int dx = (int) Math.ceil(xDisplacement(a, b, width));
+      int dx = (int) Math.round(xDisplacement(a, b, width));
       int dy = (int) Math.round(yDisplacement(b, width));
-      
       return new Point(dx, dy);
     }
     
-    /**
-     * Compute the height of a hexagon given it's width.
-     * @param width     the width of the hexagon
-     * @returns         the height of the hexagon  
-     */
-    private static float getHeight(int width) {
-      return width * HEIGHT_RATIO;
-    }
     
     /**
      * Compute the displacement along the x-axis of a hex coordinate compared to 0,0,0.
@@ -185,7 +176,7 @@ public class HexCoordinate
      * @return          the distance of a hex coordinate
      */ 
     private static double yDisplacement(int b, int width) {
-      return b * getHeight(width);
+      return b * width * HEIGHT_RATIO;
     }
 
     /**
@@ -196,9 +187,8 @@ public class HexCoordinate
      *                     width
      */
     public Polygon toPolygon(int width) {
-
     }
-    
+
     
     /**
      * The minimum number of moves needed to reach another hex coordinate.
