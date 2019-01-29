@@ -114,7 +114,7 @@ public class HexCoordinate
      * @return closest hex coordinate
      */
     public static HexCoordinate fromPoint(Point p, int width) {
-      float db = p.y / width * HEIGHT_RATIO;
+      float db = p.y / (width * HEIGHT_RATIO);
       float da = (float) p.x / width + db / 2.0f;
       float dc = da - db;
 
@@ -150,9 +150,9 @@ public class HexCoordinate
      *          square grid, given a specified hexagon width
      */
     public Point toPoint(int width) {
-      int dx = (int) Math.round(xDisplacement(width));
-      int dy = (int) Math.round(yDisplacement(width));
-      return new Point(dx, dy);
+      Point p = new Point();
+      p.translate(xDisplacement(width), yDisplacement(width));
+      return p;
     }
     
     
