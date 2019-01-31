@@ -121,7 +121,7 @@ public class HexTileSeq implements Cloneable
      **/
     public int size() {
       assert wellFormed() : "invariant failed at start of size";
-      return data.length;
+      return manyItems;
     }
 
     /**
