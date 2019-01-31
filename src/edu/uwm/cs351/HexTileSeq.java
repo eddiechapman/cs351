@@ -331,6 +331,18 @@ public class HexTileSeq implements Cloneable
      *   elements.
      **/
     private void ensureCapacity(int minimumCapacity) {
+      if (minimumCapacity <= data.length) {
+        return;
+      }
+      int newSize = data.length*2;
+      if (newSize < minimumCapacity) {
+        newSize = minimumCapacity;
+      }
+      HexTile[] newArray = new HexTile[newSize];
+      for (int i = 0; i < manyItems; i++) {
+        newArray[i] = data[i];
+      }
+      data = newArray;
     }
 
     /**
