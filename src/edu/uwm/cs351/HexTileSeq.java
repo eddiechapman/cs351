@@ -149,7 +149,7 @@ public class HexTileSeq implements Cloneable
      **/
     public boolean isCurrent() {
       assert wellFormed() : "invariant failed at start of isCurrent";
-      return currentIndex > manyItems;
+      return currentIndex < manyItems;
     }
 
     /**
@@ -279,13 +279,15 @@ public class HexTileSeq implements Cloneable
       assert wellFormed() : "invariant failed at start of addAfter";
       ensureCapacity(manyItems + 1);
       if (!isCurrent()) {
-        currentIndex = 0;
+        data[currentIndex] = element;
       }
-      currentIndex++;
-      for (int i = manyItems; i > currentIndex; i--) {
-        data[i] = data[i-1];
+      else {
+        for (int i = manyItems; i > currentIndex+1; i--) {
+          data[i] = data[i-1];
+        }
+        currentIndex++;
+        data[currentIndex] = element;
       }
-      data[currentIndex] = element;
       manyItems++;
       assert wellFormed() : "invariant failed at end of addAfter";
     }
