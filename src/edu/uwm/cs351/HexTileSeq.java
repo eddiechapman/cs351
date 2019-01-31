@@ -44,28 +44,25 @@ public class HexTileSeq implements Cloneable
     private static boolean doReport = true; // changed only by invariant tester
 
     private boolean report(String error) {
-      if (doReport)
+      if (doReport) {
         System.out.println("Invariant error: " + error);
-      else
+      }
+      else {
         System.out.println("Caught problem: " + error);
+      }
       return false;
     }
 
     private boolean wellFormed() {
-      // Check the invariant.
-      // 1. data is never null
-      if (data == null)
-        return report("data is null"); // test the NEGATION of the condition
-
-      // 2. The data array is at least as long as the number of items
-      // claimed by the sequence.
-      // TODO
-
-      // 3. currentIndex is never negative and never more than the number of
-      // items claimed by the sequence.
-      // TODO
-
-      // If no problems discovered, return true
+      if (data == null) {
+        return report("data is null");
+      }
+      if (manyItems > data.length) {
+        return report("the item count claimed by manyItems exceeds the capacity of the array");
+      }
+      if (currentIndex < 0 || currentIndex > manyItems) {
+        return report("currentIndex refers to an illegal or unused portion of the array");
+      }
       return true;
     }
 
