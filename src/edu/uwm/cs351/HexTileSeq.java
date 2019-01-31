@@ -211,8 +211,13 @@ public class HexTileSeq implements Cloneable
      **/
     public void removeCurrent() {
       assert wellFormed() : "invariant failed at start of removeCurrent";
-      // TODO: Implement this code.
-      // You will need to shift elements in the array.
+      if (!(isCurrent())) {
+        throw new IllegalStateException("there is no current element to remove");
+      }
+      for (int i=currentIndex+1; i<manyItems; i++) {
+        data[i-1] = data[i];
+      }
+      manyItems -= 1;
       assert wellFormed() : "invariant failed at end of removeCurrent";
     }
 
