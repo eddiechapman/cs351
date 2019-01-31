@@ -243,7 +243,12 @@ public class HexTileSeq implements Cloneable
      **/
     public void addBefore(HexTile element) {
       assert wellFormed() : "invariant failed at start of addBefore";
-      // TODO: Implement this code.
+      ensureCapacity(manyItems + 1);
+      for (int i=manyItems; i>currentIndex; i--) {
+        data[i] = data[i-1];
+      }
+      data[currentIndex] = element;
+      manyItems += 1;
       assert wellFormed() : "invariant failed at end of addBefore";
     }
 
