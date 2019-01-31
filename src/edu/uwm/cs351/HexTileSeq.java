@@ -104,7 +104,12 @@ public class HexTileSeq implements Cloneable
      *   new HexTile[initialCapacity].
      **/
     public HexTileSeq(int initialCapacity) {
-      // TODO: Implement this code.
+      if (0 > initialCapacity) {
+        throw new IllegalArgumentException("initialCapacity cannot be negative");
+      }
+      data = new HexTile[initialCapacity];
+      manyItems = 0;
+      currentIndex = 0;
       assert wellFormed() : "Invariant false at end of constructor";
     }
 
