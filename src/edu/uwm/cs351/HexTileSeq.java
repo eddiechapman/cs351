@@ -165,7 +165,7 @@ public class HexTileSeq implements Cloneable
      **/
     public HexTile getCurrent() {
       assert wellFormed() : "invariant failed at start of getCurrent";
-      if (!(isCurrent())) {
+      if (!isCurrent()) {
         throw new IllegalStateException("there is no current element");
       }
       return data[currentIndex];
@@ -188,10 +188,10 @@ public class HexTileSeq implements Cloneable
      **/
     public void advance() {
       assert wellFormed() : "invariant failed at start of advance";
-      if (!(isCurrent())) {
+      if (!isCurrent()) {
         throw new IllegalStateException("there is no element to advance to");
       }
-      currentIndex += 1;
+      currentIndex++;
       assert wellFormed() : "invariant failed at end of advance";
     }
 
@@ -211,13 +211,13 @@ public class HexTileSeq implements Cloneable
      **/
     public void removeCurrent() {
       assert wellFormed() : "invariant failed at start of removeCurrent";
-      if (!(isCurrent())) {
+      if (!isCurrent()) {
         throw new IllegalStateException("there is no current element to remove");
       }
-      for (int i=currentIndex+1; i<manyItems; i++) {
+      for (int i = currentIndex+1; i < manyItems; i++) {
         data[i-1] = data[i];
       }
-      manyItems -= 1;
+      manyItems--;
       assert wellFormed() : "invariant failed at end of removeCurrent";
     }
 
@@ -243,12 +243,17 @@ public class HexTileSeq implements Cloneable
      **/
     public void addBefore(HexTile element) {
       assert wellFormed() : "invariant failed at start of addBefore";
-      ensureCapacity(manyItems + 1);
-      for (int i=manyItems; i>currentIndex; i--) {
+      if (manyItems == data.length) {
+        ensureCapacity(manyItems*2 + 1);
+      }
+      if (!isCurrent()) {
+        currentIndex = 0;
+      }
+      for (int i = manyItems; i > currentIndex; i--) {
         data[i] = data[i-1];
       }
       data[currentIndex] = element;
-      manyItems += 1;
+      manyItems++;
       assert wellFormed() : "invariant failed at end of addBefore";
     }
 
@@ -274,13 +279,18 @@ public class HexTileSeq implements Cloneable
      **/
     public void addAfter(HexTile element) {
       assert wellFormed() : "invariant failed at start of addAfter";
-      ensureCapacity(manyItems + 1);
-      currentIndex += 1;
-      for (int i=manyItems; i>currentIndex; i--) {
-        data[i] = data[i - 1];
+      if (manyItems == data.length) {
+        ensureCapacity(manyItems * 2 + 1);
+      }
+      if (!isCurrent()) {
+        currentIndex = 0;
+      }
+      currentIndex++;
+      for (int i = manyItems; i > currentIndex; i--) {
+        data[i] = data[i-1];
       }
       data[currentIndex] = element;
-      manyItems += 1;
+      manyItems++;
       assert wellFormed() : "invariant failed at end of addAfter";
     }
 
@@ -307,7 +317,6 @@ public class HexTileSeq implements Cloneable
      **/
     public void addAll(HexTileSeq addend) {
       assert wellFormed() : "invariant failed at start of addAll";
-      // TODO: Implement this code.
       assert wellFormed() : "invariant failed at end of addAll";
     }
 
