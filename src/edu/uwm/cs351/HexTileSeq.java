@@ -60,7 +60,7 @@ public class HexTileSeq implements Cloneable
       if (manyItems > data.length) {
         return report("the item count claimed by manyItems exceeds the capacity of the array");
       }
-      if (currentIndex < 0 || currentIndex > manyItems) {
+      if (0 > currentIndex || currentIndex > manyItems) {
         return report("currentIndex refers to an illegal or unused portion of the array");
       }
       return true;
@@ -80,9 +80,9 @@ public class HexTileSeq implements Cloneable
      *   Indicates insufficient memory for initial array.
      **/
     public HexTileSeq() {
-      // NB: NEVER assert the invariant at the START of the constructor.
-      // (Why not? Think about it.)
-      // TODO: Implement this code.
+      data = new HexTile[INITIAL_CAPACITY];
+      manyItems = 0;
+      currentIndex = 0;
       assert wellFormed() : "Invariant false at end of constructor";
     }
 
