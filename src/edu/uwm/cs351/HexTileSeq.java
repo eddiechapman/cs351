@@ -315,6 +315,16 @@ public class HexTileSeq implements Cloneable
      **/
     public void addAll(HexTileSeq addend) {
       assert wellFormed() : "invariant failed at start of addAll";
+      if (addend == null) {
+        throw new NullPointerException("added sequence must not be null");
+      }
+      ensureCapacity(manyItems + addend.size());
+      HexTileSeq tempSeq = (HexTileSeq)addend.clone();
+      tempSeq.start();
+      for (int i = manyItems; tempSeq.isCurrent(); i++, tempSeq.advance()) {
+        data[i] = tempSeq.getCurrent();
+        manyItems++;
+      }
       assert wellFormed() : "invariant failed at end of addAll";
     }
 
@@ -362,17 +372,15 @@ public class HexTileSeq implements Cloneable
 
       try {
         answer = (HexTileSeq) super.clone();
-      } catch (CloneNotSupportedException e) { // This exception should not occur. But if it does,
-                                               // it would probably
-                                               // indicate a programming error that made super.clone
-                                               // unavailable.
-                                               // The most common error would be forgetting the
-                                               // "Implements Cloneable"
-                                               // clause at the start of this class.
+      } catch (CloneNotSupportedException e) { 
+        // This exception should not occur. But if it does, it would probably 
+        // indicate a programming error that made super.clone unavailable. The 
+        // most common error would be forgetting the "Implements Cloneable" 
+        // clause at the start of this class.
         throw new RuntimeException("This class does not implement Cloneable");
       }
 
-      // TODO: clone the data array
+      answer.data = data.clone();
 
       assert wellFormed() : "invariant failed at end of clone";
       assert answer.wellFormed() : "invariant failed for clone";
