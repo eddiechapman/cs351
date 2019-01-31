@@ -243,9 +243,7 @@ public class HexTileSeq implements Cloneable
      **/
     public void addBefore(HexTile element) {
       assert wellFormed() : "invariant failed at start of addBefore";
-      if (manyItems == data.length) {
-        ensureCapacity(manyItems*2 + 1);
-      }
+      ensureCapacity(manyItems + 1);
       if (!isCurrent()) {
         currentIndex = 0;
       }
@@ -279,9 +277,7 @@ public class HexTileSeq implements Cloneable
      **/
     public void addAfter(HexTile element) {
       assert wellFormed() : "invariant failed at start of addAfter";
-      if (manyItems == data.length) {
-        ensureCapacity(manyItems * 2 + 1);
-      }
+      ensureCapacity(manyItems + 1);
       if (!isCurrent()) {
         currentIndex = 0;
       }
@@ -335,8 +331,6 @@ public class HexTileSeq implements Cloneable
      *   elements.
      **/
     private void ensureCapacity(int minimumCapacity) {
-      // TODO: Implement this code.
-      // This is a private method: don't check invariants
     }
 
     /**
