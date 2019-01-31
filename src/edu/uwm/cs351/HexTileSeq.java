@@ -134,7 +134,7 @@ public class HexTileSeq implements Cloneable
      **/
     public void start() {
       assert wellFormed() : "invariant failed at start of start";
-      // TODO: Implement this code.
+      currentIndex = 0;
       assert wellFormed() : "invariant failed at end of start";
     }
 
