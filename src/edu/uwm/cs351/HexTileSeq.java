@@ -325,6 +325,9 @@ public class HexTileSeq implements Cloneable
         data[i] = tempSeq.getCurrent();
         manyItems++;
       }
+      if (currentIndex == manyItems - tempSeq.size()) {
+        currentIndex = manyItems;
+      }
       assert wellFormed() : "invariant failed at end of addAll";
     }
 
