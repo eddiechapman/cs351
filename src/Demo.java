@@ -58,7 +58,7 @@ public class Demo extends JFrame {
 		String input;
 		while ((input = r.readLine()) != null && !input.equalsIgnoreCase("quit")) {
 			try {
-				// TODO: use fromString to get a hex tile and then add it to the sequence
+				seq.addAfter(fromString(input));
 			} catch (FormatException e) {
 				System.out.println(e.getMessage());
 			}
@@ -99,8 +99,12 @@ public class Demo extends JFrame {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				// TODO: draw all the hex tiles in the sequence (using HexTile#draw)
-				// For this Homework, it's OK to move the cursor.
+				seq.start();
+				while (seq.isCurrent()) {
+				  HexTile tile = seq.getCurrent();
+				  tile.draw(g);
+				  seq.advance();
+				}
 			}
 		});
 	}
