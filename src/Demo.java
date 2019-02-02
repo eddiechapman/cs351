@@ -58,7 +58,7 @@ public class Demo extends JFrame {
 		String input;
 		while ((input = r.readLine()) != null && !input.equalsIgnoreCase("quit")) {
 			try {
-				seq.addAfter(fromString(input));
+				seq.addBefore(fromString(input));
 			} catch (FormatException e) {
 				System.out.println(e.getMessage());
 			}
