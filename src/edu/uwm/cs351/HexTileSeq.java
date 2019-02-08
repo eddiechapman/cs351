@@ -1,4 +1,4 @@
-// This is an assignment for students to complete after reading Chapter 3 of
+// This is an assignment for students to complete after reading Chapter 4 of
 // "Data Structures and Other Objects Using Java" by Michael Main.
 
 package edu.uwm.cs351;
@@ -66,14 +66,10 @@ public class HexTileSeq implements Cloneable
 	private HexTileSeq(boolean testInvariant) { }
 	
 	/**
-	 * Initialize an empty sequence with an initial capacity of INITIAL_CAPACITY.
-	 * The addAfter and addBefore methods work
-	 * efficiently (without needing more memory) until this capacity is reached.
+	 * Initialize an empty sequence.
 	 * @param - none
 	 * @postcondition
-	 *   This sequence is empty and has an initial capacity of INITIAL_CAPACITY
-	 * @exception OutOfMemoryError
-	 *   Indicates insufficient memory for initial array.
+	 *   This sequence is empty.
 	 **/   
 	public HexTileSeq( )
 	{
@@ -203,8 +199,6 @@ public class HexTileSeq implements Cloneable
 
 	/**
 	 * Add a new element to this sequence, after the current element. 
-	 * If the new element would take this sequence beyond its current capacity,
-	 * then the capacity is increased before adding the new element.
 	 * @param element
 	 *   the new element that is being added, may be null
 	 * @postcondition
