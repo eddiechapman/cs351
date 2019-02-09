@@ -71,7 +71,7 @@ public class HexBoardEditor extends JFrame {
 		String input;
 		while ((input = r.readLine()) != null) {
 			try {
-				// TODO: add new tile to sequence
+				seq.add(HexTile.fromString(input));
 			} catch (FormatException e) {
 				System.out.println(e.getMessage());
 			}
