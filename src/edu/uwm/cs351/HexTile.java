@@ -3,6 +3,8 @@ package edu.uwm.cs351;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A hexagonal game tail with a particular coordinate and terrain.
@@ -68,6 +70,30 @@ public class HexTile {
 		g.drawPolygon(hexagon);
 	}
 	
-	// TODO: define static method fromString.  Make sure to document it!
+	/**
+	 * Construct a HexTile using a string to specify parameters.
+	 * 
+	 * @param  input a formatted string containing HexTile parameters
+     * @return  a HexTile reflecting the input information
+     * @throws  FormatException if the input string could not be parsed. 
+     *          This could be due to inability to separate input components,
+     *          or because input components could not be converted to useful 
+     *          values.        
+     * @throws  IllegalArgumentException if the input specified illegal coordinates
+     *          for a HexCoordinate. Or, if the input resulted in a null Terrain
+     *          argument for the HexTile constructor. 
+	 */
+	public static HexTile fromString(String input) throws FormatException{
+	    String regexPattern = "[A-Z]*<[-\\d]+,[-\\d]+,[-\\d]+>";
+	    if (!input.matches(regexPattern)) {
+	        throw new FormatException(
+                "Input string could not be parsed into useful values. Input should specify the" +
+                "name of a valid terrain type in capital letters, followed comma-separated hex" +
+                "coordinates surrounded by angle brackets: TERRAIN<X,Y,Z>");                          
+	    }
+	    Terrain t = Terrain.valueOf(input.substring(0, input.indexOf("<")));
+	    HexCoordinate h = HexCoordinate.fromString(input.substring(input.indexOf("<")));
+        return new HexTile(t, h);
+	}
 
 }

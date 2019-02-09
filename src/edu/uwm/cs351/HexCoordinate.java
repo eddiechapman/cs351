@@ -2,6 +2,8 @@ package edu.uwm.cs351;
 
 import java.awt.Point;
 import java.awt.Polygon;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Coordinates on a hexagon-filled game board.
@@ -178,5 +180,32 @@ public class HexCoordinate {
 		return maxd; // Or: return da + db + dc - maxd;
 	}
 	
-	// TODO: define static method fromString.  Make sure to document it!
+	/**
+	 * Construct a HexCoordinate using a string to specify parameters.
+	 * 
+	 * @param input the string representation of a HexCoordinate
+	 * @return a HexCoordinate with the coordinates specified by input
+	 * @throws FormatException if the input could not be parsed into 
+	 *         individual coordinate values, or if the coordinate values
+	 *         could not be converted to integers.
+	 * @throws IllegalArgumentException if a HexCoordinate could not be
+	 *         constructed from input
+	 */
+	public static HexCoordinate fromString(String input) throws FormatException {
+	    if (!input.matches("<[-\\d]+,[-\\d]+,[-\\d]+>")) {
+	        throw new FormatException(
+                "Input string could not be parsed into useful values. Input should " +
+                "specify the name of a valid terrain type in capital letters, followed " +
+                "by comma-separated hex coordinates surrounded by angle brackets: " +
+                "TERRAIN<X,Y,Z>");
+	    }
+	    try {
+	        String[] xyz = input.replaceAll("[<>]", "").split(",");
+	        return new HexCoordinate(Integer.parseInt(xyz[0]),
+	                                 Integer.parseInt(xyz[1]),
+	                                 Integer.parseInt(xyz[2]));
+	    } catch (NumberFormatException e) {
+	        throw new FormatException("Must specify HexTile coordinates in integers");
+	    }
+	}   
 }
