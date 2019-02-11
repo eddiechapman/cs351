@@ -3,6 +3,7 @@ package edu.uwm.cs351;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -116,7 +117,24 @@ public class HexBoardEditor extends JFrame {
 		contentPane.add(indicatorPanel,BorderLayout.NORTH);
 		contentPane.add(buttonPanel,BorderLayout.SOUTH);
 		this.setContentPane(contentPane);
-		hexPanel.addMouseListener(new MouseAdapter())
+		hexPanel.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+	            Point p = e.getPoint();
+	            selected = HexCoordinate.fromPoint(p, getHexWidth());
+	            if (e.getClickCount() == 2) {
+	                for (Iterator<HexTile> it = seq.iterator(); it.hasNext();) {
+	                    if (it.next().getLocation().equals(selected)) {
+	                        it.remove();
+                        }
+	                }
+	                if (currentTerrain != Terrain.INACCESSIBLE) { 
+	                    seq.add(new HexTile(currentTerrain, selected)); 
+	                }
+	            }
+	            hexPanel.repaint();
+	        }
+		});
 		// TODO: if the hex panel is single clicked, 
 		// select the location (so it gets highlighted).
 		// Use HexTile.WIDTH as the width of hex tiles.
@@ -134,8 +152,6 @@ public class HexBoardEditor extends JFrame {
 		// it needs to be repainted.
 	}
 	
-	
-		
 	private final class HexPanel extends JPanel {
 		/**
 		 * Keep Eclipse happy
@@ -172,13 +188,11 @@ public class HexBoardEditor extends JFrame {
 		}
 	}
 	
-	
-	public class ButtonHandler implements ActionListener {
+	class ButtonHandler implements ActionListener {
 	    @Override
         public void actionPerformed(ActionEvent e) {
             JButton b = (JButton) e.getSource();
             currentTerrain = Terrain.valueOf(b.getText());
-            System.out.print(currentTerrain.getColor());
             terrainIndicator.repaint();
         }
     }
