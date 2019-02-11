@@ -91,15 +91,6 @@ public class HexBoardEditor extends JFrame {
 	protected int getHexWidth() {
 		return ((Integer)sizeSelector.getSelectedItem()).intValue();
 	}
-	
-	public class ButtonHandler implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            JButton b = (JButton) e.getSource();
-            currentTerrain = Terrain.valueOf(b.getText());
-            System.out.print(currentTerrain.getColor());
-            terrainIndicator.repaint();
-        }
-    }
 
 	public HexBoardEditor(final Collection<HexTile> seq) {
 		board = seq;
@@ -125,7 +116,7 @@ public class HexBoardEditor extends JFrame {
 		contentPane.add(indicatorPanel,BorderLayout.NORTH);
 		contentPane.add(buttonPanel,BorderLayout.SOUTH);
 		this.setContentPane(contentPane);
-
+		hexPanel.addMouseListener(new MouseAdapter())
 		// TODO: if the hex panel is single clicked, 
 		// select the location (so it gets highlighted).
 		// Use HexTile.WIDTH as the width of hex tiles.
@@ -180,4 +171,15 @@ public class HexBoardEditor extends JFrame {
 			super.repaint();
 		}
 	}
+	
+	
+	public class ButtonHandler implements ActionListener {
+	    @Override
+        public void actionPerformed(ActionEvent e) {
+            JButton b = (JButton) e.getSource();
+            currentTerrain = Terrain.valueOf(b.getText());
+            System.out.print(currentTerrain.getColor());
+            terrainIndicator.repaint();
+        }
+    }
 }
