@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -162,8 +163,13 @@ public class HexBoardEditor extends JFrame {
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g); // render background
 			int width = getHexWidth();
-			// TODO: render all tiles and outline selected area with magenta.
-			// Use "width" as the width of the hex tiles.
+			for (Iterator<HexTile> it = board.iterator(); it.hasNext();) {
+			    HexTile h = it.next();
+			    h.draw(g, width);
+			}
+			Polygon hexagon = selected.toPolygon(width);
+			g.setColor(Color.MAGENTA);
+			g.drawPolygon(hexagon);
 		}
 	}
 	
