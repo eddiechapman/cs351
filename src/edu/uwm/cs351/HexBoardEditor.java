@@ -192,7 +192,8 @@ public class HexBoardEditor extends JFrame {
 		
 		@Override
 		public void repaint() {
-			// TODO: set text and background color
+			this.setText(currentTerrain.toString());
+			this.setBackground(currentTerrain.getColor());
 			super.repaint();
 		}
 	}
