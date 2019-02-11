@@ -91,6 +91,15 @@ public class HexBoardEditor extends JFrame {
 	protected int getHexWidth() {
 		return ((Integer)sizeSelector.getSelectedItem()).intValue();
 	}
+	
+	public class ButtonHandler implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            JButton b = (JButton) e.getSource();
+            currentTerrain = Terrain.valueOf(b.getText());
+            System.out.print(currentTerrain.getColor());
+            terrainIndicator.repaint();
+        }
+    }
 
 	public HexBoardEditor(final Collection<HexTile> seq) {
 		board = seq;
@@ -99,6 +108,26 @@ public class HexBoardEditor extends JFrame {
 		final HexPanel hexPanel = new HexPanel();
 		contentPane.add(hexPanel, BorderLayout.CENTER);
 		JPanel buttonPanel = new JPanel();
+		ActionListener handler = new ButtonHandler();
+		JButton b1, b2, b3, b4, b5, b6, b7;
+		buttonPanel.add(b1 = new JButton("INACCESSIBLE"));
+		b1.addActionListener(handler);
+		buttonPanel.add(b2 = new JButton("LAND"));
+		b2.addActionListener(handler); 
+		buttonPanel.add(b3 = new JButton("WATER"));
+		b3.addActionListener(handler); 
+		buttonPanel.add(b4 = new JButton("FOREST"));
+		b4.addActionListener(handler); 
+		buttonPanel.add(b5 = new JButton("CITY"));
+		b5.addActionListener(handler); 
+		buttonPanel.add(b6 = new JButton("MOUNTAIN"));
+		b6.addActionListener(handler); 
+		buttonPanel.add(b7 = new JButton("DESERT"));
+		b7.addActionListener(handler);
+		
+		
+    		
+		
 		// TODO: Add buttons (use JButton) to the buttonPanel for each kind of terrain's name,
 		// setting background color and making opaque, and then activate them
 		// by adding an action listener to set the current terrain and make
@@ -113,6 +142,7 @@ public class HexBoardEditor extends JFrame {
 		contentPane.add(indicatorPanel,BorderLayout.NORTH);
 		contentPane.add(buttonPanel,BorderLayout.SOUTH);
 		this.setContentPane(contentPane);
+
 		// TODO: if the hex panel is single clicked, 
 		// select the location (so it gets highlighted).
 		// Use HexTile.WIDTH as the width of hex tiles.
@@ -129,6 +159,8 @@ public class HexBoardEditor extends JFrame {
 		// Afterwards, in any case, tell the hex panel that
 		// it needs to be repainted.
 	}
+	
+	
 		
 	private final class HexPanel extends JPanel {
 		/**
