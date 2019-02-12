@@ -59,7 +59,9 @@ public class HexBoardEditor extends JFrame {
 
 					@Override
 					public void windowClosing(WindowEvent e) {
-						// TODO: print out all tiles in the picture to standard output
+						for (Iterator<HexTile> it = seq.iterator(); it.hasNext();) {
+						    System.out.print(it.next().toString() + "\n");
+						}
 						x.setVisible(false);
 						x.dispose();
 					}
@@ -103,7 +105,16 @@ public class HexBoardEditor extends JFrame {
 		JPanel buttonPanel = new JPanel();
 		for (Terrain t : Terrain.values()) {
 		    JButton b = new JButton(t.toString());
-		    b.addActionListener(new ButtonHandler());
+		    b.addActionListener(new ActionListener() {
+		        
+		        @Override
+		        public void actionPerformed(ActionEvent e) {
+		            JButton b = (JButton) e.getSource();
+		            currentTerrain = Terrain.valueOf(b.getText());
+		            terrainIndicator.repaint();
+		        }
+		        
+		    });
 		    b.setOpaque(true);
 		    b.setBackground(t.getColor());
 		    buttonPanel.add(b);
@@ -119,15 +130,15 @@ public class HexBoardEditor extends JFrame {
 		contentPane.add(buttonPanel,BorderLayout.SOUTH);
 		this.setContentPane(contentPane);
 		hexPanel.addMouseListener(new MouseAdapter() {
+		    
 		    @Override
 		    public void mouseClicked(MouseEvent e) {
-	            Point p = e.getPoint();
-	            selected = HexCoordinate.fromPoint(p, getHexWidth());
-	            if (e.getClickCount() == 2) {
+	            selected = HexCoordinate.fromPoint(e.getPoint(), getHexWidth());
+	            if (e.getClickCount() == 2) { 
 	                for (Iterator<HexTile> it = seq.iterator(); it.hasNext();) {
-	                    if (it.next().getLocation().equals(selected)) {
-	                        it.remove();
-                        }
+	                    if (it.next().getLocation().equals(selected)) { 
+	                        it.remove(); 
+	                    }
 	                }
 	                if (currentTerrain != Terrain.INACCESSIBLE) { 
 	                    seq.add(new HexTile(currentTerrain, selected)); 
@@ -135,22 +146,8 @@ public class HexBoardEditor extends JFrame {
 	            }
 	            hexPanel.repaint();
 	        }
+
 		});
-		// TODO: if the hex panel is single clicked, 
-		// select the location (so it gets highlighted).
-		// Use HexTile.WIDTH as the width of hex tiles.
-		//
-		// If a double click, then if there is no tile there already, 
-		// a new tile of the currently selected terrain should be created there.
-		// If the current terrain is INACCESSIBLE then delete any existing tile.
-		// Otherwise, replace any existing tile with a new tile of the current terrain.
-		//
-		// Thus INACCESSIBLE is normally an eraser; 
-		// but if you double click in an empty area, 
-		// then it WILL create an INACCESSIBLE tile.  
-		//
-		// Afterwards, in any case, tell the hex panel that
-		// it needs to be repainted.
 	}
 	
 	private final class HexPanel extends JPanel {
@@ -194,12 +191,4 @@ public class HexBoardEditor extends JFrame {
 		}
 	}
 	
-	class ButtonHandler implements ActionListener {
-	    @Override
-        public void actionPerformed(ActionEvent e) {
-            JButton b = (JButton) e.getSource();
-            currentTerrain = Terrain.valueOf(b.getText());
-            terrainIndicator.repaint();
-        }
-    }
 }
