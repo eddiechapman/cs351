@@ -52,10 +52,10 @@ public class HexTileSeq implements Cloneable
 		}
 		
 		// 2. manyItems is the length of the list.
-		// 3. tail is the last node in the list pointed to be head.
-		// 4. precursor points to a node in the list pointed to by head or is null.
+		// 3. tail is the last node in the list started by head.
+		// 4. precursor is null or points to a node in the list which is started by head.
 		// 5. if precursor is null, then cursor points to the first node if any
-		//    otherwise it points the node after the one precursor poiints to (if any).
+		//    otherwise it points the node after the one precursor points to (if any).
 		// TODO
 
 		// If no problems discovered, return true
@@ -90,6 +90,44 @@ public class HexTileSeq implements Cloneable
 		// size() should not modify anything, so we omit testing the invariant here
 	}
 
+	/**
+	 * Add a new element to this sequence, before the current element. 
+	 * @param element
+	 *   the new element that is being added, it is allowed to be null
+	 * @postcondition
+	 *   A new copy of the element has been added to this sequence. If there was
+	 *   a current element, then the new element is placed before the current
+	 *   element. If there was no current element, then the new element is placed
+	 *   at the start of the sequence. In all cases, the new element becomes the
+	 *   new current element of this sequence. 
+	 **/
+	public void addBefore(HexTile element)
+	{
+		assert wellFormed() : "invariant failed at start of addBefore";
+		// TODO: Implement this code.
+		assert wellFormed() : "invariant failed at end of addBefore";
+	}
+
+	/**
+	 * Add a new element to this sequence, after the current element. 
+	 * @param element
+	 *   the new element that is being added, may be null
+	 * @postcondition
+	 *   A new copy of the element has been added to this sequence. If there was
+	 *   a current element, then the new element is placed after the current
+	 *   element. If there was no current element, then the new element is placed
+	 *   at the end of the sequence. In all cases, the new element becomes the
+	 *   new current element of this sequence. 
+	 **/
+	public void addAfter(HexTile element)
+	{
+		assert wellFormed() : "invariant failed at start of addAfter";
+		// TODO: Implement this code.
+		assert wellFormed() : "invariant failed at end of addAfter";
+	}
+
+	/// Cursor methods
+	
 	/**
 	 * The first element (if any) of this sequence is now current.
 	 * @param - none
@@ -180,43 +218,6 @@ public class HexTileSeq implements Cloneable
 	}
 
 	/**
-	 * Add a new element to this sequence, before the current element. 
-	 * @param element
-	 *   the new element that is being added, it is allowed to be null
-	 * @postcondition
-	 *   A new copy of the element has been added to this sequence. If there was
-	 *   a current element, then the new element is placed before the current
-	 *   element. If there was no current element, then the new element is placed
-	 *   at the start of the sequence. In all cases, the new element becomes the
-	 *   new current element of this sequence. 
-	 **/
-	public void addBefore(HexTile element)
-	{
-		assert wellFormed() : "invariant failed at start of addBefore";
-		// TODO: Implement this code.
-		assert wellFormed() : "invariant failed at end of addBefore";
-	}
-
-	/**
-	 * Add a new element to this sequence, after the current element. 
-	 * @param element
-	 *   the new element that is being added, may be null
-	 * @postcondition
-	 *   A new copy of the element has been added to this sequence. If there was
-	 *   a current element, then the new element is placed after the current
-	 *   element. If there was no current element, then the new element is placed
-	 *   at the end of the sequence. In all cases, the new element becomes the
-	 *   new current element of this sequence. 
-	 **/
-	public void addAfter(HexTile element)
-	{
-		assert wellFormed() : "invariant failed at start of addAfter";
-		// TODO: Implement this code.
-		assert wellFormed() : "invariant failed at end of addAfter";
-	}
-
-
-	/**
 	 * Place the contents of another sequence at the end of this sequence.
 	 * @param addend
 	 *   a sequence whose contents will be placed at the end of this sequence
@@ -292,9 +293,9 @@ public class HexTileSeq implements Cloneable
 		}
 		
 		public void testB() {
-			self.manyItems = 1;
+			self.manyNodes = 1;
 			assertFalse(self.wellFormed());
-			self.manyItems = -1;
+			self.manyNodes = -1;
 			assertFalse(self.wellFormed());
 		}
 		
@@ -315,7 +316,7 @@ public class HexTileSeq implements Cloneable
 		
 		public void testE() {
 			self.head = n();
-			self.manyItems = 1;
+			self.manyNodes = 1;
 			self.precursor = self.head;
 			assertFalse(self.wellFormed());
 			self.precursor = null;
@@ -326,7 +327,7 @@ public class HexTileSeq implements Cloneable
 		public void testF() {
 			self.head = n();
 			self.tail = n();
-			self.manyItems = 1;
+			self.manyNodes = 1;
 			self.precursor = self.tail;
 			assertFalse(self.wellFormed());
 			self.precursor = null;
@@ -337,14 +338,14 @@ public class HexTileSeq implements Cloneable
 		public void testG() {
 			self.head = n();
 			self.tail = self.head;
-			self.manyItems = 1;
+			self.manyNodes = 1;
 			assertFalse(self.wellFormed());
 		}
 		
 		public void testH() {
 			self.head = n();
 			self.tail = self.head;
-			self.manyItems = 1;
+			self.manyNodes = 1;
 			doReport = true;
 			self.cursor = self.head;
 			assertTrue(self.wellFormed());
@@ -357,7 +358,7 @@ public class HexTileSeq implements Cloneable
 			self.head = n();
 			self.tail = self.head;
 			self.head.next = self.head;
-			self.manyItems = 1;
+			self.manyNodes = 1;
 			assertFalse(self.wellFormed());
 			self.tail = n();
 			assertFalse(self.wellFormed());
@@ -371,7 +372,7 @@ public class HexTileSeq implements Cloneable
 			self.head = n();
 			self.tail = n();
 			self.head.next = self.tail;
-			self.manyItems = 2;
+			self.manyNodes = 2;
 
 			doReport = true;
 			self.cursor = self.head;
@@ -390,9 +391,9 @@ public class HexTileSeq implements Cloneable
 			self.head.next = self.tail;
 			self.cursor = self.head;
 			assertFalse(self.wellFormed());
-			self.manyItems = 1;
+			self.manyNodes = 1;
 			assertFalse(self.wellFormed());
-			self.manyItems = 3;
+			self.manyNodes = 3;
 			assertFalse(self.wellFormed());
 		}
 		
@@ -400,7 +401,7 @@ public class HexTileSeq implements Cloneable
 			self.head = n();
 			self.head.next = n();
 			self.cursor = self.head;
-			self.manyItems = 2;
+			self.manyNodes = 2;
 			assertFalse(self.wellFormed());
 			self.tail = self.head;
 			assertFalse(self.wellFormed());
@@ -412,7 +413,7 @@ public class HexTileSeq implements Cloneable
 			self.head = n();
 			self.tail = n();
 			self.head.next = self.tail;
-			self.manyItems = 2;
+			self.manyNodes = 2;
 			self.cursor = self.head;
 			self.tail.next = self.head;
 			assertFalse(self.wellFormed());
@@ -424,7 +425,7 @@ public class HexTileSeq implements Cloneable
 			self.head = n();
 			self.tail = n();
 			self.head.next = self.tail;
-			self.manyItems = 2;
+			self.manyNodes = 2;
 			assertFalse(self.wellFormed());
 			self.precursor = self.head;
 			assertFalse(self.wellFormed());
@@ -442,7 +443,7 @@ public class HexTileSeq implements Cloneable
 			self.head = n();
 			self.tail = n();
 			self.head.next = self.tail;
-			self.manyItems = 2;
+			self.manyNodes = 2;
 			self.precursor = n();
 			assertFalse(self.wellFormed());
 			self.cursor = self.tail;
@@ -457,7 +458,7 @@ public class HexTileSeq implements Cloneable
 			self.head = n();
 			self.head.next = n();
 			self.head.next.next = self.tail = n();
-			self.manyItems = 3;
+			self.manyNodes = 3;
 			self.cursor = self.head;
 			
 			doReport = true;
@@ -474,7 +475,7 @@ public class HexTileSeq implements Cloneable
 			self.head = n();
 			self.head.next = n();
 			self.head.next.next = self.tail = n();
-			self.manyItems = 3;
+			self.manyNodes = 3;
 			self.cursor = self.head;
 			self.tail.next = self.head;
 			assertFalse(self.wellFormed());
@@ -488,7 +489,7 @@ public class HexTileSeq implements Cloneable
 			self.head = n();
 			self.head.next = n();
 			self.head.next.next = self.tail = n();
-			self.manyItems = 3;
+			self.manyNodes = 3;
 			self.cursor = self.head;
 			
 			self.head.next.next = self.head.next;
@@ -503,13 +504,13 @@ public class HexTileSeq implements Cloneable
 			self.head.next.next = self.tail = n();
 			self.cursor = self.head;
 			assertFalse(self.wellFormed());
-			self.manyItems = 1;
+			self.manyNodes = 1;
 			assertFalse(self.wellFormed());
-			self.manyItems = 2;
+			self.manyNodes = 2;
 			assertFalse(self.wellFormed());
-			self.manyItems = 4;
+			self.manyNodes = 4;
 			assertFalse(self.wellFormed());
-			self.manyItems = -3;
+			self.manyNodes = -3;
 			assertFalse(self.wellFormed());
 		}
 		
@@ -518,7 +519,7 @@ public class HexTileSeq implements Cloneable
 			self.head.next = n();
 			self.head.next.next = n();
 			self.cursor = self.head;
-			self.manyItems = 3;
+			self.manyNodes = 3;
 			assertFalse(self.wellFormed());
 			self.tail = self.head;
 			assertFalse(self.wellFormed());
@@ -532,7 +533,7 @@ public class HexTileSeq implements Cloneable
 			self.head = n();
 			self.head.next = n();
 			self.head.next.next = n();
-			self.manyItems = 3;
+			self.manyNodes = 3;
 			self.tail = self.head.next.next;
 
 			assertFalse(self.wellFormed());
@@ -564,7 +565,7 @@ public class HexTileSeq implements Cloneable
 			self.head = n();
 			self.head.next = n();
 			self.head.next.next = n();
-			self.manyItems = 3;
+			self.manyNodes = 3;
 			self.tail = self.head.next.next;
 
 			self.precursor = n();
@@ -585,7 +586,7 @@ public class HexTileSeq implements Cloneable
 			self.head.next = n();
 			self.head.next.next = n();
 			self.head.next.next.next = self.tail = n();
-			self.manyItems = 4;
+			self.manyNodes = 4;
 			self.cursor = self.head;
 			
 			doReport = true;
@@ -606,7 +607,7 @@ public class HexTileSeq implements Cloneable
 			self.head.next = n();
 			self.head.next.next = n();
 			self.head.next.next.next = self.tail = n();
-			self.manyItems = 4;
+			self.manyNodes = 4;
 			self.cursor = self.head;
 
 			self.tail.next = self.head;
@@ -625,7 +626,7 @@ public class HexTileSeq implements Cloneable
 			self.head.next = n();
 			self.head.next.next = n = n();
 			self.head.next.next.next = self.tail = n();
-			self.manyItems = 4;
+			self.manyNodes = 4;
 			self.cursor = self.head;
 
 			n.next = self.head;
