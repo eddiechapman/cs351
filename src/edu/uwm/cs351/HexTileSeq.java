@@ -73,9 +73,13 @@ public class HexTileSeq implements Cloneable
 		
 		// 3. tail is the last node in the list started by head.
 		if (tail.next != null) return false;
+		
 		// 4. precursor is null or points to a node in the list which is started by head.
+
 		// 5. if precursor is null, then cursor points to the first node if any
 		//    otherwise it points the node after the one precursor points to (if any).
+		if ((precursor == null) && (cursor != head)) return false;
+		
 		// TODO
 
 		// If no problems discovered, return true
