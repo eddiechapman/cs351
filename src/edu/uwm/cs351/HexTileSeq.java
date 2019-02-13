@@ -170,7 +170,7 @@ public class HexTileSeq implements Cloneable
 	public boolean isCurrent( )
 	{
 		assert wellFormed() : "invariant failed at start of isCurrent";
-		return cursor != null;
+		return cursor.next != null;
 	}
 
 	/**
