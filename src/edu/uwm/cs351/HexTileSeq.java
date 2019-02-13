@@ -210,7 +210,7 @@ public class HexTileSeq implements Cloneable
 	{
 		assert wellFormed() : "invariant failed at start of advance";
 		if (!isCurrent()) throw new IllegalStateException("There is no current element to advance beyond.");
-		
+		cursor = cursor.next;
 		assert wellFormed() : "invariant failed at end of advance";
 	}
 
