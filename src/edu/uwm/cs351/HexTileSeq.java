@@ -42,11 +42,11 @@ public class HexTileSeq implements Cloneable
         }
     }
     
-    int manyNodes;
-    Node head;
-    Node tail;
-    Node cursor;
-    Node precursor;
+    private int manyNodes;
+    private Node head;
+    private Node tail;
+    private Node cursor;
+    private Node precursor;
 
 	private static boolean doReport = true; // changed only by invariant tester
 	
