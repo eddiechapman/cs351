@@ -113,7 +113,7 @@ public class HexTileSeq implements Cloneable
 	{
 		assert wellFormed() : "invariant failed at start of size";
 		int answer = 0;
-		for (start(); isCurrent(); advance()) {
+		for (Node tempCursor = head; tempCursor != null; tempCursor = tempCursor.next) {
 		    answer++;
 		}
 		return answer;
