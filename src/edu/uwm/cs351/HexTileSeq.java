@@ -39,7 +39,13 @@ public class HexTileSeq implements Cloneable
             link = initialLink;
         }
     }
+    
 	// TODO: Declare the five fields (see the textbook)
+    int manyNodes;
+    Node head;
+    Node tail;
+    Node cursor;
+    Node precursor;
 
 	private static boolean doReport = true; // changed only by invariant tester
 	
