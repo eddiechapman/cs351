@@ -103,6 +103,11 @@ public class HexTileSeq implements Cloneable
 	public int size( )
 	{
 		assert wellFormed() : "invariant failed at start of size";
+		int answer = 0;
+		for (start(); isCurrent(); advance()) {
+		    answer++;
+		}
+		return answer;
 		// size() should not modify anything, so we omit testing the invariant here
 	}
 
