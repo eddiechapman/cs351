@@ -187,7 +187,8 @@ public class HexTileSeq implements Cloneable
 	public HexTile getCurrent( )
 	{
 		assert wellFormed() : "invariant failed at start of getCurrent";
-		// TODO: Implement this code.
+		if (!isCurrent()) throw new IllegalStateException("There is no current element to access.");
+		return cursor.data;
 	}
 
 	/**
