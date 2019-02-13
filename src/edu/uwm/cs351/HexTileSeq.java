@@ -69,22 +69,22 @@ public class HexTileSeq implements Cloneable
 		}
 		
 		// 2. manyItems is the length of the list.
-		if (manyNodes != size()) return false;
+		if (manyNodes != size()) return report("manyNodes inaccurately represents the length of the list!");
 		
 		// 3. tail is the last node in the list started by head.
-		if (tail.next != null) return false;
+		if (tail.next != null) return report("tail is not the last node in the list!");
 		
 		// 4. precursor is null or points to a node in the list which is started by head.
 		if (precursor != null) {
     		for (Node tempCursor = head; tempCursor == precursor; tempCursor = tempCursor.next) {
-    		    if (tempCursor == null) return false;
+    		    if (tempCursor == null) return report("precursor points to a node that cannot be reached from the head!");
     		}
 		}
 		
 		// 5. if precursor is null, then cursor points to the first node if any
 		//    otherwise it points the node after the one precursor points to (if any).
-		if ((precursor == null) && (cursor != head)) return false;
-		if (cursor != precursor.next) return false;
+		if ((precursor == null) && (cursor != head)) return report("precursor is null but cursor does not point to the head!");
+		if ((precursor != null) && (cursor != precursor.next)) return report("precursor points to a node that does not point directly to cursor!");
 
 		// If no problems discovered, return true
 		return true;
