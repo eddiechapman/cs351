@@ -31,12 +31,12 @@ public class HexTileSeq implements Cloneable
     // I followed the textbook on pg. 240
     private static class Node 
     {
-        private HexTile tile;
-        private Node link;
+        private HexTile data;
+        private Node next;
         
         private Node(HexTile initialTile, Node initialLink) {
-            tile = initialTile;
-            link = initialLink;
+            data = initialTile;
+            next = initialLink;
         }
     }
     
