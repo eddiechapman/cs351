@@ -28,7 +28,17 @@ public class HexTileSeq implements Cloneable
 	//      one pointed to by the cursor.  If the cursor is the first node, the precursor
 	//      is null.  If the cursor is null, the precursor points to the last node.
 
-	// TODO: Declare the static node class (with a constructor taking a HexTile and a Node)
+    // I followed the textbook on pg. 240
+    private static class Node 
+    {
+        private HexTile tile;
+        private Node link;
+        
+        private Node(HexTile initialTile, Node initialLink) {
+            tile = initialTile;
+            link = initialLink;
+        }
+    }
 	// TODO: Declare the five fields (see the textbook)
 
 	private static boolean doReport = true; // changed only by invariant tester
