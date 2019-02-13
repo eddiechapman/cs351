@@ -29,6 +29,8 @@ public class HexTileSeq implements Cloneable
 	//      is null.  If the cursor is null, the precursor points to the last node.
 
     // I followed the textbook on pg. 240
+    // & confirmed the use of private instance fields via
+    // https://stackoverflow.com/questions/4075262/access-modifiers-inside-a-private-static-nested-class-in-java
     private static class Node 
     {
         private HexTile data;
@@ -40,7 +42,6 @@ public class HexTileSeq implements Cloneable
         }
     }
     
-	// TODO: Declare the five fields (see the textbook)
     int manyNodes;
     Node head;
     Node tail;
