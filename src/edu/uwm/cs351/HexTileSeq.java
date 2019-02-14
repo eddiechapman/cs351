@@ -155,6 +155,10 @@ public class HexTileSeq implements Cloneable
 	{
 		assert wellFormed() : "invariant failed at start of addAfter";
 		cursor = new Node(element, cursor.next);
+		precursor = precursor.next;
+		precursor.next = cursor;
+		if (cursor.next == null) tail = cursor;
+		++manyNodes;
 		assert wellFormed() : "invariant failed at end of addAfter";
 	}
 
