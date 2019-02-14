@@ -28,9 +28,6 @@ public class HexTileSeq implements Cloneable
 	//      one pointed to by the cursor.  If the cursor is the first node, the precursor
 	//      is null.  If the cursor is null, the precursor points to the last node.
 
-    // I followed the textbook on pg. 240
-    // & confirmed the use of private instance fields via
-    // https://stackoverflow.com/questions/4075262/access-modifiers-inside-a-private-static-nested-class-in-java
     private static class Node 
     {
         private HexTile data;
@@ -76,7 +73,8 @@ public class HexTileSeq implements Cloneable
 		if (count != manyNodes) return report("manyNodes inaccurately represents the length of the list!");
 		
 		// 3. tail is the last node in the list started by head.
-		if ((tail != null) && (tail.next != null)) return report("tail is not the last node in the list!");
+		if ((tail != null) && ((head == null) || (tail.next != null))) 
+		    return report("tail is not the last node in the list!");
 		
 		// 4. precursor is null or points to a node in the list which is started by head.
 		if (precursor != null) {
