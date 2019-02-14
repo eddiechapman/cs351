@@ -168,10 +168,17 @@ public class HexTileSeq implements Cloneable
 	public void addAfter(HexTile element)
 	{
 		assert wellFormed() : "invariant failed at start of addAfter";
-		cursor = new Node(element, cursor.next);
-		precursor = precursor.next;
-		precursor.next = cursor;
-		if (cursor.next == null) tail = cursor;
+		if (isCurrent())
+		    precursor = cursor;
+		    cursor = new Node(element, cursor.next);
+		    precursor.next = cursor;
+		    if (tail == precursor)
+		        tail = cursor;
+	    else
+		    cursor = new Node(element, cursor);
+		    tail = cursor;
+		    if (manyNodes != 0)
+		        head = cursor;
 		++manyNodes;
 		assert wellFormed() : "invariant failed at end of addAfter";
 	}
