@@ -154,7 +154,7 @@ public class HexTileSeq implements Cloneable
 	public void addAfter(HexTile element)
 	{
 		assert wellFormed() : "invariant failed at start of addAfter";
-		// TODO: Implement this code.
+		cursor = new Node(element, cursor.next);
 		assert wellFormed() : "invariant failed at end of addAfter";
 	}
 
