@@ -73,8 +73,13 @@ public class HexTileSeq implements Cloneable
 		if (count != manyNodes) return report("manyNodes inaccurately represents the length of the list!");
 		
 		// 3. tail is the last node in the list started by head.
-		if ((tail != null) && ((head == null) || (tail.next != null))) 
+		if ((tail != null) && (head == null))
 		    return report("tail is not the last node in the list!");
+		if ((tail != null) && (tail.next != null))
+		    return report("tail is not the last node in the list!");
+		if ((tail == null) && (manyNodes != 0))
+		    return report("tail is not the last node in the list!");
+		    
 		
 		// 4. precursor is null or points to a node in the list which is started by head.
 		if (precursor != null) {
