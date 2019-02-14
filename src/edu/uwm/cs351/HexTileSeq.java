@@ -78,8 +78,8 @@ public class HexTileSeq implements Cloneable
 		
 		// 4. precursor is null or points to a node in the list which is started by head.
 		if (precursor != null) {
-    		for (Node tempCursor = head; tempCursor != precursor; tempCursor = tempCursor.next) {
-    		    if (tempCursor == null) return report("precursor points to a node that cannot be reached from the head!");
+    		for (Node p = head; p != precursor; p = p.next) {
+    		    if (p == null) return report("precursor points to a node that cannot be reached from the head!");
     		}
 		}
 		
