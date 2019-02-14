@@ -79,6 +79,10 @@ public class HexTileSeq implements Cloneable
 		    return report("tail is not the last node in the list!");
 		if ((tail == null) && (manyNodes != 0))
 		    return report("tail is not the last node in the list!");
+		if ((tail != null) && (head != null))
+		    for (Node p = head; p != tail; p = p.next) {
+		        if (p == null) return report("tail could not be reached from the head");
+		    }
 		    
 		
 		// 4. precursor is null or points to a node in the list which is started by head.
