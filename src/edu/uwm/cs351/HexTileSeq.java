@@ -69,7 +69,11 @@ public class HexTileSeq implements Cloneable
 		}
 		
 		// 2. manyItems is the length of the list.
-		if (manyNodes != size()) return report("manyNodes inaccurately represents the length of the list!");
+        int count = 0;
+        for (Node p = head; p != null; p = p.next) {
+            ++count;
+        }
+		if (count != manyNodes) return report("manyNodes inaccurately represents the length of the list!");
 		
 		// 3. tail is the last node in the list started by head.
 		if (tail.next != null) return report("tail is not the last node in the list!");
