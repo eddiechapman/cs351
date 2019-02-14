@@ -70,32 +70,39 @@ public class HexTileSeq implements Cloneable
         for (Node p = head; p != null; p = p.next) {
             ++count;
         }
-		if (count != manyNodes) return report("manyNodes inaccurately represents the length of the list!");
+		if (count != manyNodes) 
+		    return report("manyNodes inaccurately represents the length of the list!");
 		
 		// 3. tail is the last node in the list started by head.
-		if ((tail != null) && (head == null))
-		    return report("tail is not the last node in the list!");
-		if ((tail != null) && (tail.next != null))
-		    return report("tail is not the last node in the list!");
-		if ((tail == null) && (manyNodes != 0))
-		    return report("tail is not the last node in the list!");
-		if ((tail != null) && (head != null))
-		    for (Node p = head; p != tail; p = p.next) {
-		        if (p == null) return report("tail could not be reached from the head");
-		    }
-		    
+		if ((tail == null) && (manyNodes != 0)) 
+		    return report("This list has nodes but no tail!");
 		
+		if ((tail != null) && (tail.next != null)) 
+		    return report("The tail is pointing to another node!");
+		
+		if ((tail != null) && (head == null)) 
+		    return report("This list has a tail without a head!");
+		
+		if ((tail != null) && (head != null))
+	        for (Node p = head; p != tail; p = p.next) {
+                if (p == null) 
+                    return report("The tail could not be reached from the head.");
+            }
+		    
 		// 4. precursor is null or points to a node in the list which is started by head.
 		if (precursor != null) {
     		for (Node p = head; p != precursor; p = p.next) {
-    		    if (p == null) return report("precursor points to a node that cannot be reached from the head!");
+    		    if (p == null) 
+    		        return report("Precursor points to a node that cannot be reached from the head!");
     		}
 		}
 		
 		// 5. if precursor is null, then cursor points to the first node if any
 		//    otherwise it points the node after the one precursor points to (if any).
-		if ((precursor == null) && (cursor != head)) return report("precursor is null but cursor does not point to the head!");
-		if ((precursor != null) && (cursor != precursor.next)) return report("precursor points to a node that does not point directly to cursor!");
+		if ((precursor == null) && (cursor != head)) 
+		    return report("Precursor is null but cursor does not point to the head!");
+		if ((precursor != null) && (cursor != precursor.next)) 
+		    return report("Precursor is not pointing at the cursor!");
 
 		// If no problems discovered, return true
 		return true;
