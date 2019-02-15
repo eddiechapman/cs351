@@ -116,10 +116,17 @@ public class HexTileSeq implements Cloneable
 	 * @param - none
 	 * @postcondition
 	 *   This sequence is empty.
-	 **/   
+	 **/
+	// I initialize the instance variables explicitly per the textbook's 
+	// recommendation (p. 248): "Having an actual implementation makes it easier
+	// to make future changes. Also, without the implementation, we could not
+	// include a Javadoc comment to specify exactly what the constructor does."
 	public HexTileSeq( )
 	{
-		manyNodes = 0;
+		head = null;
+		tail = null;
+		cursor = null;
+	    manyNodes = 0;
 		assert wellFormed() : "Invariant false at end of constructor";
 	}
 
@@ -149,9 +156,7 @@ public class HexTileSeq implements Cloneable
 	 **/
 	public void addBefore(HexTile element)
 	{
-		assert wellFormed() : "invariant failed at start of addBefore";
-		cursor = new Node(element, precursor.next);
-		assert wellFormed() : "invariant failed at end of addBefore";
+
 	}
 
 	/**
@@ -177,7 +182,7 @@ public class HexTileSeq implements Cloneable
 	    else
 		    cursor = new Node(element, cursor);
 		    tail = cursor;
-		    if (manyNodes != 0)
+		    if (manyNodes == 0)
 		        head = cursor;
 		++manyNodes;
 		assert wellFormed() : "invariant failed at end of addAfter";
