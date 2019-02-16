@@ -124,8 +124,9 @@ public class HexTileSeq implements Cloneable
 	public HexTileSeq( )
 	{
 		head = null;
-		tail = null;
+		tail = head;
 		cursor = null;
+		precursor = null;
 	    manyNodes = 0;
 		assert wellFormed() : "Invariant false at end of constructor";
 	}
