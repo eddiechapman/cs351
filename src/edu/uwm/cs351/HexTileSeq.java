@@ -285,7 +285,15 @@ public class HexTileSeq implements Cloneable
 	public void removeCurrent( )
 	{
 		assert wellFormed() : "invariant failed at start of removeCurrent";
-		// TODO: Implement this code.
+		if (!isCurrent()) throw new IllegalStateException("There is no current element to remove!");
+		if (cursor == head) head = head.next;
+		else if (cursor == tail) {
+		    tail = precursor;
+		    tail.next = null;
+	    }
+		else precursor.next = cursor.next;   
+		cursor = cursor.next;
+		--manyNodes;
 		assert wellFormed() : "invariant failed at end of removeCurrent";
 	}
 
