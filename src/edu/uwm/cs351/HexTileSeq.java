@@ -157,19 +157,32 @@ public class HexTileSeq implements Cloneable
 	 **/
 	public void addBefore(HexTile element)
 	{
-        if (!isCurrent() || cursor == head) {
-            head = new Node(element, head);
-            cursor = head;
-            precursor = null;
-            if (size() == 0) {
-                tail = head;
-            }
-        }
-        else {
-            cursor = new Node(element, precursor.next);
-            precursor.next = cursor;  
-        }
+	    assert wellFormed() : "invariant failed at start of addBefore";
+	    if (size() == 0) {
+	        head = new Node(element, head);
+	        cursor = head;
+	        precursor = null;
+	        tail = head;
+	    }
+	    else if (!isCurrent()) {
+	        head = new Node(element, head);
+	        cursor = head;
+	        precursor = null;
+	    }
+	    else if (cursor == head) {
+	        head = new Node(element, head);
+	        cursor = head;
+	    }
+	    else if (cursor == tail) {
+	        cursor = new Node(element, cursor);
+	        precursor.next = cursor;
+	    }
+	    else {
+	        cursor = new Node(element, cursor);
+	        precursor.next = cursor;
+	    }
         ++manyNodes;
+        assert wellFormed() : "invariant failed at end of addBefore";
 	}
 
 	/**
