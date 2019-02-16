@@ -71,7 +71,6 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		@Override
 		public HexTile next() {
 			return null; // TODO: use base iterator and generate hex tile on demand
-			 */
 		}
 
 		// TODO: what else?
