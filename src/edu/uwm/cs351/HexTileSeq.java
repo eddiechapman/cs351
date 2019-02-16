@@ -156,14 +156,14 @@ public class HexTileSeq implements Cloneable
 	 **/
 	public void addBefore(HexTile element)
 	{
-        if (isCurrent())
-            cursor = new Node(element, precursor.next);
-            precursor.next = cursor;
-        if(!isCurrent())
+        if (!isCurrent() || cursor == head)
             head = new Node(element, head);
+            cursor = head;
             precursor = null;
-            if (tail == null)
-                tail = head;
+            if (size() == 0) tail = head;
+        else
+            cursor = new Node(element, precursor.next);
+            precursor.next = cursor;          
         ++manyNodes;
 	}
 
