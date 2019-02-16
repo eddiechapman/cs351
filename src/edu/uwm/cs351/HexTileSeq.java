@@ -230,6 +230,7 @@ public class HexTileSeq implements Cloneable
 	{
 		assert wellFormed() : "invariant failed at start of start";
 		cursor = head;
+		precursor = null;
 		assert wellFormed() : "invariant failed at end of start";
 	}
 
