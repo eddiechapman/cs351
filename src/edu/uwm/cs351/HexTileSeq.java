@@ -156,14 +156,18 @@ public class HexTileSeq implements Cloneable
 	 **/
 	public void addBefore(HexTile element)
 	{
-        if (!isCurrent() || cursor == head)
+        if (!isCurrent() || cursor == head) {
             head = new Node(element, head);
             cursor = head;
             precursor = null;
-            if (size() == 0) tail = head;
-        else
+            if (size() == 0) {
+                tail = head;
+            }
+        }
+        else {
             cursor = new Node(element, precursor.next);
-            precursor.next = cursor;          
+            precursor.next = cursor;  
+        }
         ++manyNodes;
 	}
 
@@ -181,17 +185,22 @@ public class HexTileSeq implements Cloneable
 	public void addAfter(HexTile element)
 	{
 		assert wellFormed() : "invariant failed at start of addAfter";
-		if (isCurrent())
+		if (isCurrent()) {
 		    precursor = cursor;
 		    cursor = new Node(element, cursor.next);
 		    precursor.next = cursor;
-		    if (tail == precursor)
+		
+		    if (tail == precursor) {
 		        tail = cursor;
-	    else
+		    }
+		}
+	    else {
 		    cursor = new Node(element, cursor);
 		    tail = cursor;
-		    if (manyNodes == 0)
+		    if (manyNodes == 0) {
 		        head = cursor;
+		    }
+	    }
 		++manyNodes;
 		assert wellFormed() : "invariant failed at end of addAfter";
 	}
@@ -285,13 +294,19 @@ public class HexTileSeq implements Cloneable
 	public void removeCurrent( )
 	{
 		assert wellFormed() : "invariant failed at start of removeCurrent";
-		if (!isCurrent()) throw new IllegalStateException("There is no current element to remove!");
-		if (cursor == head) head = head.next;
+		if (!isCurrent()) {
+		    throw new IllegalStateException("There is no current element to remove!");
+		}
+		if (cursor == head) {
+		    head = head.next;
+		}
 		else if (cursor == tail) {
 		    tail = precursor;
 		    tail.next = null;
 	    }
-		else precursor.next = cursor.next;   
+		else {
+		    precursor.next = cursor.next;   
+		}
 		cursor = cursor.next;
 		--manyNodes;
 		assert wellFormed() : "invariant failed at end of removeCurrent";
