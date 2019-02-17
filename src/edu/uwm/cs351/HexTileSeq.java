@@ -291,7 +291,7 @@ public class HexTileSeq implements Cloneable
 	 * this sequence.
 	 * @param - none
 	 * @precondition
-	 *   isCurrent() returns true. 
+	 *   isCurrent() returns true.             ++manyNodes;
 	 * @postcondition
 	 *   If the current element was already the end element of this sequence 
 	 *   (with nothing after it), then there is no longer any current element. 
@@ -368,7 +368,28 @@ public class HexTileSeq implements Cloneable
 	public void addAll(HexTileSeq addend)
 	{
 		assert wellFormed() : "invariant failed at start of addAll";
-		// TODO: Implement this code.
+		if (addend == null) throw new NullPointerException("HexSequence addend cannot be null!");
+		if (addend.size() == 0) return;
+		
+		Node saveCursor = cursor;
+		
+		// Prepare to append list by moving cursor to tail, preceeded by precursor.
+		start();
+		while (cursor != tail) {
+		    advance();
+		}
+		
+		// Add new nodes for each element in addend.
+		for (Node p = addend.head; p != null; p = p.next) {
+		    addAfter(p.data);
+		}
+		
+		// Reset the cursor and precursor to their original locations.
+		start();
+		while (cursor != saveCursor) {
+		    advance();
+		}
+		    
 		assert wellFormed() : "invariant failed at end of addAll";
 	}   
 
