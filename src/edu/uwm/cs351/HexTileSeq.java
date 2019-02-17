@@ -324,7 +324,12 @@ public class HexTileSeq implements Cloneable
 		if (!isCurrent()) {
 		    throw new IllegalStateException("There is no current element to remove!");
 		}
-		if (cursor == head) {
+		if (size() == 1) {
+		    cursor = cursor.next;
+		    head = head.next;
+		    tail = tail.next;
+		}
+		else if (cursor == head) {
 		    cursor = cursor.next;
 		    head = head.next;
 		}
