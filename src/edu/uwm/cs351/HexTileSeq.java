@@ -209,6 +209,12 @@ public class HexTileSeq implements Cloneable
 		    precursor.next = cursor;
 		    tail = cursor;
 		}
+		else if ((cursor == head) && (cursor == tail)) {
+		    cursor = new Node(element, cursor.next);
+		    precursor = head;
+		    head.next = cursor;
+		    tail = cursor;
+		}
 		else if (cursor == head) {
 		    cursor = new Node(element, cursor.next);
 		    precursor = head;
