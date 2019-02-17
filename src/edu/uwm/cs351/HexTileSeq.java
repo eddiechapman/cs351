@@ -299,8 +299,8 @@ public class HexTileSeq implements Cloneable
 	{
 		assert wellFormed() : "invariant failed at start of advance";
 		if (!isCurrent()) throw new IllegalStateException("There is no current element to advance beyond.");
+		precursor = cursor;
 		cursor = cursor.next;
-		precursor = precursor.next;
 		assert wellFormed() : "invariant failed at end of advance";
 	}
 
@@ -390,7 +390,17 @@ public class HexTileSeq implements Cloneable
 		}
 		
 		// TODO: clone the whole list and give it four new pointers
-		
+		if (head == null) {
+		    return answer;
+		}
+		answer.head = new Node(head.data, head.next);
+		answer.tail = answer.head;
+		for (Node p = head; p != null; p = p.next) {
+		    answer.tail = new Node(p.data, p.next);
+		    if (isCurrent() && (answer.cursor != cursor)) {
+		        answer.advance();
+		    }
+		}
 		assert wellFormed() : "invariant failed at end of clone";
 		assert answer.wellFormed() : "invariant failed for clone";
 		
