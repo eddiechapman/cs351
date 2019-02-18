@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
@@ -28,9 +27,9 @@ public class TestEfficiency extends TestCase {
 		pc = new Piece.Collection();
 		r = new Random();
 		try {
-			assert hb.iterator().next() == null;
+			assert r.nextInt(hb.size()) == 42;
 			assertTrue(true);
-		} catch (NoSuchElementException ex) {
+		} catch (IllegalArgumentException ex) {
 			System.err.println("You must disable assertions to run this test.");
 			System.err.println("Go to Run > Run Configurations. Select the 'Arguments' tab");
 			System.err.println("Then remove '-ea' from the VM Arguments box.");
