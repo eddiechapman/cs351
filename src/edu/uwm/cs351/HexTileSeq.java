@@ -12,6 +12,11 @@ import junit.framework.TestCase;
  * accessed through four methods that are not available in the sequence class 
  * (start, getCurrent, advance and isCurrent).
  * This implementation uses a singly-linked list implementation.
+ * 
+ * @author Eddie Chapman
+ * I completed this assignment by adapting methods from chapter 4 of the
+ * textbook (4th edition). I also consulted the lecture notes and the 
+ * slides provided on the home page of the CS351 website.
  ******************************************************************************/
 public class HexTileSeq implements Cloneable
 {
@@ -128,6 +133,7 @@ public class HexTileSeq implements Cloneable
 		cursor = null;
 		precursor = null;
 	    manyNodes = 0;
+	    
 		assert wellFormed() : "Invariant false at end of constructor";
 	}
 
@@ -140,7 +146,9 @@ public class HexTileSeq implements Cloneable
 	public int size( )
 	{
 		assert wellFormed() : "invariant failed at start of size";
+		
 		return manyNodes;
+		
 		// size() should not modify anything, so we omit testing the invariant here
 	}
 
@@ -158,30 +166,37 @@ public class HexTileSeq implements Cloneable
 	public void addBefore(HexTile element)
 	{
 	    assert wellFormed() : "invariant failed at start of addBefore";
+	    
+	    // Empty list
 	    if (size() == 0) {
 	        head = new Node(element, head);
 	        cursor = head;
 	        precursor = null;
 	        tail = head;
 	    }
+	    // Non-empty list, no current element
 	    else if (!isCurrent()) {
 	        head = new Node(element, head);
 	        cursor = head;
 	        precursor = null;
 	    }
+	    // Current element at head node
 	    else if (cursor == head) {
 	        head = new Node(element, head);
 	        cursor = head;
 	    }
+	    // Current element at tail node
 	    else if (cursor == tail) {
 	        cursor = new Node(element, cursor);
 	        precursor.next = cursor;
 	    }
+	    // Current element somewhere between head and tail
 	    else {
 	        cursor = new Node(element, cursor);
 	        precursor.next = cursor;
 	    }
         ++manyNodes;
+        
         assert wellFormed() : "invariant failed at end of addBefore";
 	}
 
@@ -199,33 +214,40 @@ public class HexTileSeq implements Cloneable
 	public void addAfter(HexTile element)
 	{
 		assert wellFormed() : "invariant failed at start of addAfter";
-		if (size() == 0) {
+		
+		// Empty list
+		if (manyNodes == 0) {
 		    cursor = new Node(element, cursor);
 		    head = cursor;
 		    tail = head;
 		}
+		// Non-empty list, no current element
 		else if (!isCurrent()) {
 		    cursor = new Node(element, cursor);
 		    precursor.next = cursor;
 		    tail = cursor;
 		}
+		// List size 1 w/current element
 		else if ((cursor == head) && (cursor == tail)) {
 		    cursor = new Node(element, cursor.next);
 		    precursor = head;
 		    head.next = cursor;
 		    tail = cursor;
 		}
+		// Current element at head node
 		else if (cursor == head) {
 		    cursor = new Node(element, cursor.next);
 		    precursor = head;
 		    head.next = cursor;
 		}
+		// Current element at tail node
 		else if (cursor == tail) {
 		    cursor = new Node(element, cursor.next);
 		    precursor = precursor.next;
 		    precursor.next = cursor;
 		    tail = cursor;
 		}
+		// Current element in between head and tail
 		else {
 		    cursor = new Node(element, cursor.next);
 		    precursor = precursor.next;
@@ -249,8 +271,10 @@ public class HexTileSeq implements Cloneable
 	public void start( )
 	{
 		assert wellFormed() : "invariant failed at start of start";
+		
 		cursor = head;
 		precursor = null;
+		
 		assert wellFormed() : "invariant failed at end of start";
 	}
 
@@ -265,6 +289,7 @@ public class HexTileSeq implements Cloneable
 	public boolean isCurrent( )
 	{
 		assert wellFormed() : "invariant failed at start of isCurrent";
+		
 		return cursor != null;
 	}
 
@@ -282,7 +307,10 @@ public class HexTileSeq implements Cloneable
 	public HexTile getCurrent( )
 	{
 		assert wellFormed() : "invariant failed at start of getCurrent";
-		if (!isCurrent()) throw new IllegalStateException("There is no current element to access.");
+		
+		if (!isCurrent()) 
+		    throw new IllegalStateException("There is no current element to access.");
+		
 		return cursor.data;
 	}
 
@@ -304,9 +332,13 @@ public class HexTileSeq implements Cloneable
 	public void advance( )
 	{
 		assert wellFormed() : "invariant failed at start of advance";
-		if (!isCurrent()) throw new IllegalStateException("There is no current element to advance beyond.");
+		
+		if (!isCurrent()) 
+		    throw new IllegalStateException("There is no current element to advance beyond.");
+		
 		precursor = cursor;
 		cursor = cursor.next;
+		
 		assert wellFormed() : "invariant failed at end of advance";
 	}
 
@@ -327,28 +359,34 @@ public class HexTileSeq implements Cloneable
 	public void removeCurrent( )
 	{
 		assert wellFormed() : "invariant failed at start of removeCurrent";
+		
 		if (!isCurrent()) {
 		    throw new IllegalStateException("There is no current element to remove!");
 		}
-		if (size() == 1) {
+		// List size 1: current element is both head and tail
+		if (manyNodes == 1) {
 		    cursor = cursor.next;
 		    head = head.next;
 		    tail = tail.next;
 		}
+		// List size > 1: current element at head
 		else if (cursor == head) {
 		    cursor = cursor.next;
 		    head = head.next;
 		}
+		// List size > 1: current element at tail
 		else if (cursor == tail) {
 		    cursor = cursor.next;
 		    tail = precursor;
 		    tail.next = null;
 	    }
+		// List size > 2: current element between head and tail
 		else {
 		    cursor = cursor.next;
 		    precursor.next = cursor;   
 		}
 		--manyNodes;
+		
 		assert wellFormed() : "invariant failed at end of removeCurrent";
 	}
 
@@ -368,26 +406,34 @@ public class HexTileSeq implements Cloneable
 	public void addAll(HexTileSeq addend)
 	{
 		assert wellFormed() : "invariant failed at start of addAll";
-		if (addend == null) throw new NullPointerException("HexSequence addend cannot be null!");
-		if (addend.manyNodes == 0) return;
 		
-		HexTileSeq listCopy = addend.clone();
+		if (addend == null) 
+		    throw new NullPointerException("HexSequence addend cannot be null!");
 		
-		if (manyNodes == 0) {
-		    head = listCopy.head;
-		    tail = listCopy.tail;
-		    precursor = tail;
+		if (addend.manyNodes > 0) {
+		    // Create deep copy of addend to link to
+    		HexTileSeq listCopy = addend.clone();
+    		
+    		// Initialize pointers for a blank receiving list
+    		if (manyNodes == 0) {
+    		    head = listCopy.head;
+    		    tail = listCopy.tail;
+    		    precursor = tail;
+    		}
+    		// Or a non-blank list with no current element
+    		else if (cursor == null) {
+    		    tail.next = listCopy.head;
+    	        tail = listCopy.tail;
+    	        precursor = tail;
+    		}
+    		// In all cases, link existing tail to copy list's tail
+    		else {
+    		    tail.next = listCopy.head;
+    		    tail = listCopy.tail;
+    		}
+    		manyNodes += listCopy.manyNodes;
 		}
-		else if (cursor == null) {
-		    tail.next = listCopy.head;
-	        tail = listCopy.tail;
-	        precursor = tail;
-		}
-		else {
-		    tail.next = listCopy.head;
-		    tail = listCopy.tail;
-		}
-		manyNodes += listCopy.manyNodes;
+		
 		assert wellFormed() : "invariant failed at end of addAll";
 	}   
 
@@ -404,6 +450,7 @@ public class HexTileSeq implements Cloneable
 	public HexTileSeq clone( )
 	{  // Clone a HexTileSeq object.
 		assert wellFormed() : "invariant failed at start of clone";
+		
 		HexTileSeq answer;
 
 		try
