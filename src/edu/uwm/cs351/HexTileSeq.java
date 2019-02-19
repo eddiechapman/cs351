@@ -368,28 +368,26 @@ public class HexTileSeq implements Cloneable
 	public void addAll(HexTileSeq addend)
 	{
 		assert wellFormed() : "invariant failed at start of addAll";
-//		if (addend == null) throw new NullPointerException("HexSequence addend cannot be null!");
-//		if (addend.size() == 0) return;
-//		
-//		Node saveCursor = cursor;
-//		
-//		// Prepare to append list by moving cursor to tail, preceded by precursor.
-//		start();
-//		while (cursor != tail) {
-//		    advance();
-//		}
-//		
-//		// Add new nodes for each element in addend.
-//		for (Node p = addend.head; p != null; p = p.next) {
-//		    addAfter(p.data);
-//		}
-//		
-//		// Reset the cursor and precursor to their original locations.
-//		start();
-//		while (cursor != saveCursor) {
-//		    advance();
-//		}
-//		    
+		if (addend == null) throw new NullPointerException("HexSequence addend cannot be null!");
+		if (addend.manyNodes == 0) return;
+		
+		HexTileSeq listCopy = addend.clone();
+		
+		if (manyNodes == 0) {
+		    head = listCopy.head;
+		    tail = listCopy.tail;
+		    precursor = tail;
+		}
+		else if (cursor == null) {
+		    tail.next = listCopy.head;
+	        tail = listCopy.tail;
+	        precursor = tail;
+		}
+		else {
+		    tail.next = listCopy.head;
+		    tail = listCopy.tail;
+		}
+		manyNodes += listCopy.manyNodes;
 		assert wellFormed() : "invariant failed at end of addAll";
 	}   
 
@@ -421,20 +419,19 @@ public class HexTileSeq implements Cloneable
 			("This class does not implement Cloneable");
 		}
 		
-		// TODO: clone the whole list and give it four new pointers
-		if (head == null) return answer;
-		
-		
-		answer.start();
-		for (Node p = head; p.next != null; p = p.next) {
-		    answer.removeCurrent();
-		    answer.addBefore(p.data);
-		    answer.advance();
-		}
-		
-		answer.start();
-		for (Node p = head; p != cursor; p = p.next) {
-		    answer.advance();
+		if (head != null) {
+		    // Replace all nodes in answer list with new copies.
+		    answer.start();
+    		for (Node p = head; p != null; p = p.next) {
+    		    answer.addBefore(p.data);
+    		    answer.advance();
+    		    answer.removeCurrent();
+            }
+    		// Reset answer cursor to original position.
+    		answer.start();
+    		for (Node p = head; p != cursor; p = p.next) {
+    		    answer.advance();
+    		}
 		}
 
 		assert wellFormed() : "invariant failed at end of clone";
