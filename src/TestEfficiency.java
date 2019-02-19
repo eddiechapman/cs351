@@ -212,7 +212,7 @@ public class TestEfficiency extends TestCase {
 		ArrayList<T> samples = new ArrayList<>();
 		for (int i=0; i < MAX_LENGTH; ++i) {
 			T obj = maker.apply(i);
-			if (r.nextInt(MAX_LENGTH/SAMPLE) == 0) samples.add(obj);
+			samples.add(obj);
 			col.add(obj);
 		}
 		for (T obj : samples) {
@@ -231,7 +231,7 @@ public class TestEfficiency extends TestCase {
 		ArrayList<T> samples = new ArrayList<>();
 		for (int i=0; i < MAX_LENGTH; ++i) {
 			T obj = maker.apply(i);
-			if (r.nextInt(MAX_LENGTH/SAMPLE) == 0) samples.add(obj);
+			if ((i & 1) == 0) samples.add(obj);
 			col.add(obj);
 		}
 		for (T obj : samples) {

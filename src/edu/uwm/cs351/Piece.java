@@ -122,13 +122,13 @@ public class Piece {
 			assert wellFormed() : "invariant failed in constructor";
 		}
 
-		@Override
+		@Override // required by Java
 		public Iterator<Piece> iterator() {
 			assert wellFormed() : "invariant failed in iterator()";
 			return null; // TODO
 		}
 
-		@Override
+		@Override // required by Java
 		public int size() {
 			assert wellFormed() : "invariant failed in size()";
 			return count;
@@ -149,13 +149,13 @@ public class Piece {
 				// TODO: if the versions don't match, throw CME
 			}
 
-			@Override
+			@Override // required by Java
 			public boolean hasNext() {
 				checkStale();
 			    return false; // TODO
 			}
 
-			@Override
+			@Override // required by Java
 			public Piece next() {
 			    return null; // TODO
 			}

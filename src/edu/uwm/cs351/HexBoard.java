@@ -24,17 +24,20 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		return null; // TODO (very easy)
 	}
 
-	@Override
+	@Override // required by Java
 	public Iterator<HexTile> iterator() {
 		return new MyIterator();
 	}
 
-	@Override
+	@Override // required by Java
 	public int size() {
 		return 0; // TODO
 	}
 
 	// TODO: What else?
+	// Document with "//" the reason for every override
+	// and add a "//" comment for other Collection methods when you don't need to.
+	// (Except for the list in the homework.)
 	
 	/**
 	 * Read a hex board from a reader
@@ -63,12 +66,12 @@ public class HexBoard extends AbstractCollection<HexTile> {
 	private class MyIterator implements Iterator<HexTile> {
 		private Iterator<Map.Entry<HexCoordinate,Terrain>> base = contents.entrySet().iterator();
 		
-		@Override
+		@Override // required by Java
 		public boolean hasNext() {
 			return false; // TODO: very easy, delegate to the "base" iterator
 		}
 
-		@Override
+		@Override // required by Java
 		public HexTile next() {
 			return null; // TODO: use base iterator and generate hex tile on demand
 		}

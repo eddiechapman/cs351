@@ -41,6 +41,8 @@ public class TestPieceCollection extends TestCollection<Piece> {
 		assertEquals(Ts(330480954),toString(() -> pc.add(rf1)));
 		// add it again ?
 		assertEquals(Ts(434214267),toString(() -> pc.add(rf1)));
+		// add it to a different piece collection?
+		assertEquals(Ts(1764796602),toString(() -> new Piece.Collection().add(rf1)));
 		// add something that looks the same?
 		assertEquals(Ts(1442026135),toString(() -> pc.add(rf2)));
 		// can we add null?  If not, which exception?
@@ -115,5 +117,36 @@ public class TestPieceCollection extends TestCollection<Piece> {
 		c.remove(e[0]);
 		it = c.iterator();
 		assertEquals(e[6],it.next());
+	}
+	
+	public void testU() {
+		c.add(e[0]);
+		c.add(e[6]);
+		assertEquals(2,c.size());
+		c.remove(e[0]);
+		assertTrue(c.add(e[0]));
+	}
+	
+	public void testV() {
+		c.add(e[1]);
+		c.add(e[2]);
+		c.clear();
+		assertTrue(c.add(e[2]));
+	}
+	
+	public void testW() {
+		c.add(e[3]);
+		it = pc.iterator();
+		c.add(e[4]);
+		assertTrue(c.remove(e[3]));
+		assertException(ConcurrentModificationException.class,() -> it.hasNext());
+	}
+	
+	public void testX() {
+		c.add(e[5]);
+		it = c.iterator();
+		c.clear();
+		c.add(e[6]);
+		assertException(ConcurrentModificationException.class,() -> it.hasNext());		
 	}
 }
