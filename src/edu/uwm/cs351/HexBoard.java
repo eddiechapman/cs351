@@ -22,7 +22,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 	 * @return terrain at that coordinate, or null if nothing
 	 */
 	public Terrain terrainAt(HexCoordinate c) {
-		return null; // TODO (very easy)
+		return contents.get(c); 
 	}
 
 	@Override // required by Java
