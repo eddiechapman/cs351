@@ -32,7 +32,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 
 	@Override // required by Java
 	public int size() {
-		return 0; // TODO
+		return contents.size();
 	}
 	
 	@Override // default implementation raises UnsupportedOperationException
