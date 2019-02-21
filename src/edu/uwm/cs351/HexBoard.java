@@ -7,6 +7,7 @@ import java.util.AbstractCollection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * An abstraction of a hexagonal game board.
@@ -99,12 +100,13 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		
 		@Override // required by Java
 		public boolean hasNext() {
-			return false; // TODO: very easy, delegate to the "base" iterator
+			return base.hasNext();
 		}
 
 		@Override // required by Java
 		public HexTile next() {
-			return null; // TODO: use base iterator and generate hex tile on demand
+		    Entry<HexCoordinate,Terrain> pair = base.next();
+			return new HexTile(pair.getValue(), pair.getKey());
 		}
 
 		// TODO: what else?
