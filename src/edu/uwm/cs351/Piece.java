@@ -98,7 +98,8 @@ public class Piece {
 	 * An endogenous collection of pieces.
 	 */
 	public static class Collection extends AbstractCollection<Piece> {
-		// the only fields:
+        
+	    // the only fields:
 		private final Piece dummy = new Piece();
 		private int count;
 		private int version;
@@ -133,6 +134,30 @@ public class Piece {
 			assert wellFormed() : "invariant failed in size()";
 			return count;
 		}
+		
+		@Override
+        public boolean add(Piece e) {
+            // TODO Auto-generated method stub
+            return super.add(e);
+        }
+
+        @Override
+        public void clear() {
+            // TODO Auto-generated method stub
+            super.clear();
+        }
+
+        @Override
+        public boolean contains(Object o) {
+            // TODO Auto-generated method stub
+            return super.contains(o);
+        }
+
+        @Override
+        public boolean remove(Object o) {
+            // TODO Auto-generated method stub
+            return super.remove(o);
+        }
 
 		// TODO: What else?
 
