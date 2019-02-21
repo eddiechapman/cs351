@@ -12,7 +12,8 @@ import java.util.Map;
  * An abstraction of a hexagonal game board.
  */
 public class HexBoard extends AbstractCollection<HexTile> {
-	// the only field is an ADT, no redundancy, no need for an invariant
+
+    // the only field is an ADT, no redundancy, no need for an invariant
 	private Map<HexCoordinate,Terrain> contents = new HashMap<>();
 
 	/** Return the terrain at the given coordinate or null
@@ -33,6 +34,30 @@ public class HexBoard extends AbstractCollection<HexTile> {
 	public int size() {
 		return 0; // TODO
 	}
+	
+	@Override
+    public boolean add(HexTile e) {
+        // TODO Auto-generated method stub
+        return super.add(e);
+    }
+
+    @Override
+    public void clear() {
+        // TODO Auto-generated method stub
+        super.clear();
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        // TODO Auto-generated method stub
+        return super.contains(o);
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        // TODO Auto-generated method stub
+        return super.remove(o);
+    }
 
 	// TODO: What else?
 	// Document with "//" the reason for every override
