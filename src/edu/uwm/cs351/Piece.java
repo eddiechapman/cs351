@@ -125,7 +125,7 @@ public class Piece {
 		@Override // required by Java
 		public Iterator<Piece> iterator() {
 			assert wellFormed() : "invariant failed in iterator()";
-			return null; // TODO
+			return new MyIterator();
 		}
 
 		@Override // required by Java
