@@ -35,8 +35,12 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		return contents.size();
 	}
 	
+	
 	@Override // default implementation raises UnsupportedOperationException
     public boolean add(HexTile e) {
+	    if (e == null) {
+	        throw new NullPointerException("Can't add a null tile to the HexBoard.");
+	    }
 	    Terrain result = contents.put(e.getLocation(), e.getTerrain());
 	    if (result == null || result != e.getTerrain()) {
 	        return true;
@@ -46,8 +50,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 
     @Override
     public void clear() {
-        // TODO Auto-generated method stub
-        super.clear();
+        contents.clear();
     }
 
     @Override
