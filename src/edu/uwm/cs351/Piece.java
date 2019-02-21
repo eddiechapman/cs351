@@ -137,7 +137,7 @@ public class Piece {
 		// TODO: What else?
 
 		private class MyIterator implements Iterator<Piece> {
-			private Piece current;
+            private Piece current;
 			private boolean canRemove;
 			private int myVersion;
 
@@ -159,6 +159,12 @@ public class Piece {
 			public Piece next() {
 			    return null; // TODO
 			}
+			
+			@Override
+            public void remove() {
+                // TODO Auto-generated method stub
+                Iterator.super.remove();
+            }
 
 			// TODO: what else ?
 		}
