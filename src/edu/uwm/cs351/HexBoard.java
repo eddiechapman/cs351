@@ -7,7 +7,6 @@ import java.util.AbstractCollection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  * An abstraction of a hexagonal game board.
@@ -60,11 +59,10 @@ public class HexBoard extends AbstractCollection<HexTile> {
         return super.contains(o);
     }
 
-    @Override
-    public boolean remove(Object o) {
-        // TODO Auto-generated method stub
-        return super.remove(o);
-    }
+//    @Override
+//    public boolean remove(Object o) {
+//        return (contents.remove(o) == o);  
+//    }
 
 	// TODO: What else?
 	// Document with "//" the reason for every override
@@ -96,18 +94,24 @@ public class HexBoard extends AbstractCollection<HexTile> {
 	}
 	
 	private class MyIterator implements Iterator<HexTile> {
-		private Iterator<Map.Entry<HexCoordinate,Terrain>> base = contents.entrySet().iterator();
+        private Iterator<Map.Entry<HexCoordinate,Terrain>> base = contents.entrySet().iterator();
+		private Map.Entry<HexCoordinate,Terrain> current = null;
 		
-		@Override // required by Java
+        @Override // required by Java
 		public boolean hasNext() {
 			return base.hasNext();
 		}
 
 		@Override // required by Java
 		public HexTile next() {
-		    Entry<HexCoordinate,Terrain> pair = base.next();
-			return new HexTile(pair.getValue(), pair.getKey());
+		    current = base.next();
+			return new HexTile(current.getValue(), current.getKey());
 		}
+		
+		@Override
+        public void remove() {
+            contents.entrySet().remove(current);
+        }
 
 		// TODO: what else?
 	}
