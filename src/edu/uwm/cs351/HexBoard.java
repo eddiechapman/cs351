@@ -7,6 +7,7 @@ import java.util.AbstractCollection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * An abstraction of a hexagonal game board.
@@ -104,6 +105,9 @@ public class HexBoard extends AbstractCollection<HexTile> {
 
 		@Override // required by Java
 		public HexTile next() {
+		    if (!hasNext()) {
+		        throw new NoSuchElementException("Iterator is exhausted.");
+		    }
 		    current = base.next();
 			return new HexTile(current.getValue(), current.getKey());
 		}
