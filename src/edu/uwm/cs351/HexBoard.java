@@ -35,10 +35,13 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		return 0; // TODO
 	}
 	
-	@Override
+	@Override // default implementation raises UnsupportedOperationException
     public boolean add(HexTile e) {
-        // TODO Auto-generated method stub
-        return super.add(e);
+	    Terrain result = contents.put(e.getLocation(), e.getTerrain());
+	    if (result == null || result != e.getTerrain()) {
+	        return true;
+	    }
+	    return false;
     }
 
     @Override
