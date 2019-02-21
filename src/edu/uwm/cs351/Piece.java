@@ -146,7 +146,7 @@ public class Piece {
 			}
 
 			private void checkStale() {
-				// TODO: if the versions don't match, throw CME
+			    if (myVersion != version) throw new ConcurrentModificationException("This iterator is stale.");
 			}
 
 			@Override // required by Java
