@@ -111,7 +111,7 @@ public class Piece {
 		}
 
 		private boolean wellFormed() {
-			// TODO: check data struture.
+			// TODO: check data structure.
 			return true;
 		}
 
