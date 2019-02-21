@@ -118,6 +118,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		        throw new IllegalStateException("Cannot remove while current element is null.");
 		    }
             contents.entrySet().remove(current);
+            current = null;
         }
 
 		// TODO: what else?
