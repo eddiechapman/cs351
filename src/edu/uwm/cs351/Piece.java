@@ -112,7 +112,14 @@ public class Piece {
 		}
 
 		private boolean wellFormed() {
-			// TODO: check data structure.
+		    int n = 0;
+            if (dummy.prev != dummy) {
+                ++n;
+                for (Piece i = dummy.next; i != dummy.prev; i = i.next) {
+                    ++n;
+                }
+            }
+            if (n != count) { return report("count inaccurately represents list size"); }
 			return true;
 		}
 
