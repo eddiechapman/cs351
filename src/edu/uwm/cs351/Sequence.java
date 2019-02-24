@@ -138,9 +138,9 @@ public class Sequence<E> implements Cloneable
 			
 			doReport = true;
 			self.precursor = self.dummy;
-			assertFalse(self.wellFormed());
+			assertTrue(self.wellFormed());
 			self.precursor = self.dummy.next;
-			assertFalse(self.wellFormed());
+			assertTrue(self.wellFormed());
 		}
 		
 		public void testI() {
