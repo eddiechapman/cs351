@@ -56,14 +56,21 @@ public class HexBoard extends AbstractCollection<HexTile> {
 
     @Override
     public boolean contains(Object o) {
-        // TODO Auto-generated method stub
-        return super.contains(o);
+        if (!(o instanceof HexTile)) return false;
+        HexTile tile = (HexTile) o;
+        if (terrainAt(tile.getLocation()) == null) return false;
+        HexTile stored = new HexTile(terrainAt(tile.getLocation()), tile.getLocation());
+        return stored.equals(tile);
     }
 
     @Override
     public boolean remove(Object o) {
-        HexTile t = (HexTile) o;
-        return (contents.remove(t.getLocation()) == t.getTerrain());  
+        if (!(o instanceof HexTile)) return false;
+        HexTile tile = (HexTile) o;
+        Terrain terrain = terrainAt(tile.getLocation());
+        if ((terrain == null) || (terrain != tile.getTerrain())) return false;
+        contents.remove(tile.getLocation());
+        return true;
     }
 
 	// TODO: What else?
