@@ -252,13 +252,11 @@ public class Piece {
 			    
                 if (!canRemove) throw new IllegalStateException("Must call next before calling remove.");
                 
-                Piece p = current;
-                
-                p.prev.next = p.next;
-                p.next.prev = p.prev;
-                current = p.prev;
-                p.next = null;
-                p.prev = null;
+                current = current.prev;
+                current.next = current.next.next;
+                current.next.prev.prev = null;
+                current.next.prev.next = null;
+                current.next.prev = current;
                 
                 --count;
                 canRemove = false;
