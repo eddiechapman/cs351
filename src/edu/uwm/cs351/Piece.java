@@ -185,7 +185,6 @@ public class Piece {
             while (it.hasNext()) {
                 it.next();
                 it.remove();
-                ++version;
             }
             assert wellFormed() : "invariant failed at end of clear()";
         }
@@ -204,7 +203,6 @@ public class Piece {
                 Piece p = it.next();
                 if (p.equals(o)) {
                     it.remove();
-                    ++version;
                     assert wellFormed() : "invariant failed at end of remove()";
                     return true;
                 }
@@ -265,6 +263,7 @@ public class Piece {
                 --count;
                 canRemove = false;
                 ++myVersion;
+                ++version;
             }
 
 			// TODO: what else ?
