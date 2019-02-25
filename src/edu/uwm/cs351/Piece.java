@@ -112,14 +112,20 @@ public class Piece {
 		}
 
 		private boolean wellFormed() {
+		    
 		    int n = 0;
             if (dummy.prev != dummy) {
                 ++n;
                 for (Piece i = dummy.next; i != dummy.prev; i = i.next) {
                     ++n;
+                    if (i.next == dummy) { return report("list cycle is incomplete"); }
                 }
             }
             if (n != count) { return report("count inaccurately represents list size"); }
+            
+            if (dummy.prev != dummy) {
+                
+            }
 			return true;
 		}
 
