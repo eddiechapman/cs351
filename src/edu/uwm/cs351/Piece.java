@@ -179,8 +179,13 @@ public class Piece {
 
         @Override
         public void clear() {
-            // TODO Auto-generated method stub
-            super.clear();
+            assert wellFormed() : "invariant failed at start of clear()";
+            Iterator<Piece> it = iterator();
+            while (it.hasNext()) {
+                it.next();
+                it.remove();
+            }
+            assert wellFormed() : "invariant failed at end of clear()";
         }
 
         @Override
@@ -191,8 +196,17 @@ public class Piece {
 
         @Override
         public boolean remove(Object o) {
-            // TODO Auto-generated method stub
-            return super.remove(o);
+            assert wellFormed() : "invariant failed at start of remove()";
+            Iterator<Piece> it = iterator();
+            while (it.hasNext()) {
+                Piece p = it.next();
+                if (p.equals(o)) {
+                    it.remove();
+                    assert wellFormed() : "invariant failed at end of remove()";
+                    return true;
+                }
+            }
+            return false;
         }
 
 		// TODO: What else?
@@ -203,7 +217,8 @@ public class Piece {
 			private int myVersion;
 
 			public MyIterator() {
-				// TODO: initialize fields 
+				current = dummy;
+				canRemove = false;
 			}
 
 			private void checkStale() {
@@ -213,18 +228,42 @@ public class Piece {
 			@Override // required by Java
 			public boolean hasNext() {
 				checkStale();
-			    return false; // TODO
+				
+				return (current.next != dummy);
 			}
 
 			@Override // required by Java
 			public Piece next() {
-			    return null; // TODO
+			    checkStale();
+			    
+			    if (!hasNext()) throw new NoSuchElementException("Iterator exhausted");
+			    
+			    current = current.next;
+			    canRemove = true;
+			    
+			    checkStale();
+			    
+			    return current;
 			}
 			
 			@Override
             public void remove() {
-                // TODO Auto-generated method stub
-                Iterator.super.remove();
+			    checkStale();
+			    
+                if (!canRemove) throw new IllegalStateException("Must call next before calling remove.");
+                
+                Piece p = current;
+                
+                p.prev.next = p.next;
+                p.next.prev = p.prev;
+                current = p.prev;
+                p.next = null;
+                p.prev = null;
+                
+                --count;
+                canRemove = false;   
+                
+                checkStale();
             }
 
 			// TODO: what else ?
