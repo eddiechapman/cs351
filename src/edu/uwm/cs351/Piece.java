@@ -171,6 +171,7 @@ public class Piece {
             e.next = dummy;
             dummy.prev = dummy.prev.next;
             ++count;
+            ++version;
             
             assert wellFormed() : "invariant failed at end of add()";
             
@@ -184,6 +185,7 @@ public class Piece {
             while (it.hasNext()) {
                 it.next();
                 it.remove();
+                ++version;
             }
             assert wellFormed() : "invariant failed at end of clear()";
         }
@@ -202,6 +204,7 @@ public class Piece {
                 Piece p = it.next();
                 if (p.equals(o)) {
                     it.remove();
+                    ++version;
                     assert wellFormed() : "invariant failed at end of remove()";
                     return true;
                 }
@@ -219,6 +222,7 @@ public class Piece {
 			public MyIterator() {
 				current = dummy;
 				canRemove = false;
+				myVersion = version;
 			}
 
 			private void checkStale() {
@@ -241,8 +245,6 @@ public class Piece {
 			    current = current.next;
 			    canRemove = true;
 			    
-			    checkStale();
-			    
 			    return current;
 			}
 			
@@ -261,9 +263,8 @@ public class Piece {
                 p.prev = null;
                 
                 --count;
-                canRemove = false;   
-                
-                checkStale();
+                canRemove = false;
+                ++myVersion;
             }
 
 			// TODO: what else ?
