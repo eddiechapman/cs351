@@ -153,11 +153,29 @@ public class Piece {
 			return count;
 		}
 		
-		@Override
+		@Override // Not implemented by default
         public boolean add(Piece e) {
-            // TODO Auto-generated method stub
-            return super.add(e);
-        }
+            assert wellFormed() : "invariant failed at start of add()";
+            
+            if (e == null) 
+                throw new NullPointerException("No null pieces may be added to a list");
+            
+            if ((e.next != null) || (e.prev != null)) 
+                throw new IllegalArgumentException("A piece cannot be a member of more than one list at a time.");
+            
+            if (contains(e))
+                throw new IllegalArgumentException("A piece cannot appear in a single list more than once.");
+            
+            dummy.prev.next = e;
+            e.prev = dummy.prev;
+            e.next = dummy;
+            dummy.prev = dummy.prev.next;
+            ++count;
+            
+            assert wellFormed() : "invariant failed at end of add()";
+            
+            return true;
+		}
 
         @Override
         public void clear() {
