@@ -97,6 +97,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 	private class MyIterator implements Iterator<HexTile> {
         private Iterator<Map.Entry<HexCoordinate,Terrain>> base = contents.entrySet().iterator();
 		private Map.Entry<HexCoordinate,Terrain> current = null;
+		private boolean canRemove = false;
 		
         @Override // required by Java
 		public boolean hasNext() {
@@ -105,20 +106,17 @@ public class HexBoard extends AbstractCollection<HexTile> {
 
 		@Override // required by Java
 		public HexTile next() {
-		    if (!hasNext()) {
-		        throw new NoSuchElementException("Iterator is exhausted.");
-		    }
 		    current = base.next();
+		    canRemove = true;
 			return new HexTile(current.getValue(), current.getKey());
 		}
 		
 		@Override
         public void remove() {
-		    if (current == null) {
-		        throw new IllegalStateException("Cannot remove while current element is null.");
-		    }
+		    if (!canRemove) throw new IllegalStateException("Must call next() before calling remove()");
             contents.entrySet().remove(current);
             current = null;
+            canRemove = false;
         }
 
 		// TODO: what else?
