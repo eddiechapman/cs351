@@ -60,10 +60,11 @@ public class HexBoard extends AbstractCollection<HexTile> {
         return super.contains(o);
     }
 
-//    @Override
-//    public boolean remove(Object o) {
-//        return (contents.remove(o) == o);  
-//    }
+    @Override
+    public boolean remove(Object o) {
+        HexTile t = (HexTile) o;
+        return (contents.remove(t.getLocation()) == t.getTerrain());  
+    }
 
 	// TODO: What else?
 	// Document with "//" the reason for every override
@@ -96,7 +97,6 @@ public class HexBoard extends AbstractCollection<HexTile> {
 	
 	private class MyIterator implements Iterator<HexTile> {
         private Iterator<Map.Entry<HexCoordinate,Terrain>> base = contents.entrySet().iterator();
-		private Map.Entry<HexCoordinate,Terrain> current = null;
 		private boolean canRemove = false;
 		
         @Override // required by Java
@@ -106,7 +106,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 
 		@Override // required by Java
 		public HexTile next() {
-		    current = base.next();
+		    Map.Entry<HexCoordinate,Terrain> current = base.next();
 		    canRemove = true;
 			return new HexTile(current.getValue(), current.getKey());
 		}
@@ -114,8 +114,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		@Override
         public void remove() {
 		    if (!canRemove) throw new IllegalStateException("Must call next() before calling remove()");
-            contents.entrySet().remove(current);
-            current = null;
+		    base.remove();
             canRemove = false;
         }
 
