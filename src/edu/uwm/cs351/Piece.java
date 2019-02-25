@@ -113,19 +113,24 @@ public class Piece {
 
 		private boolean wellFormed() {
 		    
-		    int n = 0;
+		    int pieceCount = 0;
+		    Piece i = dummy;
+		    if ((i.next == null) || (i.prev == null)) { 
+		        return report("Null pointers at dummy."); 
+		    }
+		    if ((i.next.prev == null) || (i.next.prev != i) || (i.prev.next == null) || (i.prev.next != i)) { 
+		        return report("Null or broken link at dummy."); 
+		    }
             if (dummy.prev != dummy) {
-                ++n;
-                for (Piece i = dummy.next; i != dummy.prev; i = i.next) {
-                    ++n;
-                    if (i.next == dummy) { return report("list cycle is incomplete"); }
+                ++pieceCount;
+                for (i = dummy.next; i != dummy.prev; i = i.next) {
+                    if ((i.next.prev == null) || (i.next.prev != i) || (i.prev.next == null) || (i.prev.next != i)) { 
+                        return report("Null or broken link at: " + i); 
+                    }
+                    ++pieceCount;
                 }
             }
-            if (n != count) { return report("count inaccurately represents list size"); }
-            
-            if (dummy.prev != dummy) {
-                
-            }
+            if (pieceCount != count) { return report("count inaccurately represents list size"); }
 			return true;
 		}
 
