@@ -87,7 +87,22 @@ public class TestSequence extends TestCase {
 		s.start();
 		assertFalse(s.isCurrent());
 	}
-	
+
+	public void test07() {
+		s.start();
+		assertException(IllegalStateException.class,() -> {s.getCurrent();});		
+	}
+
+	public void test08() {
+		s.start();
+		assertException(IllegalStateException.class, () -> {s.advance();});
+	}
+
+	public void test09() {
+		s.start();
+		assertException(IllegalStateException.class, () -> {s.removeCurrent();});
+	}
+
 	public void test10() {
 		s.addBefore(null);
 		assertEquals(1,s.size());
@@ -149,6 +164,10 @@ public class TestSequence extends TestCase {
 		s.removeCurrent();
 		assertFalse(s.isCurrent());
 		assertEquals(0,s.size());
+		s.addAfter(b2);
+		s.start();
+		assertSame(b2,s.getCurrent());
+		assertEquals(1,s.size());
 	}
 	
 	public void test16() {
@@ -165,18 +184,24 @@ public class TestSequence extends TestCase {
 		assertFalse(s.isCurrent());
 		assertEquals(1,s.size());
 		assertException(IllegalStateException.class,() -> { s.removeCurrent(); });
+		assertFalse(s.isCurrent());
+		assertEquals(1,s.size());
 	}
 	
 	public void test18() {
 		s.addAfter(b2);
 		s.advance();
 		assertException(IllegalStateException.class, () -> { s.advance(); });
+		assertFalse(s.isCurrent());
+		assertEquals(1,s.size());
 	}
 	
 	public void test19() {
 		s.addBefore(b3);
 		s.advance();
 		assertException(IllegalStateException.class,() -> { s.getCurrent(); });
+		assertFalse(s.isCurrent());
+		assertEquals(1,s.size());
 	}
 	
 	public void test20() {
@@ -913,7 +938,70 @@ public class TestSequence extends TestCase {
 		assertSame(b4,c.getCurrent());
 	}
 
+	public void test89() {
+		Sequence<HexTile> c = s.clone();
+		assertFalse(c.isCurrent());
+		
+		s.addAfter(b1);
+		c = s.clone();
+		assertTrue(s.isCurrent());
+		assertTrue(c.isCurrent());
+		assertSame(b1,s.getCurrent());
+		assertSame(b1,c.getCurrent());
+		
+		s.addAfter(b2);
+		c = s.clone();
+		assertTrue(s.isCurrent());
+		assertTrue(c.isCurrent());
+		assertSame(b2,s.getCurrent());
+		assertSame(b2,c.getCurrent());
+		s.advance();
+		c.advance();
+		assertFalse(s.isCurrent());
+		assertFalse(c.isCurrent());
+		
+		s.addAfter(b3);
+		c = s.clone();
+		assertSame(b3,s.getCurrent());
+		assertSame(b3,c.getCurrent());
+		s.advance();
+		c.advance();
+		assertFalse(s.isCurrent());
+		assertFalse(c.isCurrent());
+		s.start();
+		c.start();
+		assertTrue(s.isCurrent());
+		assertTrue(c.isCurrent());
+		assertSame(b1,s.getCurrent());
+		assertSame(b1,c.getCurrent());
+		s.advance();
+		c.advance();
+		assertTrue(s.isCurrent());
+		assertTrue(c.isCurrent());
+		assertSame(b2,s.getCurrent());
+		assertSame(b2,c.getCurrent());
+		
+		s.start();
+		c = s.clone();
+		assertTrue(s.isCurrent());
+		assertTrue(c.isCurrent());
+		assertSame(b1,s.getCurrent());
+		assertSame(b1,c.getCurrent());
+		s.advance();
+		c.advance();
+		assertTrue(s.isCurrent());
+		assertTrue(c.isCurrent());
+		assertSame(b2,s.getCurrent());
+		assertSame(b2,c.getCurrent());
+		s.advance();
+		c.advance();
+		assertTrue(s.isCurrent());
+		assertTrue(c.isCurrent());
+		assertSame(b3,s.getCurrent());
+		assertSame(b3,c.getCurrent());		
+	}
 	
+
 	/// test9X: generic tests
 	// If these tests how up with raw or unchecked cast warnings
 	// you didn't declare things correctly
@@ -953,132 +1041,7 @@ public class TestSequence extends TestCase {
 	
 	/// Named tests
 	
-	public void testEmpty() {
-		assertEquals(0,s.size());
-		assertFalse(s.isCurrent());
-		s.start();
-		assertFalse(s.isCurrent());
-	}
-	
-	public void testEmptyNext() {
-		s.start();
-		try {
-			s.getCurrent();
-			assertFalse("s.getCurrent() should not return",true);
-		} catch (RuntimeException ex) {
-			assertTrue("wrong exception thrown: " + ex,ex instanceof IllegalStateException);
-		}
-	}
-	
-	public void testEmptyRemove() {
-		s.start();
-		try {
-			s.removeCurrent();
-			assertFalse("empty.removeCurrent() should not return",true);
-		} catch (RuntimeException ex) {
-			assertTrue("wrong exception thrown: " + ex,ex instanceof IllegalStateException);
-		}
-	}
-	
-	public void testEmptyAdvance() {
-		try {
-			s.advance();
-			assertFalse("s.advance() should not return",true);
-		} catch (RuntimeException ex) {
-			assertTrue("wrong exception thrown: " + ex,ex instanceof IllegalStateException);
-		}
-	}
-	
-	public void testOneSeq() {
-		s.addAfter(b1);
-		assertEquals(1,s.size());
-		assertTrue(s.isCurrent());
-		assertSame(b[1],s.getCurrent());
-		s.start();
-		assertTrue(s.isCurrent());
-		assertSame(b1,s.getCurrent());
-		assertSame(b1,s.getCurrent());
-		s.advance();
-		assertEquals(1,s.size());
-		assertFalse(s.isCurrent());
-		s.start();
-		assertTrue(s.isCurrent());
-		assertSame(b1,s.getCurrent());
-		assertEquals(1,s.size());
-	}
-	
-	public void testOneSeqAgain() {
-		s.addBefore(b1);
-		assertEquals(1,s.size());
-		assertTrue(s.isCurrent());
-		assertSame(b1,s.getCurrent());
-		s.start();
-		assertTrue(s.isCurrent());
-		assertSame(b1,s.getCurrent());
-		assertSame(b1,s.getCurrent());
-		s.advance();
-		assertEquals(1,s.size());
-		assertFalse(s.isCurrent());
-		s.start();
-		assertTrue(s.isCurrent());
-		assertSame(b1,s.getCurrent());
-		assertEquals(1,s.size());
-	}
-	
-	public void testOneSeqRemove() {
-		s.addAfter(b1);
-		s.removeCurrent();
-		// For "ix" give 1, 2, 3 etc for b1, b2, b3 etc
-		// give 0 for null, -1 for error and -2 for "none of the above"
-		assertEquals(-1,ix(()->s.getCurrent()));
-		assertEquals(0,s.size());	
-		s.addAfter(b2);
-		s.start();
-		assertSame(b2,s.getCurrent());
-		assertEquals(1,s.size());
-	}
-	
-	public void testOneSeqNextError() {
-		s.addAfter(b2);
-		s.start();
-		s.advance();
-		try {
-			s.advance();
-			assertFalse("it.next() should not return",true);
-		} catch (RuntimeException ex) {
-			assertTrue("wrong exception thrown: " + ex,ex instanceof IllegalStateException);
-		}
-		assertFalse(s.isCurrent());
-		assertEquals(1,s.size());
-	}
-
-
-	public void testOneSeqRemoveError() {
-		s.addAfter(b2);
-		s.advance();
-		try {
-			s.removeCurrent();
-			assertFalse("it.removeCurrent() should not return",true);
-		} catch (RuntimeException ex) {
-			assertTrue("wrong exception thrown: " + ex,ex instanceof IllegalStateException);
-		}
-		assertFalse(s.isCurrent());
-		assertEquals(1,s.size());
-	}
-
-	public void testOneSeqCurrentError() {
-		s.addAfter(b2);
-		s.advance();
-		try {
-			s.getCurrent();
-			assertFalse("s.getCurrent() should not return",true);
-		} catch (RuntimeException ex) {
-			assertTrue("wrong exception thrown: " + ex,ex instanceof IllegalStateException);
-		}
-		assertFalse(s.isCurrent());
-		assertEquals(1,s.size());
-	}
-	
+		
 	public void testSeq21() {
 		s.addAfter(b1);
 		assertTrue(s.isCurrent());
@@ -1698,142 +1661,6 @@ public class TestSequence extends TestCase {
 		assertFalse(se.isCurrent());
 		se.start();
 		assertSame(b1,se.getCurrent());
-	}
-	
-	public void testClone0() {
-		Sequence<HexTile> c = s.clone();
-		assertFalse(c.isCurrent());
-		assertEquals(0, c.size());
-	}
-	
-	public void testClone1A() {
-		s.addAfter(b1);
-		Sequence<HexTile> c = s.clone();
-		
-		assertTrue(s.isCurrent());
-		assertTrue(c.isCurrent());
-		assertSame(b1,s.getCurrent()); s.advance();
-		assertSame(b1,c.getCurrent()); c.advance();
-		assertFalse(s.isCurrent());
-		assertFalse(c.isCurrent());
-	}
-	
-	public void testClone1B() {
-		s.addAfter(b1);
-		s.advance();
-		Sequence<HexTile> c = s.clone();
-		
-		assertFalse(s.isCurrent());
-		assertFalse(c.isCurrent());
-	}
-
-	public void testClone() {
-		Sequence<HexTile> c = s.clone();
-		assertFalse(c.isCurrent());
-		
-		s.addAfter(b1);
-		c = s.clone();
-		assertTrue(s.isCurrent());
-		assertTrue(c.isCurrent());
-		assertSame(b1,s.getCurrent());
-		assertSame(b1,c.getCurrent());
-		
-		s.addAfter(b2);
-		c = s.clone();
-		assertTrue(s.isCurrent());
-		assertTrue(c.isCurrent());
-		assertSame(b2,s.getCurrent());
-		assertSame(b2,c.getCurrent());
-		s.advance();
-		c.advance();
-		assertFalse(s.isCurrent());
-		assertFalse(c.isCurrent());
-		
-		s.addAfter(b3);
-		c = s.clone();
-		assertSame(b3,s.getCurrent());
-		assertSame(b3,c.getCurrent());
-		s.advance();
-		c.advance();
-		assertFalse(s.isCurrent());
-		assertFalse(c.isCurrent());
-		s.start();
-		c.start();
-		assertTrue(s.isCurrent());
-		assertTrue(c.isCurrent());
-		assertSame(b1,s.getCurrent());
-		assertSame(b1,c.getCurrent());
-		s.advance();
-		c.advance();
-		assertTrue(s.isCurrent());
-		assertTrue(c.isCurrent());
-		assertSame(b2,s.getCurrent());
-		assertSame(b2,c.getCurrent());
-		
-		s.start();
-		c = s.clone();
-		assertTrue(s.isCurrent());
-		assertTrue(c.isCurrent());
-		assertSame(b1,s.getCurrent());
-		assertSame(b1,c.getCurrent());
-		s.advance();
-		c.advance();
-		assertTrue(s.isCurrent());
-		assertTrue(c.isCurrent());
-		assertSame(b2,s.getCurrent());
-		assertSame(b2,c.getCurrent());
-		s.advance();
-		c.advance();
-		assertTrue(s.isCurrent());
-		assertTrue(c.isCurrent());
-		assertSame(b3,s.getCurrent());
-		assertSame(b3,c.getCurrent());		
-	}
-	
-	public void testCloneRemove() {
-		s.addAfter(b1);
-		s.addAfter(b3);
-		s.addBefore(b2);
-		s.removeCurrent();
-		
-		Sequence<HexTile> c = s.clone();
-		
-		assertEquals(2,c.size());
-		
-		assertTrue(s.isCurrent());
-		assertTrue(c.isCurrent());
-		
-		assertSame(b3,s.getCurrent());
-		assertSame(b3,c.getCurrent());
-	}
-
-	public void testCloneAlias() {
-		s.addAfter(b1);
-		s.addAfter(b2);
-		
-		Sequence<HexTile> c = s.clone();
-		s.addBefore(b3);
-		c.addBefore(b4);
-		
-		assertSame(b3,s.getCurrent());
-		assertSame(b4,c.getCurrent());
-		s.advance();
-		c.advance();
-		assertSame(b2,s.getCurrent());
-		assertSame(b2,c.getCurrent());
-		s.advance();
-		c.advance();
-		assertFalse(s.isCurrent());
-		assertFalse(c.isCurrent());
-		
-		s.start();
-		c.start();
-		assertSame(b1,s.getCurrent());
-		assertSame(b1,c.getCurrent());
-		s.advance();
-		c.advance();
-		assertSame(b3,s.getCurrent());
-		assertSame(b4,c.getCurrent());
 	}
 
 }

@@ -38,7 +38,7 @@ public class Sequence<E> implements Cloneable
 		// (It's sloppy and confusing to use the same name as for Sequence)
 	}
 	
-	// TODO: Declare the *three* fields (see the homework)
+	// TODO: Declare the *three* fields (see the homework handout)
 
 	private static boolean doReport = true; // changed only by invariant tester
 	
@@ -55,7 +55,8 @@ public class Sequence<E> implements Cloneable
 		//    Use the "Tortoise and Hare" Algorithm attributed to Floyd.
 		//    (See Homework #4)
 		// 2. manyItems is the length of the list (excluding dummy!).
-		// 3. precursor is points to a node in the list which is started by dummy.
+		// 3. precursor is points to a node (it is not null) and 
+		//    that node is in the list which is started by dummy.
 		// TODO
 
 		// If no problems discovered, return true
