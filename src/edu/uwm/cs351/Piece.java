@@ -11,6 +11,10 @@ import javax.swing.Icon;
 
 import junit.framework.TestCase;
 
+// I completed this assignment using the PDF from the the "examples" page of 
+// the CS351 website, my notes from the lectures, and the portion of the 
+// textbook chapter 4 dealing with alternative forms of linked lists.
+
 /**
  * A piece in a game using hexagonal boards.
  * It uses the {@link Rank} to determine kind of piece.
@@ -98,8 +102,8 @@ public class Piece {
 	 * An endogenous collection of pieces.
 	 */
 	public static class Collection extends AbstractCollection<Piece> {
-        
-	    // the only fields:
+
+        // the only fields:
 		private final Piece dummy = new Piece();
 		private int count;
 		private int version;
@@ -112,7 +116,6 @@ public class Piece {
 		}
 
 		private boolean wellFormed() {
-		    
 		    int pieceCount = 0;
 		    Piece i = dummy;
 		    if ((i.next == null) || (i.prev == null)) { 
@@ -153,15 +156,11 @@ public class Piece {
 			return count;
 		}
 		
-		@Override // Not implemented by default
+		@Override // default implementation raises UnsupportedOperationException
         public boolean add(Piece e) {
             assert wellFormed() : "invariant failed at start of add()";
-            
-            if (e == null) 
-                throw new NullPointerException("No null pieces may be added to a list");
-            
-            if ((e.next != null) || (e.prev != null)) 
-                throw new IllegalArgumentException("A piece cannot be a member of more than one list at a time.");
+            if (e == null) throw new NullPointerException("No null pieces may be added to a list");
+            if ((e.next != null) || (e.prev != null)) throw new IllegalArgumentException("A piece cannot be a member of more than one list at a time.");
             
             dummy.prev.next = e;
             e.prev = dummy.prev;
@@ -171,28 +170,11 @@ public class Piece {
             ++version;
             
             assert wellFormed() : "invariant failed at end of add()";
-            
             return true;
 		}
+        
 
-        @Override
-        public void clear() {
-            assert wellFormed() : "invariant failed at start of clear()";
-            Iterator<Piece> it = iterator();
-            while (it.hasNext()) {
-                it.next();
-                it.remove();
-            }
-            assert wellFormed() : "invariant failed at end of clear()";
-        }
-
-        @Override
-        public boolean contains(Object o) {
-            // TODO Auto-generated method stub
-            return super.contains(o);
-        }
-
-        @Override
+        @Override  // default implementation raises UnsupportedOperationException
         public boolean remove(Object o) {
             assert wellFormed() : "invariant failed at start of remove()";
             Iterator<Piece> it = iterator();
@@ -206,14 +188,29 @@ public class Piece {
             }
             return false;
         }
+        
+        // TODO: what else ?
+        //  clear       -   default implementation is sufficient
+        //  contains    -   default implementation is sufficient
+        //  toString    -   not required by program
+        //  addAll      -   not required by program
+        //  containsAll -   not required by program
+        //  isEmpty     -   not required by program
+        //  removeAll   -   not required by program
+        //  retainAll   -   not required by program
+        //  toArray     -   not required by program
 
-		// TODO: What else?
 
 		private class MyIterator implements Iterator<Piece> {
             private Piece current;
 			private boolean canRemove;
 			private int myVersion;
 
+			/**
+			 * Create a fresh iterator for the piece collection
+			 * 
+			 * @returns a new iterator for the piece collection
+			 */
 			public MyIterator() {
 				current = dummy;
 				canRemove = false;
@@ -227,7 +224,6 @@ public class Piece {
 			@Override // required by Java
 			public boolean hasNext() {
 				checkStale();
-				
 				return (current.next != dummy);
 			}
 
@@ -243,7 +239,7 @@ public class Piece {
 			    return current;
 			}
 			
-			@Override
+			@Override  // default implementation raises UnsupportedOperationException
             public void remove() {
 			    checkStale();
 			    
@@ -260,8 +256,9 @@ public class Piece {
                 ++myVersion;
                 ++version;
             }
-
+			
 			// TODO: what else ?
+	        //  forEachRemaining   -   not required by program
 		}
 	}
 	

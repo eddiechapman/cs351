@@ -9,6 +9,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+//I completed this assignment using the PDF from the the "examples" page of 
+//the CS351 website, my notes from the lectures, and the portion of the 
+//textbook chapter 4 dealing with alternative forms of linked lists.
+
 /**
  * An abstraction of a hexagonal game board.
  */
@@ -49,12 +53,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 	    return false;
     }
 
-    @Override
-    public void clear() {
-        contents.clear();
-    }
-
-    @Override
+    @Override  // default implementation is inefficient
     public boolean contains(Object o) {
         if (!(o instanceof HexTile)) return false;
         HexTile tile = (HexTile) o;
@@ -63,7 +62,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
         return stored.equals(tile);
     }
 
-    @Override
+    @Override // default implementation is inefficient
     public boolean remove(Object o) {
         if (!(o instanceof HexTile)) return false;
         HexTile tile = (HexTile) o;
@@ -74,9 +73,14 @@ public class HexBoard extends AbstractCollection<HexTile> {
     }
 
 	// TODO: What else?
-	// Document with "//" the reason for every override
-	// and add a "//" comment for other Collection methods when you don't need to.
-	// (Except for the list in the homework.)
+    //  clear       -   default implementation is sufficient
+    //  toString    -   not required by program
+    //  addAll      -   not required by program
+    //  containsAll -   not required by program
+    //  isEmpty     -   not required by program
+    //  removeAll   -   not required by program
+    //  retainAll   -   not required by program
+    //  toArray     -   not required by program
 	
 	/**
 	 * Read a hex board from a reader
@@ -118,13 +122,14 @@ public class HexBoard extends AbstractCollection<HexTile> {
 			return new HexTile(current.getValue(), current.getKey());
 		}
 		
-		@Override
-        public void remove() {
+		@Override // default implementation raises UnsupportedOperationException
+        public void remove() {  
 		    if (!canRemove) throw new IllegalStateException("Must call next() before calling remove()");
 		    base.remove();
             canRemove = false;
         }
 
 		// TODO: what else?
+        //  forEachRemaining   -   not required by program
 	}
 }
