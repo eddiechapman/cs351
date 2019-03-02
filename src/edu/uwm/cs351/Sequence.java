@@ -102,7 +102,7 @@ public class Sequence<E> implements Cloneable
     public int size( )
     {
         assert wellFormed() : "invariant failed at start of size";
-        return manyNodes;
+        return manyItems;
     }
 
     /**
