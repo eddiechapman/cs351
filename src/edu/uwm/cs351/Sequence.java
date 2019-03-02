@@ -199,8 +199,7 @@ public class Sequence<E> implements Cloneable
     public void start( )
     {
         assert wellFormed() : "invariant failed at start of start";
-        precursor = null;
-        cursor = head;
+        precursor = dummy;
         assert wellFormed() : "invariant failed at end of start";
     }
 
