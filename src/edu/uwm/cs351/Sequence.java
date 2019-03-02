@@ -228,11 +228,11 @@ public class Sequence<E> implements Cloneable
      *   Indicates that there is no current element, so 
      *   getCurrent may not be called.
      **/
-    public HexTile getCurrent( )
+    public E getCurrent( )
     {
         assert wellFormed() : "invariant failed at start of getCurrent";
         if (!isCurrent()) throw new IllegalStateException("no current");
-        return cursor.data;
+        return precursor.next.data;
     }
 
     /**
