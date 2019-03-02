@@ -254,8 +254,7 @@ public class Sequence<E> implements Cloneable
     {
         assert wellFormed() : "invariant failed at start of advance";
         if (!isCurrent()) throw new IllegalStateException("no current");
-        precursor = cursor;
-        cursor = cursor.next;
+        precursor = precursor.next;
         assert wellFormed() : "invariant failed at end of advance";
     }
 
