@@ -90,8 +90,8 @@ public class Sequence<E> implements Cloneable
 		if (precursor == null) return report("precursor should not be null");
 		Node<E> p = dummy;
 		while (p != precursor) {
-		    p = p.next;
 		    if (p.next == null) return report("Precursor cannot be reached from dummy node");
+		    p = p.next;
 		}
 		
 		// If no problems discovered, return true
