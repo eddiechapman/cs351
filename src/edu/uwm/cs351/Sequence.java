@@ -4,8 +4,6 @@
 package edu.uwm.cs351;
 
 import java.util.Comparator;
-
-import edu.uwm.cs351.HexTileSeq.Node;
 import junit.framework.TestCase;
 
 /******************************************************************************
