@@ -35,11 +35,20 @@ public class Sequence<E> implements Cloneable
 	// and may not suppress warnings except in one place where we placed it in clone().
 
 	private static class Node<T> {
-		// TODO: finish this class.  Keep "T" as the generic parameter
-		// (It's sloppy and confusing to use the same name as for Sequence)
+	      T data;
+	      Node<T> next;
+	      
+	      Node (T data, Node<T> next) {
+	          this.data = data;
+	          this.next = next;
+	      }
+	      
+	      @Override
+	      public String toString() {
+	          return super.toString() + "[" + data + "]";
+	      }
 	}
-	
-	// TODO: Declare the *three* fields (see the homework handout)
+
 	private Node<E> dummy;
 	private Node<E> precursor;
 	private int manyItems;
