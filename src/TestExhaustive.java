@@ -11,6 +11,12 @@ public class TestExhaustive extends TestCase {
   protected void setUp() {
     ss = new Sequence<>();
   }
+  
+  // additional test case provided on course website
+  public void test0000() {
+      ss.sort(comp);
+      assertEquals(0,ss.size());
+  }
 
   public void test1001() {
     ss.addAfter(1);
