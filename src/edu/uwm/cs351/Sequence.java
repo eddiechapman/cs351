@@ -333,10 +333,17 @@ public class Sequence<E> implements Cloneable
             ("This class does not implement Cloneable");
         }
         
-        answer.dummy = new Node<E>(null,null);
-        for (Node<E> p = dummy.next; p != null; p = p.next) {
-            Node<E> c = new Node<E>(p.data, null);
-            if (p == precursor) answer.precursor = c;
+        answer.dummy = new Node<E>(null, null);
+        answer.precursor = answer.dummy;
+        
+        Node<E> p = dummy;
+        Node<E> n = answer.dummy;
+        
+        while(p.next != null) {
+            p = p.next;
+            n.next = new Node<E>(p.data, null);
+            if (p == precursor.next) n = answer.precursor;
+            n = n.next;
         }
        
         assert wellFormed() : "invariant failed at end of clone";
