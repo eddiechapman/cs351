@@ -4,8 +4,6 @@
 package edu.uwm.cs351;
 
 import java.util.Comparator;
-
-import edu.uwm.cs351.HexTileSeq.Node;
 import junit.framework.TestCase;
 
 /******************************************************************************
@@ -100,7 +98,7 @@ public class Sequence<E> implements Cloneable
 		return true;
 	}
 
-	// This is only for testing the invariant.  Do not change!
+	// This is only for testielementng the invariant.  Do not change!
 	private Sequence(boolean testInvariant) { }
 	
 	/**
@@ -154,21 +152,12 @@ public class Sequence<E> implements Cloneable
      *   at the start of the sequence. In all cases, the new element becomes the
      *   new current element of this sequence. 
      **/
-    public void addBefore(HexTile element)
+    public void addBefore(E element)
     {
         assert wellFormed() : "invariant failed at start of addBefore";
-        if (cursor == null) {
-            precursor = null;
-            cursor = head;
-        }
-        cursor = new Node(element,cursor);
-        if (tail == null) tail = cursor;
-        if (precursor == null) {
-            head = cursor;
-        } else {
-            precursor.next = cursor;
-        }
-        ++manyNodes;
+        if (precursor.next == null) precursor = dummy;
+        precursor.next = new Node<E>(element, precursor.next);
+        ++manyItems;
         assert wellFormed() : "invariant failed at end of addBefore";
     }
 
@@ -183,16 +172,12 @@ public class Sequence<E> implements Cloneable
      *   at the end of the sequence. In all cases, the new element becomes the
      *   new current element of this sequence. 
      **/
-    public void addAfter(HexTile element)
+    public void addAfter(E element)
     {
         assert wellFormed() : "invariant failed at start of addAfter";
-        if (cursor == null) {
-            tail = cursor = new Node(element,null);
-            if (precursor == null) {
-                head = cursor;
-            } else {
-                precursor.next = cursor;
-            }
+        if (precursor.next == null) {
+            addBefore(element);
+            return;
         } else {
             cursor.next = new Node(element,cursor.next);
             precursor = cursor;
