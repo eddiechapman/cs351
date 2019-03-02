@@ -96,6 +96,15 @@ public class Sequence<E> implements Cloneable
         return precursor.next;
     }
     
+    private Node<E> getTail() {
+        assert wellFormed() : "Invariant failed at the start of getTail";
+        Node<E> p = dummy.next;
+        while (p.next != null) {
+            p = p.next;
+        }
+        return p;  
+    }
+    
     /**
      * Determine the number of elements in this sequence.
      * @param - none
