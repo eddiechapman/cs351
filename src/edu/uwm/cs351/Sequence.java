@@ -300,6 +300,8 @@ public class Sequence<E> implements Cloneable
         if (addend.manyItems == 0) return;
         Sequence<E> copy = addend.clone();
         Node<E> tail = getTail();
+        Node<E> copyTail = copy.getTail();
+        if (precursor.next == null) precursor = copyTail;
         tail.next = copy.dummy.next;
         manyItems += addend.manyItems;
         assert wellFormed() : "invariant failed at end of addAll";
