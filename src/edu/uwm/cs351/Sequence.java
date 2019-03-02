@@ -122,7 +122,7 @@ public class Sequence<E> implements Cloneable
     
     private Node<E> getTail() {
         assert wellFormed() : "Invariant failed at the start of getTail";
-        Node<E> p = dummy.next;
+        Node<E> p = dummy;
         while (p.next != null) {
             p = p.next;
         }
