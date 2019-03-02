@@ -40,6 +40,9 @@ public class Sequence<E> implements Cloneable
 	}
 	
 	// TODO: Declare the *three* fields (see the homework handout)
+	private Node<E> dummy;
+	private Node<E> precursor;
+	private int manyItems;
 
 	private static boolean doReport = true; // changed only by invariant tester
 	
