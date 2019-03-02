@@ -83,7 +83,7 @@ public class Sequence<E> implements Cloneable
             ++count;
             n = n.next;
         }
-        if (count != manyItems) return report(String.format("manyItems ({}) is not length of list ({})", manyItems, count));  
+        if (count != manyItems) return report(String.format("manyItems (%d) is not length of list (%d)", manyItems, count));  
         
 		// 3. precursor is points to a node (it is not null) and 
 		//    that node is in the list which is started by dummy.
