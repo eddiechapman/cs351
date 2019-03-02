@@ -85,8 +85,11 @@ public class Sequence<E> implements Cloneable
      * @postcondition
      *   This sequence is empty.
      **/   
-    public HexTileSeq( )
+    public Sequence( )
     {
+        dummy = new Node<E>(null, null);
+        precursor = dummy;
+        manyItems = 0;
         assert wellFormed() : "Invariant false at end of constructor";
     }
 
