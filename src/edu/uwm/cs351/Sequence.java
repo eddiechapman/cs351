@@ -276,14 +276,8 @@ public class Sequence<E> implements Cloneable
     {
         assert wellFormed() : "invariant failed at start of removeCurrent";
         if (!isCurrent()) throw new IllegalStateException("no current to remove");
-        --manyNodes;
-        if (precursor == null) {
-            head = cursor.next;
-        } else {
-            precursor.next = cursor.next;
-        }
-        if (tail == cursor) tail = precursor;
-        cursor = cursor.next;
+        --manyItems;
+        precursor.next = precursor.next.next;
         assert wellFormed() : "invariant failed at end of removeCurrent";
     }
 
