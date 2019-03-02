@@ -4,6 +4,8 @@
 package edu.uwm.cs351;
 
 import java.util.Comparator;
+
+import edu.uwm.cs351.HexTileSeq.Node;
 import junit.framework.TestCase;
 
 /******************************************************************************
@@ -61,15 +63,39 @@ public class Sequence<E> implements Cloneable
 
 	private boolean wellFormed() {
 		// Check the invariant.
+	    
 		// 0. The dummy isn't null
+	    if (dummy == null) return report("The dummy is null.");
+	    
 		// 1. the linked list starting at dummy has no cycles.
 		//    Use the "Tortoise and Hare" Algorithm attributed to Floyd.
 		//    (See Homework #4)
+	    Node<E> slow = dummy.next;
+        Node<E> fast = dummy.next;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) return report("cycle in list!");
+        }
+        
 		// 2. manyItems is the length of the list (excluding dummy!).
+        int count = 0;
+        Node<E> n = dummy;
+        while(n.next != null) {
+            ++count;
+            n = n.next;
+        }
+        if (count != manyItems) return report(String.format("manyItems ({}) is not length of list ({})", manyItems, count));  
+        
 		// 3. precursor is points to a node (it is not null) and 
 		//    that node is in the list which is started by dummy.
-		// TODO
-
+		if (precursor == null) return report("precursor should not be null");
+		Node<E> p = dummy;
+		while (p != precursor) {
+		    p = p.next;
+		    if (p.next == null) return report("Precursor cannot be reached from dummy node");
+		}
+		
 		// If no problems discovered, return true
 		return true;
 	}
