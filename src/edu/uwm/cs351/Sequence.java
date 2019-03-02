@@ -90,7 +90,12 @@ public class Sequence<E> implements Cloneable
         manyItems = 0;
         assert wellFormed() : "Invariant false at end of constructor";
     }
-
+    
+    private Node<E> getCursor() {
+        assert wellFormed() : "invariant failed at the start of getCursor";
+        return precursor.next;
+    }
+    
     /**
      * Determine the number of elements in this sequence.
      * @param - none
