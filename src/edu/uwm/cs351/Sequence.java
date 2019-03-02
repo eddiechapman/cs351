@@ -312,7 +312,7 @@ public class Sequence<E> implements Cloneable
         assert wellFormed() : "invariant failed at end of addAll";
     }   
 
-
+    @SuppressWarnings("unchecked")
     /**
      * Generate a copy of this sequence.
      * @param - none
@@ -322,14 +322,14 @@ public class Sequence<E> implements Cloneable
      * @exception OutOfMemoryError
      *   Indicates insufficient memory for creating the clone.
      **/ 
-    public HexTileSeq clone( )
+    public Sequence<E> clone( )
     {  // Clone a HexTileSeq object.
         assert wellFormed() : "invariant failed at start of clone";
-        HexTileSeq answer;
+        Sequence<E> answer;
 
         try
         {
-            answer = (HexTileSeq) super.clone( );
+            answer = (Sequence<E>) super.clone( );
         }
         catch (CloneNotSupportedException e)
         {  // This exception should not occur. But if it does, it would probably
@@ -340,17 +340,12 @@ public class Sequence<E> implements Cloneable
             ("This class does not implement Cloneable");
         }
         
-        Node dummy = new Node(null,null);
-        Node newTail = dummy;
-        for (Node p = head; p != null; p = p.next) {
-            Node c = new Node(p.data,null);
-            newTail = newTail.next = c;
+        answer.dummy = new Node<E>(null,null);
+        for (Node<E> p = dummy.next; p != null; p = p.next) {
+            Node<E> c = new Node<E>(p.data, null);
             if (p == precursor) answer.precursor = c;
-            if (p == cursor) answer.cursor = c;
-            if (p == tail) answer.tail = c;
         }
-        answer.head = dummy.next;
-        
+       
         assert wellFormed() : "invariant failed at end of clone";
         assert answer.wellFormed() : "invariant failed for clone";
         
