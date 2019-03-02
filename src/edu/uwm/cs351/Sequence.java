@@ -176,15 +176,13 @@ public class Sequence<E> implements Cloneable
     {
         assert wellFormed() : "invariant failed at start of addAfter";
         if (precursor.next == null) {
-            addBefore(element);
-            return;
+            precursor.next = new Node<E>(element, precursor.next);
         } else {
-            cursor.next = new Node(element,cursor.next);
+            Node<E> cursor = getCursor();
+            cursor.next = new Node<E>(element, cursor.next);
             precursor = cursor;
-            cursor = cursor.next;
-            if (precursor == tail) tail = cursor;
         }
-        ++manyNodes;
+        ++manyItems;
         assert wellFormed() : "invariant failed at end of addAfter";
     }
 
