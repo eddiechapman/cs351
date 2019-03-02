@@ -294,21 +294,14 @@ public class Sequence<E> implements Cloneable
      * @exception NullPointerException
      *   Indicates that addend is null. 
      **/
-    public void addAll(HexTileSeq addend)
+    public void addAll(Sequence<E> addend)
     {
         assert wellFormed() : "invariant failed at start of addAll";
-        if (addend.manyNodes == 0) return;
-        HexTileSeq copy = addend.clone();
-        if (tail == null) {
-            head = copy.head;
-        } else {
-            tail.next = copy.head;
-        }
-        tail = copy.tail;
-        if (cursor == null) {
-            precursor = copy.tail;
-        }
-        manyNodes += addend.manyNodes;
+        if (addend.manyItems == 0) return;
+        Sequence<E> copy = addend.clone();
+        Node<E> tail = getTail();
+        tail.next = copy.dummy.next;
+        manyItems += addend.manyItems;
         assert wellFormed() : "invariant failed at end of addAll";
     }   
 
