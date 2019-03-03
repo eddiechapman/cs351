@@ -344,9 +344,12 @@ public class Sequence<E> implements Cloneable
         while(p.next != null) {
             p = p.next;
             n.next = new Node<E>(p.data, null);
-            if (p == precursor.next) n = answer.precursor;
             n = n.next;
+            if (p == precursor) {
+                answer.precursor = n; 
+            }
         }
+        
        
         assert wellFormed() : "invariant failed at end of clone";
         assert answer.wellFormed() : "invariant failed for clone";
