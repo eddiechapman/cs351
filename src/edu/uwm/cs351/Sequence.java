@@ -361,10 +361,10 @@ public class Sequence<E> implements Cloneable
         StringBuilder sb = new StringBuilder();
         sb.append("{");
         boolean first = true;
-        for (Node p = head; p != null; p=p.next) {
+        for (Node p = dummy.next; p != null; p=p.next) {
             if (first) first = false;
             else sb.append(", ");
-            if (p == cursor) sb.append("*");
+            if (p == precursor.next) sb.append("*");
             sb.append(p.data);
         }
         sb.append("}");
