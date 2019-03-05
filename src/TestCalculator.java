@@ -1,18 +1,107 @@
 import java.util.EmptyStackException;
+import java.util.function.Supplier;
 
-import junit.framework.TestCase;
+import edu.uwm.cs.junit.LockedTestCase;
 import edu.uwm.cs351.Calculator;
 import edu.uwm.cs351.Operation;
 
 
-public class TestCalculator extends TestCase {
+public class TestCalculator extends LockedTestCase {
 
 	private Calculator calc;
+
+	/**
+	 * Convert the result into a string, or into the name of the exception thrown
+	 * @param supp supplier of something, may return null
+	 * @return string of result, or simple name of exception thrown
+	 */
+	protected <T> String toString(Supplier<T> supp) {
+		try {
+			return ""+supp.get();
+		} catch (RuntimeException ex) {
+			return ex.getClass().getSimpleName();
+		}
+	}
+	
+	protected String howStopped(Runnable r) {
+		try {
+			r.run();
+			return "OK";
+		} catch (RuntimeException ex) {
+			return ex.getClass().getSimpleName();
+		}
+	}
+	
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		calc = new Calculator();
+	}
+	
+	
+	/// locked tests
+	
+	public void test() {
+		// we test 1 + 2 * 3 - 4 =
+		calc.value(1);
+		assertEquals(1,calc.getCurrent());
+		calc.binop(Operation.PLUS);
+		// what will the calculator window show after pressing '+'
+		assertEquals(Ti(2130836036),calc.getCurrent());
+		calc.value(2);
+		// what will the calculator window show after pressing '2'
+		assertEquals(Ti(2132532626),calc.getCurrent());
+		calc.binop(Operation.TIMES);
+		// what will the calculator window show after pressing '*'
+		assertEquals(Ti(1743461167),calc.getCurrent());
+		calc.value(3);
+		// what will the calculator window show after pressing '3'
+		assertEquals(3,calc.getCurrent());
+		calc.binop(Operation.MINUS);
+		// what will the calculator window show after pressing '-'
+		// Not obvious: remember that minus is lower precedence than * and + (if after)
+		assertEquals(Ti(203422342),calc.getCurrent());
+		calc.value(4);
+		// what happens when we press '=' ?
+		assertEquals(Ti(856279275),calc.compute());
+		testcont(true);
+	}
+	
+	private void testcont(boolean ignored) {
+		// we got an answer of 3.  This is called the "default value".
+		calc.binop(Operation.TIMES);
+		calc.value(7);
+		// what will the calculator show (don't be tricked!)
+		assertEquals(Ti(1674274506),calc.getCurrent());
+		calc.sqrt(); // what is the integer (rounded down) square root of Ti(1674274506) ?
+		assertEquals(Ti(1675006888),calc.getCurrent());
+		// do you remember what we were doing?
+		assertEquals(Ti(2077042487),calc.compute());
+		testerror(false);
+	}
+	
+	private void testerror(boolean ignored) {
+		// default value is 6
+		// howStopped is "OK" is no exception thrown,
+		//            or the name of exception if one is thrown
+		// what if we type "99";
+		assertEquals("OK",howStopped(() -> calc.value(99)));
+		// and then enter another number?
+		assertEquals(Ts(760326031),howStopped(() -> calc.value(55)));
+		// then press +
+		assertEquals(Ts(48507371),howStopped(() -> calc.binop(Operation.PLUS)));
+		// then enter another number: 55
+		assertEquals("OK",howStopped(() -> calc.value(55)));
+		// then a closing parenthesis
+		assertEquals(Ts(1325211284),howStopped(() -> calc.close()));
+		// but the closing paren did force computation:
+		assertEquals(Ti(2128232356),calc.getCurrent());
+		// now press '/'
+		calc.binop(Operation.DIVIDE);
+		// now press 'clear' (red 'C')
+		assertEquals(Ts(1998774167),howStopped(() -> calc.clear()));
+		assertEquals(0,calc.getCurrent());
 	}
 	
 	public void testInit() {
@@ -37,7 +126,28 @@ public class TestCalculator extends TestCase {
 		assertEquals(3,calc.getCurrent());
 	}
 	
+	public void testAddDefault() {
+		calc.binop(Operation.PLUS);
+		calc.value(17);
+		
+		assertEquals(17,calc.getCurrent());
+		
+		assertEquals(17,calc.compute());
+		assertEquals(17,calc.getCurrent());
+	}
+	
 	public void testSub() {
+		calc.value(6L);
+		calc.binop(Operation.MINUS);
+		calc.value(2);
+		
+		assertEquals(2,calc.getCurrent());
+		
+		assertEquals(4,calc.compute());
+		assertEquals(4,calc.getCurrent());		
+	}
+
+	public void testSubDefault() {
 		calc.binop(Operation.MINUS);
 		calc.value(2);
 		
@@ -46,7 +156,7 @@ public class TestCalculator extends TestCase {
 		assertEquals(-2,calc.compute());
 		assertEquals(-2,calc.getCurrent());		
 	}
-	
+
 	public void testPrecAddMul() {
 		calc.value(5);
 		calc.binop(Operation.PLUS);
@@ -125,7 +235,7 @@ public class TestCalculator extends TestCase {
 		assertEquals(1L<<48,calc.getCurrent());
 	}
 	
-	public void testReCompute() {
+	public void testReCompute1() {
 		calc.value(13);
 		calc.binop(Operation.PLUS);
 		calc.value(77);
@@ -134,6 +244,50 @@ public class TestCalculator extends TestCase {
 		
 		calc.value(25);
 		assertEquals(25,calc.compute());
+	}
+	
+	public void testReCompute2() {
+		calc.value(3);
+		calc.binop(Operation.TIMES);
+		calc.value(4);
+		
+		assertEquals(12,calc.compute());
+		
+		calc.binop(Operation.TIMES);
+		calc.value(5);
+		assertEquals(60,calc.compute());
+	}
+	
+	public void testReCompute3() {
+		calc.value(10);
+		calc.binop(Operation.DIVIDE);
+		calc.value(3);
+		
+		assertEquals(3,calc.compute());
+		assertEquals(3L,calc.compute());
+		
+		calc.binop(Operation.TIMES);
+		calc.value(3);
+		assertEquals(9,calc.compute());		
+	}
+	
+	public void testReCompute4() {
+		calc.value(6);
+		calc.binop(Operation.TIMES);
+		calc.value(7);
+		
+		assertEquals(42,calc.compute());
+		
+		calc.value(100);
+		calc.binop(Operation.MINUS);
+		calc.value(52);
+		
+		assertEquals(48,calc.compute());
+		
+		calc.binop(Operation.DIVIDE);
+		calc.value(6);
+		
+		assertEquals(8,calc.compute());
 	}
 	
 	public void testParens() {
@@ -243,11 +397,40 @@ public class TestCalculator extends TestCase {
 		assertEquals(0,calc.compute());
 	}
 	
-	public void testSqrtNegative() {
+	public void testSqrtLarge() {
+		// test to make sure sqrt() uses IntMath.isqrt, not Math.sqrt
+		long l1 = 0x87654321L;
+		long l2 = l1*l1;
+		calc.value(l2);
+		calc.sqrt();
+		assertEquals(l1,calc.compute());
+		calc.value(l2+1);
+		calc.sqrt();
+		assertEquals(l1,calc.compute());
+		calc.value(l2-1);
+		calc.sqrt();
+		assertEquals(l1-1,calc.compute());
+	}
+	
+	public void testSqrtNegativeOne() {
 		calc.value(-1);
 		calc.sqrt();
 		
 		assertEquals((1L<<32)-1,calc.compute());
+	}
+	
+	public void testSqrtNegative() {
+		long l1 = (1L<<32)-1;
+		long l2 = -(1L<<33)+1;
+		calc.value(l2);
+		calc.sqrt();
+		assertEquals(l1,calc.compute());
+		calc.value(l2+1);
+		calc.sqrt();
+		assertEquals(l1,calc.compute());
+		calc.value(l2-1);
+		calc.sqrt();
+		assertEquals(l1-1,calc.compute());
 	}
 	
 	
@@ -399,6 +582,71 @@ public class TestCalculator extends TestCase {
 		} catch (RuntimeException e) {
 			assertTrue("exception of wrong type: " + e.getClass().getName(), e instanceof EmptyStackException);
 		}		
+	}
+	
+	public void testRecovery1() {
+		calc.value(2);
+		calc.binop(Operation.PLUS);
+		calc.value(3);
+		calc.binop(Operation.TIMES);
+		calc.value(4);
+		
+		try {
+			calc.close();
+			assertFalse("close() should have raised error",true);
+		} catch (RuntimeException e) {
+			assertTrue("exception of wrong type: " + e.getClass().getName(), e instanceof EmptyStackException);
+		}
+		
+		assertEquals(14,calc.getCurrent());
+		
+		try {
+			calc.value(13);
+			assertFalse("value(13) should have raised error",true);
+		} catch (RuntimeException e) {
+			assertTrue("exception of wrong type: " + e.getClass().getName(), e instanceof IllegalStateException);
+		}
+		
+		assertEquals(14,calc.getCurrent());
+
+		calc.binop(Operation.MINUS);
+		calc.value(4);
+		
+		assertEquals(10,calc.compute());
+	}
+	
+	public void testRecovery2() {
+		calc.value(2);
+		calc.binop(Operation.PLUS);
+		calc.value(3);
+		calc.binop(Operation.TIMES);
+
+		try {
+			calc.sqrt();
+			assertFalse("sqrt() should have raised error",true);
+		} catch (RuntimeException e) {
+			assertTrue("exception of wrong type: " + e.getClass().getName(), e instanceof IllegalStateException);
+		}
+
+		calc.value(4);
+		assertEquals(4,calc.getCurrent());
+		
+		calc.binop(Operation.MINUS);
+		assertEquals(14, calc.getCurrent());
+		
+		calc.value(4);
+		
+		try {
+			calc.open();
+			assertFalse("open() should have raised error",true);
+		} catch (RuntimeException e) {
+			assertTrue("exception of wrong type: " + e.getClass().getName(), e instanceof IllegalStateException);
+		}		
+		
+		calc.sqrt();
+		assertEquals(2, calc.getCurrent());
+		
+		assertEquals(12, calc.compute());
 	}
 	
 	public void testErrorComplexRecovery() {

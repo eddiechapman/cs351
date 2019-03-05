@@ -202,7 +202,43 @@ public class TestStack extends TestCase {
 		assertTrue(s.isEmpty());
 	}
 	
+	public void test32() {
+		s = new Stack<Integer>();; // test with no class object
+		s.push(-3);
+		s.push(null);
+		s.push(0);
+		assertFalse(s.isEmpty());
+		assertEquals(0,s.peek().intValue());
+		assertFalse(s.isEmpty());
+		assertEquals(0,s.pop().intValue());
+		assertFalse(s.isEmpty());
+		assertNull(s.peek());
+		assertFalse(s.isEmpty());
+		assertNull(s.pop());
+		assertFalse(s.isEmpty());
+		assertEquals(-3,s.peek().intValue());
+		assertFalse(s.isEmpty());
+		assertEquals(-3,s.pop().intValue());
+		assertTrue(s.isEmpty());
+	}
+	
+	public void test38() {
+		for (int i=0; i < 1000; ++i) {
+			s.push(i);
+			assertFalse(s.isEmpty());
+		}
+		for (int i=0; i < 1000; ++i) {
+			assertFalse(s.isEmpty());
+			if ((i & 1) == 0) {
+				assertEquals(999,i+s.peek());
+			}
+			assertEquals(999,i+s.pop());
+		}
+		assertTrue(s.isEmpty());
+	}
+	
 	public void test39() {
+		s = new Stack<Integer>();
 		for (int i=0; i < 1000; ++i) {
 			s.push(i);
 			assertFalse(s.isEmpty());
@@ -246,7 +282,19 @@ public class TestStack extends TestCase {
 		assertTrue(s.isEmpty());
 	}
 	
+	public void test48() {
+		for (int i=0; i < 1000; ++i) {
+			s.push(i);
+			assertFalse(s.isEmpty());
+		}
+		s.clear();
+		assertTrue(s.isEmpty());
+		s.clear();
+		assertTrue(s.isEmpty());
+	}
+	
 	public void test49() {
+		s = new Stack<>();
 		for (int i=0; i < 1000; ++i) {
 			s.push(i);
 			assertFalse(s.isEmpty());
@@ -350,6 +398,7 @@ public class TestStack extends TestCase {
 	}
 	
 	public void test59() {
+		s = new Stack<>();
 		for (int i=0; i < 1000; ++i) {
 			s.push(i);
 		}

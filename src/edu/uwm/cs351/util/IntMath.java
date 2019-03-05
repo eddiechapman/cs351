@@ -75,7 +75,7 @@ public class IntMath {
 	 */
 	public static long isqr(long x) {
 		if (x <= -(1L << 32) || x >= (1L << 32)) throw new ArithmeticException("Overflow");
-		if (x < 0) x = -x; // no point is handle negatives now
+		if (x < 0) x = -x; // no point in handling negatives now
 		if (x <= Integer.MAX_VALUE) return x*x;
 		// x is [2^31-1,2^32-1]
 		long z = x - (1L << 31);
