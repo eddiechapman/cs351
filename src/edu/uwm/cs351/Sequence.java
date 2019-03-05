@@ -13,6 +13,11 @@ import junit.framework.TestCase;
  * accessed through four methods that are not available in the sequence class 
  * (start, getCurrent, advance and isCurrent).
  * This implementation uses a singly-linked list with a dummy node implementation.
+ * 
+ * @Author Eddie Chapman chapman4@uwm.edu
+ * 
+ * I completed this assignment by referencing the assigned readings, lecture notes,
+ * and the Oracle documentation. 
  ******************************************************************************/
 public class Sequence<E> implements Cloneable
 {
@@ -350,7 +355,6 @@ public class Sequence<E> implements Cloneable
             }
         }
         
-       
         assert wellFormed() : "invariant failed at end of clone";
         assert answer.wellFormed() : "invariant failed for clone";
         
@@ -378,8 +382,10 @@ public class Sequence<E> implements Cloneable
      * Sort the sequence in ascending order. Uses selection sort to sort
      * the elements in descending order before reversing the list. 
      * 
+     * @precondition the list has more than one element
+     * @postcondition the list is sorted in ascending order according to the comparator
      * @param comp  a comparator of the element type
-     * @return the sequence with elements sorted in ascending order
+     * @returns the sequence with elements sorted in ascending order
      */
 	public void sort(Comparator<E> comp) {
 	    assert wellFormed() : "invariant failed at start of sort";
