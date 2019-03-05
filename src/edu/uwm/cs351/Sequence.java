@@ -361,7 +361,7 @@ public class Sequence<E> implements Cloneable
         StringBuilder sb = new StringBuilder();
         sb.append("{");
         boolean first = true;
-        for (Node p = dummy.next; p != null; p=p.next) {
+        for (Node<E> p = dummy.next; p != null; p=p.next) {
             if (first) first = false;
             else sb.append(", ");
             if (p == precursor.next) sb.append("*");
@@ -373,7 +373,55 @@ public class Sequence<E> implements Cloneable
     
 	// TODO:
 	// Add the "sort" method with documentation comment (AKA "javadoc").
-	
+    /**
+     * Sort the sequence in ascending order. Uses selection sort to sort
+     * the elements in descending order before reversing the list. 
+     * 
+     * @param comp  a comparator of the element type
+     * @return the sequence with elements sorted in ascending order
+     */
+	public void sort(Comparator<E> comp) {
+	    assert wellFormed() : "invariant failed at start of sort";
+	    if (manyItems < 2) return;  // 1 item list is already sorted
+	    
+	    Node<E> selected;
+        Node<E> lag;
+        Node<E> sorted; 
+	    
+	    // Separate the list into sorted and unsorted portions by cutting off the dummy & head
+	    sorted = dummy.next.next;
+	    dummy.next.next = null;   
+	    
+	    // Advance through the unsorted portion by selecting and removing the first unsorted node
+	    while (sorted != null) {
+	        selected = sorted;
+	        sorted = sorted.next;
+	        
+	        // Compare the selected node to each sorted node until it is in place
+	        lag = dummy;
+	        while ((lag.next != null) && (comp.compare(selected.data, lag.next.data) < 0)) {
+                lag = lag.next;
+	        }
+	        
+	        // Mend the sorted node references to include the selected node
+	        selected.next = lag.next;
+            lag.next = selected;
+	    }
+	    
+	    // To reverse the list, separate the dummy node from the rest of the list...
+	    sorted = dummy.next;
+	    dummy.next = null;
+	    
+	    // ...and move each node to the head
+	    while (sorted != null) {
+	        selected = sorted;
+	        sorted = sorted.next;
+	        selected.next = dummy.next;
+	        dummy.next = selected;
+	    }
+	    
+	    assert wellFormed() : "invariant failed at end of sort";
+	}
 	
 	// Please don't change the following tests:
 	public static class TestInvariant extends TestCase {
