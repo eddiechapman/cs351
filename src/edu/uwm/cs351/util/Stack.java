@@ -12,17 +12,12 @@ import java.util.EmptyStackException;
 public class Stack<T> implements Cloneable {
 
 	private final Class<T> clazz; // initialize to null if necessary
-	
-	// Hint: You are permitted to copy in code from lecture repos.
-	// TODO: Declare fields (for dynamic array data structure)
-	private String[] contents;
+	private T[] contents;
     private int used;
-	
-	// TODO: declare report/wellFormed
     
     // Copied from lecture #5
     private boolean report(String s) {
-        System.err.println("ibnvariant error: " + s);
+        System.err.println("invariant error: " + s);
         return false;
     }
     
@@ -44,6 +39,8 @@ public class Stack<T> implements Cloneable {
 	}
 	
 	private static final int DEFAULT_CAPACITY = 1;
+	
+
 
 	// TODO: rest of class
 	// You need two constructors: one taking a class value (used by makeArray)
