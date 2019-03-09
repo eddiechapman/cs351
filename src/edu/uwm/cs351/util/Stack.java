@@ -15,6 +15,8 @@ public class Stack<T> implements Cloneable {
 	
 	// Hint: You are permitted to copy in code from lecture repos.
 	// TODO: Declare fields (for dynamic array data structure)
+	private String[] contents;
+    private int used;
 	
 	// TODO: declare report/wellFormed
 	
