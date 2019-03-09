@@ -6,8 +6,9 @@ import java.util.EmptyStackException;
 /**
  * A generic stack class with push/pop methods.
  * When an instance is created, one may optionally pass in a
- * class descriptor.  This makes the implementation more robust.
- * @param T element type of stack
+ * class descriptor. This makes the implementation more robust.
+ * 
+ * @param T     element type of stack
  */
 public class Stack<T> implements Cloneable {
 
@@ -40,7 +41,30 @@ public class Stack<T> implements Cloneable {
 	
 	private static final int DEFAULT_CAPACITY = 1;
 	
-
+	/**
+     * Stack constructor of a generic type.
+     * 
+     * @postcondition   the stack is empty and initialized to accept generic elements.
+     */
+    public Stack() {
+        this.clazz = null;
+        this.contents = makeArray(DEFAULT_CAPACITY);
+        this.used = 0;
+        assert wellFormed() : "Invariant failed at end of Stack constructor (generic)";
+    }
+    
+     /**
+     * Stack constructor of a specified type.
+     * 
+     * @postcondition   the stack is empty and initialized to accept elements of the type clazz
+     * @param clazz     the class of elements stored in the stack
+     */
+    public Stack(Class<T> clazz) {
+        this.clazz = clazz;
+        this.contents = makeArray(DEFAULT_CAPACITY);
+        this.used = 0;
+        assert wellFormed() : "Invariant failed at end of Stack constructor (class specified)";
+    }
 
 	// TODO: rest of class
 	// You need two constructors: one taking a class value (used by makeArray)
