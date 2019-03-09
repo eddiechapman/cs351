@@ -65,6 +65,60 @@ public class Stack<T> implements Cloneable {
         this.used = 0;
         assert wellFormed() : "Invariant failed at end of Stack constructor (class specified)";
     }
+    
+    /**
+     * Adds a specified element to the top of this stack.
+     * 
+     * @param e     the element to be added to the top of the stack 
+     */
+    public void push(E e) {
+        assert wellFormed() : "Invariant failed at start of";
+        assert wellFormed() : "Invariant failed at end of";
+    } 
+    
+    /**
+     * Retrieves and removes the top of this stack, which must not be empty. If the stack is empty,this methods throws an instance ofEmptyStackException.
+     * 
+     * @return the top element of the stack, which is removed from the stack in the process
+     * @throws EmptyStackException  if the stack is empty before calling pop
+     */
+    public E pop() {
+        assert wellFormed() : "Invariant failed at start of pop";
+        assert wellFormed() : "Invariant failed at end of pop";
+    }
+    
+    /**
+     * Retrieves, but does not remove, the top of this stack, which must not be empty.
+     *
+     * @return the top element of the stack, which is not removed from the stack
+     * @throws EmptyStackException  if the stack is empty before calling peek
+     */
+    public E peek() {
+        assert wellFormed() : "Invariant failed at start of peek";
+    }
+    
+    /**
+     * Return true if this stack is empty.
+     * 
+     * @return <code>true</code> if the stack is empty, <code>false</code> otherwise. 
+     */
+    public boolean isEmpty() {
+        assert wellFormed() : "Invariant failed at start of isEmpty";
+    }
+    
+    @Override
+    public Stack clone() {
+        assert wellFormed() : "Invariant failed at start of clone";
+        assert wellFormed() : "Invariant failed at end of clone";
+    }
+    
+    /**
+     * Discard everything from the stack.
+     */
+    public void clear() {
+        assert wellFormed() : "Invariant failed at start of clear";
+        assert wellFormed() : "Invariant failed at end of clear";
+    }
 
 	// TODO: rest of class
 	// You need two constructors: one taking a class value (used by makeArray)
