@@ -19,6 +19,20 @@ public class Stack<T> implements Cloneable {
     private int used;
 	
 	// TODO: declare report/wellFormed
+    
+    // Copied from lecture #5
+    private boolean report(String s) {
+        System.err.println("ibnvariant error: " + s);
+        return false;
+    }
+    
+    // Copied from lecture #5
+    private boolean wellFormed() {
+        if (contents == null) return report("contents is null");
+        if (used < 0) return report("Used is negative! " + used);
+        if (used > contents.length) return report("more in collection that its capacity? " + used + " > " + contents.length);
+        return true;
+    }
 	
 	// a helper method which you will find useful.
 	@SuppressWarnings("unchecked")
