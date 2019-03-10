@@ -107,8 +107,20 @@ public class Stack<T> implements Cloneable {
         return contents.length == 0;
     }
     
+    private void ensureCapacity(int min) {
+        if (min <= contents.length) { return; }
+        int newCap = contents.length * 2;
+        if (newCap < min) { newCap = min; }
+        T[] newArray = makeArray(newCap);
+        for (int i=0; i < contents.length; ++i) {
+            newArray[i] = contents[i];
+        }
+        contents = newArray;
+    }
+    
+    
     @Override
-    public Stack clone() {
+    public Stack<T> clone() {
         assert wellFormed() : "Invariant failed at start of clone";
         assert wellFormed() : "Invariant failed at end of clone";
     }
