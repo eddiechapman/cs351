@@ -3,6 +3,9 @@ package edu.uwm.cs351.util;
 import java.lang.reflect.Array;
 import java.util.EmptyStackException;
 
+import edu.uwm.cs351.Sequence;
+import edu.uwm.cs351.Sequence.Node;
+
 /**
  * A generic stack class with push/pop methods.
  * When an instance is created, one may optionally pass in a
@@ -128,12 +131,26 @@ public class Stack<T> implements Cloneable {
         contents = newArray;
     }
     
-    
     @Override
     public Stack<T> clone() {
         assert wellFormed() : "Invariant failed at start of clone";
+        Stack<T> answer;
+        try {
+            answer = (Stack<T>) super.clone();
+        } catch (CloneNotSupportedException e) {
+            // This exception should not occur. But if it does, it would probably
+            // indicate a programming error that made super.clone unavailable.
+            // The most common error would be forgetting the "Implements Cloneable"
+            // clause at the start of this class.
+            throw new RuntimeException("This class does not implement Cloneable");
+        }
+        answer.contents = contents.clone();
+        assert answer.wellFormed() : "Invariant failed at end of answer's clone";  
         assert wellFormed() : "Invariant failed at end of clone";
+        return answer;
     }
+    
+   
     
     /**
      * Discard everything from the stack.
