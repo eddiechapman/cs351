@@ -3,9 +3,6 @@ package edu.uwm.cs351.util;
 import java.lang.reflect.Array;
 import java.util.EmptyStackException;
 
-import edu.uwm.cs351.Sequence;
-import edu.uwm.cs351.Sequence.Node;
-
 /**
  * A generic stack class with push/pop methods.
  * When an instance is created, one may optionally pass in a
