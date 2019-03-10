@@ -10,8 +10,8 @@ import java.util.EmptyStackException;
  * 
  * @param T     element type of stack
  */
-public class Stack<T> implements Cloneable {
-
+public class Stack<T> implements Cloneable 
+{
 	private final Class<T> clazz; // initialize to null if necessary
 	private T[] contents;
     private int head;
@@ -21,15 +21,10 @@ public class Stack<T> implements Cloneable {
         System.err.println("invariant error: " + s);
         return false;
     }
-    
 
     private boolean wellFormed() {
-        if (contents == null) { 
-            return report("contents is null"); 
-        }
-        if (head < 0) { 
-            return report(String.format("cannot have a negative head (%d)", head)); 
-        }
+        if (contents == null) { return report("contents is null"); }
+        if (head < 0) { return report(String.format("cannot have a negative head (%d)", head)); }
         if (head >= contents.length) { 
             return report(String.format("head (%d) cannot point beyond array boundaries (%d)", 
                                         head, contents.length)); 
@@ -40,10 +35,11 @@ public class Stack<T> implements Cloneable {
 	// a helper method which you will find useful.
 	@SuppressWarnings("unchecked")
 	private T[] makeArray(int size) {
-		if (clazz == null)
-			return (T[])new Object[size]; // lying...
-		else
+		if (clazz == null) {
+			return (T[])new Object[size];  // lying...
+		} else {
 			return (T[])Array.newInstance(clazz, size);
+		}
 	}
 	
 	private static final int DEFAULT_CAPACITY = 1;
@@ -136,6 +132,7 @@ public class Stack<T> implements Cloneable {
     }
     
     @Override
+    @SuppressWarnings("unchecked")
     public Stack<T> clone() {
         assert wellFormed() : "Invariant failed at start of clone";
         Stack<T> answer;
