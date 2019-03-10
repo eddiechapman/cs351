@@ -22,11 +22,18 @@ public class Stack<T> implements Cloneable {
         return false;
     }
     
-    // Copied from lecture #5
+
     private boolean wellFormed() {
-//        if (contents == null) return report("contents is null");
-//        if (used < 0) return report("Used is negative! " + used);
-//        if (used > contents.length) return report("more in collection that its capacity? " + used + " > " + contents.length);
+        if (contents == null) { 
+            return report("contents is null"); 
+        }
+        if (head < 0) { 
+            return report(String.format("cannot have a negative head (%d)", head)); 
+        }
+        if (head >= contents.length) { 
+            return report(String.format("head (%d) cannot point beyond array boundaries (%d)", 
+                                        head, contents.length)); 
+        }
         return true;
     }
 	
