@@ -14,7 +14,7 @@ public class Stack<T> implements Cloneable {
 
 	private final Class<T> clazz; // initialize to null if necessary
 	private T[] contents;
-    private int used;
+    private int head;
     
     // Copied from lecture #5
     private boolean report(String s) {
@@ -24,9 +24,9 @@ public class Stack<T> implements Cloneable {
     
     // Copied from lecture #5
     private boolean wellFormed() {
-        if (contents == null) return report("contents is null");
-        if (used < 0) return report("Used is negative! " + used);
-        if (used > contents.length) return report("more in collection that its capacity? " + used + " > " + contents.length);
+//        if (contents == null) return report("contents is null");
+//        if (used < 0) return report("Used is negative! " + used);
+//        if (used > contents.length) return report("more in collection that its capacity? " + used + " > " + contents.length);
         return true;
     }
 	
@@ -49,7 +49,7 @@ public class Stack<T> implements Cloneable {
     public Stack() {
         this.clazz = null;
         this.contents = makeArray(DEFAULT_CAPACITY);
-        this.used = 0;
+        this.head = 0;
         assert wellFormed() : "Invariant failed at end of Stack constructor (generic)";
     }
     
@@ -62,7 +62,7 @@ public class Stack<T> implements Cloneable {
     public Stack(Class<T> clazz) {
         this.clazz = clazz;
         this.contents = makeArray(DEFAULT_CAPACITY);
-        this.used = 0;
+        this.head = 0;
         assert wellFormed() : "Invariant failed at end of Stack constructor (class specified)";
     }
     
