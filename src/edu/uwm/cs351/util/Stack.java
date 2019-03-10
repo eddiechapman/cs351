@@ -87,7 +87,12 @@ public class Stack<T> implements Cloneable {
      */
     public T pop() {
         assert wellFormed() : "Invariant failed at start of pop";
+        if (isEmpty()) { throw new EmptyStackException(); }
+        T element = contents[head];
+        contents[head] = null;
+        --head;
         assert wellFormed() : "Invariant failed at end of pop";
+        return element;
     }
     
     /**
