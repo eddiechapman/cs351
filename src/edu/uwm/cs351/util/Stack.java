@@ -150,13 +150,14 @@ public class Stack<T> implements Cloneable {
         return answer;
     }
     
-   
-    
     /**
      * Discard everything from the stack.
      */
     public void clear() {
         assert wellFormed() : "Invariant failed at start of clear";
+        if (isEmpty()) { return; }
+        contents = makeArray(DEFAULT_CAPACITY);
+        head = 0;
         assert wellFormed() : "Invariant failed at end of clear";
     }
 
