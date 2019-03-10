@@ -69,9 +69,9 @@ public class Stack<T> implements Cloneable {
     /**
      * Adds a specified element to the top of this stack.
      * 
-     * @param e     the element to be added to the top of the stack 
+     * @param t     the element to be added to the top of the stack 
      */
-    public void push(E e) {
+    public void push(T t) {
         assert wellFormed() : "Invariant failed at start of";
         assert wellFormed() : "Invariant failed at end of";
     } 
@@ -82,7 +82,7 @@ public class Stack<T> implements Cloneable {
      * @return the top element of the stack, which is removed from the stack in the process
      * @throws EmptyStackException  if the stack is empty before calling pop
      */
-    public E pop() {
+    public T pop() {
         assert wellFormed() : "Invariant failed at start of pop";
         assert wellFormed() : "Invariant failed at end of pop";
     }
@@ -93,7 +93,7 @@ public class Stack<T> implements Cloneable {
      * @return the top element of the stack, which is not removed from the stack
      * @throws EmptyStackException  if the stack is empty before calling peek
      */
-    public E peek() {
+    public T peek() {
         assert wellFormed() : "Invariant failed at start of peek";
     }
     
