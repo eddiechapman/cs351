@@ -103,6 +103,8 @@ public class Stack<T> implements Cloneable {
      */
     public T peek() {
         assert wellFormed() : "Invariant failed at start of peek";
+        if (isEmpty()) { throw new EmptyStackException(); }
+        return contents[head];
     }
     
     /**
