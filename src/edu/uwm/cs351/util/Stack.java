@@ -72,8 +72,11 @@ public class Stack<T> implements Cloneable {
      * @param t     the element to be added to the top of the stack 
      */
     public void push(T t) {
-        assert wellFormed() : "Invariant failed at start of";
-        assert wellFormed() : "Invariant failed at end of";
+        assert wellFormed() : "Invariant failed at start of push";
+        ensureCapacity(contents.length + 1);
+        ++head;
+        contents[head] = t;
+        assert wellFormed() : "Invariant failed at end of push";
     } 
     
     /**
