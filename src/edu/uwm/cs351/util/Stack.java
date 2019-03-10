@@ -104,6 +104,7 @@ public class Stack<T> implements Cloneable {
      */
     public boolean isEmpty() {
         assert wellFormed() : "Invariant failed at start of isEmpty";
+        return contents.length == 0;
     }
     
     @Override
