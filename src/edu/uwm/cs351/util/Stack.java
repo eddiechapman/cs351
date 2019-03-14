@@ -15,6 +15,7 @@ public class Stack<T> implements Cloneable
 	private final Class<T> clazz; // initialize to null if necessary
 	private T[] contents;
     private int head;
+    private int manyItems;
     
     // Copied from lecture #5
     private boolean report(String s) {
@@ -24,7 +25,7 @@ public class Stack<T> implements Cloneable
 
     private boolean wellFormed() {
         if (contents == null) { return report("contents is null"); }
-        if (head < 0) { return report(String.format("cannot have a negative head (%d)", head)); }
+        if (head < -1) { return report(String.format("Head cannot be less than -1 (%d)", head)); }
         if (head >= contents.length) { 
             return report(String.format("head (%d) cannot point beyond array boundaries (%d)", 
                                         head, contents.length)); 
@@ -52,7 +53,7 @@ public class Stack<T> implements Cloneable
     public Stack() {
         this.clazz = null;
         this.contents = makeArray(DEFAULT_CAPACITY);
-        this.head = 0;
+        this.head = -1;
         assert wellFormed() : "Invariant failed at end of Stack constructor (generic)";
     }
     
@@ -65,7 +66,7 @@ public class Stack<T> implements Cloneable
     public Stack(Class<T> clazz) {
         this.clazz = clazz;
         this.contents = makeArray(DEFAULT_CAPACITY);
-        this.head = 0;
+        this.head = -1;
         assert wellFormed() : "Invariant failed at end of Stack constructor (class specified)";
     }
     
@@ -76,7 +77,7 @@ public class Stack<T> implements Cloneable
      */
     public void push(T t) {
         assert wellFormed() : "Invariant failed at start of push";
-        ensureCapacity(contents.length + 1);
+        ensureCapacity(head + 2);
         ++head;
         contents[head] = t;
         assert wellFormed() : "Invariant failed at end of push";
@@ -117,7 +118,7 @@ public class Stack<T> implements Cloneable
      */
     public boolean isEmpty() {
         assert wellFormed() : "Invariant failed at start of isEmpty";
-        return head == 0;
+        return head == -1;
     }
     
     private void ensureCapacity(int min) {
@@ -158,7 +159,7 @@ public class Stack<T> implements Cloneable
         assert wellFormed() : "Invariant failed at start of clear";
         if (isEmpty()) { return; }
         contents = makeArray(DEFAULT_CAPACITY);
-        head = 0;
+        head = -1;
         assert wellFormed() : "Invariant failed at end of clear";
     }
 
