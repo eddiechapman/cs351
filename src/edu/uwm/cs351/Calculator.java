@@ -44,10 +44,10 @@ public class Calculator {
     /**
      * Enter a number.
      * 
-     * @precondition    The calculator is in state 0 ('empty') or state 2 ('waiting')
-     * @postcondition   The number is added to the top of the operand stack. The calculator is in state 1 ('ready'). 
-     * @param number    a double to be entered in the calculator
-     * @throws          IllegalStateException if the calculator is in state 1 ('ready')
+     * @precondition    the calculator is in an empty or waiting state.
+     * @postcondition   the number is added to the top of the operand stack. The calculator is a ready state. 
+     * @param number    a double to be entered in the calculator.
+     * @throws          IllegalStateException if the calculator is in a ready state.
      */
     public void value(long number) throws IllegalStateException {
         if (state == 1) throw new IllegalStateException("Cannot add a value to a calculator in state 1 ('ready')"); 
@@ -58,12 +58,10 @@ public class Calculator {
     /**
      * Enter a binary operator.
      * 
-     * If we were in the empty state, then the default value is used to first move the state 1.
-     * 
-     * @precondition    the calculator is in an empty or ready state
-     * @postcondition   an operation has been added to the operators stack and the calculator is in a waiting state
-     * @param o         an Operation that will be performed on the long integers in the operators stack
-     * @throws          IllegalStateException if the calculator is in an waiting state before calling this method
+     * @precondition    the calculator is in an empty or ready state.
+     * @postcondition   an operation has been added to the operators stack and the calculator is in a waiting state.
+     * @param o         an Operation that will be performed on the long integers in the operators stack.
+     * @throws          IllegalStateException if the calculator is in an waiting state before calling this method.
      */
     public void binop(Operation o) throws IllegalStateException {
         switch (state) {
