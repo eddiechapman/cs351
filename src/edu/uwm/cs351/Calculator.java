@@ -3,6 +3,7 @@ package edu.uwm.cs351;
 import java.util.EmptyStackException;
 
 import edu.uwm.cs351.util.Stack;
+import edu.uwm.cs351.Operation;
 
 
 /**
@@ -10,14 +11,14 @@ import edu.uwm.cs351.util.Stack;
  *
  */
 public class Calculator {
-    private Stack<Double> values = new Stack<Double>();
-    private Stack<Double> operations = new Stack<Double>();
-    private double defaultValue;
+    private Stack<Long> operators = new Stack<Long>();
+    private Stack<Long> operations = new Stack<Long>();
+    private long defaultValue;
     private boolean receiving;
     private int state;
     
     /**
-     * Enter a number
+     * 
      * 
      * @precondition
      * @postcondition
@@ -30,13 +31,13 @@ public class Calculator {
     public void clear() {}
     
     /**
-     * Enter a number
+     * Enter a number.
      * 
      * @precondition
      * @postcondition
      * @param number    a double to be entered in the calculator
      */
-    public void value(Double number) {}
+    public void value(long number) {}
     
     /**
      * Enter a binary operator.
@@ -46,7 +47,7 @@ public class Calculator {
      * @precondition
      * @postcondition   
      */
-    public void binop() {}
+    public void binop(Operation o) {}
     
     /**
      * Replace the current value with the square root of the unsigned integer. 
@@ -87,7 +88,7 @@ public class Calculator {
      * @postcondition
      * @return         the default value
      */
-    public double compute() {}
+    public long compute() {}
     
     /**
      * Return the current value.
@@ -100,7 +101,7 @@ public class Calculator {
      * @postcondition
      * @return         the current value
      */
-    public double getCurrent() {}
+    public long getCurrent() {}
     
     
     
