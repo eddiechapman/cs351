@@ -13,7 +13,7 @@ import edu.uwm.cs351.Operation;
 public class Calculator {
     private Stack<Operation> operators;      // Stores operators for applying to the operands upon calculation
     private Stack<Long> operands;       // Stores long integers for calculating
-    private long defaultValue;          // The result of the most recent compute operation
+    private Long defaultValue;          // The result of the most recent compute operation
     private boolean receiving;
     private int state;                  // Indicates which operations are legal
     
@@ -71,7 +71,7 @@ public class Calculator {
                 operators.push(o);
                 state = 2;
                 break;
-            case 3:
+            case 2:
                 throw new IllegalStateException("A binary operation cannot be entered to a calculator in a waiting state");
             default:
                 break;
@@ -121,7 +121,7 @@ public class Calculator {
      * 
      * @precondition
      * @postcondition
-     * @return         the default value
+     * @return          the default value
      */
     public long compute() {
         
@@ -130,17 +130,14 @@ public class Calculator {
     /**
      * Return the current value.
      * 
-     * In the "empty" state, the current value is the default value;
-     * in the "ready" state, the current value is the most recently entered number;
-     * in the "waiting" state, the current value is also the most recently entered number.
-     * 
-     * @precondition
-     * @postcondition
-     * @return         the current value
+     * @return          the most recently entered value, or the default value if the calculator is 
+     *                  in an empty state.          
      */
-    public long getCurrent() {
-
+    public Long getCurrent() {
+        if (state == 0) return defaultValue;
+        return operands.peek();
     }
+        
     
     
     
