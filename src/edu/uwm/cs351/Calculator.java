@@ -44,11 +44,16 @@ public class Calculator {
     /**
      * Enter a number.
      * 
-     * @precondition
-     * @postcondition
+     * @precondition    The calculator is in state 0 ('waiting') or state 2 ('waiting')
+     * @postcondition   The number is added to the top of the operand stack. The calculator is in state 1 ('ready'). 
      * @param number    a double to be entered in the calculator
+     * @throws          IllegalStateException if the calculator is in state 1 ('ready')
      */
-    public void value(long number) {}
+    public void value(long number) throws IllegalStateException {
+        if (state == 1) throw new IllegalStateException("Cannot add a value to a calculator in state 1 ('ready')"); 
+        operands.push(number);
+        state = 1;
+    }
     
     /**
      * Enter a binary operator.
