@@ -26,7 +26,7 @@ public class Calculator {
     public Calculator() {
         operators = new Stack<Operation>();
         operands = new Stack<Long>();
-        defaultValue = 0;
+        defaultValue = 0L;
         state = 0;
     }
     
@@ -39,7 +39,7 @@ public class Calculator {
     public void clear() {
         operators.clear();
         operands.clear();
-        defaultValue = 0;
+        defaultValue = 0L;
         state = 0;
     }
     
