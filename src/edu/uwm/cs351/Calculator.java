@@ -11,19 +11,23 @@ import edu.uwm.cs351.Operation;
  *
  */
 public class Calculator {
-    private Stack<Long> operators = new Stack<Long>();
-    private Stack<Long> operations = new Stack<Long>();
-    private long defaultValue;
+    private Stack<Long> operators;      // Stores operators for applying to the operands upon calculation
+    private Stack<Long> operands;       // Stores long integers for calculating
+    private long defaultValue;          // The result of the most recent compute operation
     private boolean receiving;
-    private int state;
+    private int state;                  // Indicates which operations are legal
     
     /**
+     * Initialize an empty calculator.
      * 
-     * 
-     * @precondition
-     * @postcondition
+     * @postcondition   The calculator has an empty state with no stored operators, operands, or recently calculated values.         
      */
-    public Calculator() {}
+    public Calculator() {
+        operators = new Stack<Long>();
+        operands = new Stack<Long>();
+        defaultValue = 0;
+        state = 0;
+    }
     
     /**
      * Clear the calculator and default value.
@@ -73,7 +77,7 @@ public class Calculator {
      * 
      * @precondition    The operators stack includes an unclosed open
      * @postcondition
-     * @throws           EmptyStackException if the operators stack is missing an unclosed open.      
+     * @throws          EmptyStackException if the operators stack is missing an unclosed open.      
      */
     public void close() throws EmptyStackException {}
     
