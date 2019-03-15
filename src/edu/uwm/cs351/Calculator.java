@@ -106,11 +106,18 @@ public class Calculator {
     /**
      * Start a parenthetical expression.
      * 
-     * @precondition
-     * @postcondition
+     * @precondition    The Calculator is in an empty or waiting state.
+     * 
+     * @postcondition   A left parenthesis has been added to the operators stack,
+     *                  and the Calculator is in a waiting state.
+     * 
+     * @throws          IllegalStateException if the Calculator is in a ready state
+     *                  when this method is called. 
      */
-    public void open() {
-
+    public void open() throws IllegalStateException {
+        if (state == 1) throw new IllegalStateException("Cannot add a parenthesis when the Calculator is in a ready state.");
+        operators.push(Operation.find("LPAREN"));
+        state = 2;
     }
     
     /**
