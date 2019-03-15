@@ -11,11 +11,11 @@ import edu.uwm.cs351.Operation;
  *
  */
 public class Calculator {
-    private Stack<Operation> operators;      // Stores operators for applying to the operands upon calculation
-    private Stack<Long> operands;       // Stores long integers for calculating
-    private Long defaultValue;          // The result of the most recent compute operation
+    private Stack<Operation> operators;     // Stores operators for applying to the operands upon calculation
+    private Stack<Long> operands;           // Stores long integers for calculating
+    private Long defaultValue;              // The result of the most recent compute operation
     private boolean receiving;
-    private int state;                  // Indicates which operations are legal
+    private int state;                      // Indicates which operations are legal
     
     /**
      * Initialize an empty calculator.
@@ -27,7 +27,7 @@ public class Calculator {
         operators = new Stack<Operation>();
         operands = new Stack<Long>();
         defaultValue = 0L;
-        state = 0;
+        state = 0;  // 'empty'
     }
     
     /**
@@ -40,7 +40,7 @@ public class Calculator {
         operators.clear();
         operands.clear();
         defaultValue = 0L;
-        state = 0;
+        state = 0;  // 'empty'
     }
     
     /**
@@ -51,14 +51,16 @@ public class Calculator {
      * @postcondition   the number is added to the top of the operands Stack. 
      *                  The Calculator is a ready state. 
      *                  
-     * @param number    a Long to be entered in the Calculator.
+     * @param val       a Long to be entered in the Calculator.
      * 
      * @throws          IllegalStateException if the Calculator is in a ready state.
      */
-    public void value(long number) throws IllegalStateException {
-        if (state == 1) throw new IllegalStateException("Cannot add a value to a calculator in state 1 ('ready')"); 
-        operands.push(number);
-        state = 1;  // ready
+    public void value(long val) throws IllegalStateException {
+        if (state == 1) 
+            throw new IllegalStateException("Cannot add a value to a calculator in a ready state"); 
+        
+        operands.push(val);
+        state = 1;  // 'ready'
     }
     
     /**
@@ -69,17 +71,21 @@ public class Calculator {
      * @postcondition   an Operation has been added to the operators Stack and the 
      *                  Calculator is in a waiting state.
      *                  
-     * @param o         an Operation that will be performed on the long integers in the 
+     * @param op        an Operation that will be performed on the long integers in the 
      *                  operators Stack.
      *                  
      * @throws          IllegalStateException if the Calculator is in an waiting state 
      *                  before calling this method.
      */
-    public void binop(Operation o) throws IllegalStateException {
-        if (state == 2) throw new IllegalStateException("A binary operation cannot be entered to a calculator in a waiting state");
-        if (state == 0) value(defaultValue);
-        operators.push(o);
-        state = 2;
+    public void binop(Operation op) throws IllegalStateException {
+        if (state == 2) 
+            throw new IllegalStateException("A binary operation cannot be entered to a calculator in a waiting state");
+        
+        if (state == 0) 
+            value(defaultValue);
+        
+        operators.push(op);
+        state = 2;  // 'waiting'
     }
     
     /**
@@ -107,8 +113,10 @@ public class Calculator {
      *                  when this method is called. 
      */
     public void open() throws IllegalStateException {
-        if (state == 1) throw new IllegalStateException("Cannot add a parenthesis when the Calculator is in a ready state.");
-        operators.push(Operation.find("LPAREN"));
+        if (state == 1) 
+            throw new IllegalStateException("Cannot add a parenthesis when the Calculator is in a ready state.");
+        
+        operators.push(Operation.LPAREN);
         state = 2;
     }
     
@@ -137,12 +145,12 @@ public class Calculator {
             Operation op = temp.pop();
             if (op == Operation.LPAREN) ++unclosed;
             if (op == Operation.RPAREN) --unclosed;
-        }   
+        }     
         
         if (unclosed > 1) 
             throw new EmptyStackException();
-        
-        operators.push(Operation.RPAREN);
+        else
+            operators.push(Operation.RPAREN);
     }
     
     /**
@@ -169,8 +177,10 @@ public class Calculator {
      *                  Long default value if the Calculator is in an empty state.          
      */
     public Long getCurrent() {
-        if (state == 0) return defaultValue;
-        return operands.peek();
+        if (state == 0) 
+            return defaultValue;
+        else
+            return operands.peek();
     }
         
     
