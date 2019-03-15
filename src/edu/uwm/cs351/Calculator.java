@@ -20,7 +20,8 @@ public class Calculator {
     /**
      * Initialize an empty calculator.
      * 
-     * @postcondition   The calculator has an empty state with no stored operators, operands, or recently calculated values.         
+     * @postcondition   The calculator has an empty state with no stored operators, 
+     *                  operands, or recently calculated values.         
      */
     public Calculator() {
         operators = new Stack<Operation>();
@@ -32,7 +33,8 @@ public class Calculator {
     /**
      * Clear the calculator and default value.
      * 
-     * @postcondition   The calculator has an empty state with no stored operators, operands, or recently calculated values.
+     * @postcondition   the calculator has an empty state with no stored operators, 
+     *                  operands, or recently calculated values.
      */
     public void clear() {
         operators.clear();
@@ -44,10 +46,14 @@ public class Calculator {
     /**
      * Enter a number.
      * 
-     * @precondition    the calculator is in an empty or waiting state.
-     * @postcondition   the number is added to the top of the operand stack. The calculator is a ready state. 
-     * @param number    a double to be entered in the calculator.
-     * @throws          IllegalStateException if the calculator is in a ready state.
+     * @precondition    the Calculator is in an empty or waiting state.
+     * 
+     * @postcondition   the number is added to the top of the operands Stack. 
+     *                  The Calculator is a ready state. 
+     *                  
+     * @param number    a Long to be entered in the Calculator.
+     * 
+     * @throws          IllegalStateException if the Calculator is in a ready state.
      */
     public void value(long number) throws IllegalStateException {
         if (state == 1) throw new IllegalStateException("Cannot add a value to a calculator in state 1 ('ready')"); 
@@ -58,10 +64,16 @@ public class Calculator {
     /**
      * Enter a binary operator.
      * 
-     * @precondition    the calculator is in an empty or ready state.
-     * @postcondition   an operation has been added to the operators stack and the calculator is in a waiting state.
-     * @param o         an Operation that will be performed on the long integers in the operators stack.
-     * @throws          IllegalStateException if the calculator is in an waiting state before calling this method.
+     * @precondition    the Calculator is in an empty or ready state.
+     * 
+     * @postcondition   an Operation has been added to the operators Stack and the 
+     *                  Calculator is in a waiting state.
+     *                  
+     * @param o         an Operation that will be performed on the long integers in the 
+     *                  operators Stack.
+     *                  
+     * @throws          IllegalStateException if the Calculator is in an waiting state 
+     *                  before calling this method.
      */
     public void binop(Operation o) throws IllegalStateException {
         switch (state) {
@@ -105,7 +117,9 @@ public class Calculator {
      * End a parenthetical expression
      * 
      * @precondition    The operators stack includes an unclosed open
+     * 
      * @postcondition
+     * 
      * @throws          EmptyStackException if the operators stack is missing an unclosed open.      
      */
     public void close() throws EmptyStackException {
@@ -120,7 +134,9 @@ public class Calculator {
      * default value is the result which is returned.
      * 
      * @precondition
+     * 
      * @postcondition
+     * 
      * @return          the default value
      */
     public long compute() {
@@ -130,8 +146,8 @@ public class Calculator {
     /**
      * Return the current value.
      * 
-     * @return          the most recently entered value, or the default value if the calculator is 
-     *                  in an empty state.          
+     * @return          the Long most recently added to the operands Stack, or the 
+     *                  Long default value if the Calculator is in an empty state.          
      */
     public Long getCurrent() {
         if (state == 0) return defaultValue;
