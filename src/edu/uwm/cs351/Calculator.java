@@ -123,14 +123,34 @@ public class Calculator {
     /**
      * End a parenthetical expression
      * 
-     * @precondition    The operators stack includes an unclosed open
+     * @precondition    the Calculator is in a ready state and the operators stack includes 
+     *                  an unclosed parenthetical expression.
      * 
-     * @postcondition
+     * @postcondition   the most recent unclosed parenthetical expression has been closed. 
+     *                  The Calculator is in a ready state.
      * 
-     * @throws          EmptyStackException if the operators stack is missing an unclosed open.      
+     * @throws          EmptyStackException if the operators stack is missing an unclosed open.
+     * 
+     * @throws          IllegalStateException if the Calculator is in an empty or waiting state
+     *                  when this this method is called.
      */
-    public void close() throws EmptyStackException {
-
+    public void close() throws IllegalStateException, EmptyStackException {
+        if (state != 1) 
+            throw new IllegalStateException("The Calculator must be in a ready state to attempt a close operation.");  
+        
+        Stack<Operation> temp = operators.clone();
+        int unclosed = 0;
+        
+        while (!temp.isEmpty()) {
+            Operation op = temp.pop();
+            if (op == Operation.LPAREN) ++unclosed;
+            if (op == Operation.RPAREN) --unclosed;
+        }   
+        
+        if (unclosed > 1) 
+            throw new EmptyStackException();
+        
+        operators.push(Operation.RPAREN);
     }
     
     /**
