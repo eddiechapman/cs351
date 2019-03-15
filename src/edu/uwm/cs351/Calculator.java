@@ -76,18 +76,10 @@ public class Calculator {
      *                  before calling this method.
      */
     public void binop(Operation o) throws IllegalStateException {
-        switch (state) {
-            case 0:
-                value(defaultValue);
-            case 1:
-                operators.push(o);
-                state = 2;
-                break;
-            case 2:
-                throw new IllegalStateException("A binary operation cannot be entered to a calculator in a waiting state");
-            default:
-                break;
-        }
+        if (state == 2) throw new IllegalStateException("A binary operation cannot be entered to a calculator in a waiting state");
+        if (state == 0) value(defaultValue);
+        operators.push(o);
+        state = 2;
     }
     
     /**
