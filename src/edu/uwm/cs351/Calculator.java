@@ -11,7 +11,7 @@ import edu.uwm.cs351.Operation;
  *
  */
 public class Calculator {
-    private Stack<Long> operators;      // Stores operators for applying to the operands upon calculation
+    private Stack<Operation> operators;      // Stores operators for applying to the operands upon calculation
     private Stack<Long> operands;       // Stores long integers for calculating
     private long defaultValue;          // The result of the most recent compute operation
     private boolean receiving;
@@ -23,7 +23,7 @@ public class Calculator {
      * @postcondition   The calculator has an empty state with no stored operators, operands, or recently calculated values.         
      */
     public Calculator() {
-        operators = new Stack<Long>();
+        operators = new Stack<Operation>();
         operands = new Stack<Long>();
         defaultValue = 0;
         state = 0;
@@ -44,7 +44,7 @@ public class Calculator {
     /**
      * Enter a number.
      * 
-     * @precondition    The calculator is in state 0 ('waiting') or state 2 ('waiting')
+     * @precondition    The calculator is in state 0 ('empty') or state 2 ('waiting')
      * @postcondition   The number is added to the top of the operand stack. The calculator is in state 1 ('ready'). 
      * @param number    a double to be entered in the calculator
      * @throws          IllegalStateException if the calculator is in state 1 ('ready')
@@ -52,7 +52,7 @@ public class Calculator {
     public void value(long number) throws IllegalStateException {
         if (state == 1) throw new IllegalStateException("Cannot add a value to a calculator in state 1 ('ready')"); 
         operands.push(number);
-        state = 1;
+        state = 1;  // ready
     }
     
     /**
@@ -60,10 +60,25 @@ public class Calculator {
      * 
      * If we were in the empty state, then the default value is used to first move the state 1.
      * 
-     * @precondition
-     * @postcondition   
+     * @precondition    the calculator is in an empty or ready state
+     * @postcondition   an operation has been added to the operators stack and the calculator is in a waiting state
+     * @param o         an Operation that will be performed on the long integers in the operators stack
+     * @throws          IllegalStateException if the calculator is in an waiting state before calling this method
      */
-    public void binop(Operation o) {}
+    public void binop(Operation o) throws IllegalStateException {
+        switch (state) {
+            case 0:
+                value(defaultValue);
+            case 1:
+                operators.push(o);
+                state = 2;
+                break;
+            case 3:
+                throw new IllegalStateException("A binary operation cannot be entered to a calculator in a waiting state");
+            default:
+                break;
+        }
+    }
     
     /**
      * Replace the current value with the square root of the unsigned integer. 
@@ -74,7 +89,9 @@ public class Calculator {
      * @precondition
      * @postcondition
      */
-    public void sqrt() {}
+    public void sqrt() {
+
+    }
     
     /**
      * Start a parenthetical expression.
@@ -82,7 +99,9 @@ public class Calculator {
      * @precondition
      * @postcondition
      */
-    public void open() {}
+    public void open() {
+
+    }
     
     /**
      * End a parenthetical expression
@@ -91,7 +110,9 @@ public class Calculator {
      * @postcondition
      * @throws          EmptyStackException if the operators stack is missing an unclosed open.      
      */
-    public void close() throws EmptyStackException {}
+    public void close() throws EmptyStackException {
+
+    }
     
     /**
      * Perform all pending computations.
@@ -104,7 +125,9 @@ public class Calculator {
      * @postcondition
      * @return         the default value
      */
-    public long compute() {}
+    public long compute() {
+        
+    }
     
     /**
      * Return the current value.
@@ -117,7 +140,9 @@ public class Calculator {
      * @postcondition
      * @return         the current value
      */
-    public long getCurrent() {}
+    public long getCurrent() {
+
+    }
     
     
     
