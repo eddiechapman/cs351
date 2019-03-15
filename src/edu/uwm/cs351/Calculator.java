@@ -3,6 +3,7 @@ package edu.uwm.cs351;
 import java.util.EmptyStackException;
 
 import edu.uwm.cs351.util.Stack;
+import edu.uwm.cs351.util.IntMath;
 import edu.uwm.cs351.Operation;
 
 
@@ -82,7 +83,7 @@ public class Calculator {
             throw new IllegalStateException("A binary operation cannot be entered to a calculator in a waiting state");
         
         if (state == 0) 
-            value(defaultValue);
+            operands.push(defaultValue);
         
         operators.push(op);
         state = 2;  // 'waiting'
@@ -91,14 +92,24 @@ public class Calculator {
     /**
      * Replace the current value with the square root of the unsigned integer. 
      * 
-     * This uses the "unsigned integer square root" function in the IntMath class.
-     * As with binop, the default value is used if we were in the empty state.
+     * @precondition        the Calculator is in an empty or ready state
      * 
-     * @precondition
-     * @postcondition
+     * @postcondition       the current value has been replaced by the square root 
+     *                      of the unsigned integer
+     *                      
+     * @throws              IllegalStateException if the Calculator is in a waiting 
+     *                      state when this method is called.
      */
-    public void sqrt() {
-
+    public void sqrt() throws IllegalStateException {
+        if (state == 2) 
+            throw new IllegalStateException("A binary operation cannot be entered to a calculator in a waiting state");
+        
+        Long sqrt = IntMath.isqrt(getCurrent());
+        
+        if (state == 1)
+            operands.pop();
+        
+        operands.push(sqrt);  
     }
     
     /**
