@@ -31,8 +31,15 @@ public class Calculator {
     
     /**
      * Clear the calculator and default value.
+     * 
+     * @postcondition   The calculator has an empty state with no stored operators, operands, or recently calculated values.
      */
-    public void clear() {}
+    public void clear() {
+        operators.clear();
+        operands.clear();
+        defaultValue = 0;
+        state = 0;
+    }
     
     /**
      * Enter a number.
