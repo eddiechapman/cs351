@@ -116,6 +116,8 @@ public class Calculator {
             operands.pop();
         
         operands.push(sqrt);  
+        
+        state = 1;
     }
     
     /**
@@ -180,20 +182,34 @@ public class Calculator {
      * @precondition
      * 
      * @postcondition
-     * 
-     * @return          the default value
      */
-    public long compute() {
+    public long compute() { 
+        if (state == 2)
+            throw new IllegalStateException("Cannot compute values in a waiting state");
+     
+        if (state == 0)
+            return defaultValue;
         
+        long current = operands.pop();
+
+        while (!operators.isEmpty()) {
+            Operation op = operators.pop();
+            if ((op != Operation.LPAREN) && (op != Operation.RPAREN))
+                current = op.operate(operands.pop(), current);
+        }
+        
+        state = 0;
+        
+        return current;
     }
     
     /**
      * Return the current value.
      * 
-     * @return          the Long most recently added to the operands Stack, or the 
-     *                  Long default value if the Calculator is in an empty state.          
+     * @return          the long integer most recently added to the operands Stack, 
+     *                  or the default value if the Calculator is in an empty state.          
      */
-    public Long getCurrent() {
+    public long getCurrent() {
         if (state == 0) 
             return defaultValue;
         else
