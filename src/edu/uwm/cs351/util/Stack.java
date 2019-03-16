@@ -24,13 +24,17 @@ public class Stack<T> implements Cloneable
     }
 
     private boolean wellFormed() {
-        if (contents == null) { return report("contents is null"); }
-        if (head < -1) { return report(String.format("Head cannot be less than -1 (%d)", head)); }
-        if (head >= contents.length) { 
+        if (contents == null) 
+            return report("contents is null");  
+        
+        if (head < -1) 
+            return report(String.format("Head cannot be less than -1 (%d)", head));      
+        
+        if (head >= contents.length)
             return report(String.format("head (%d) cannot point beyond array boundaries (%d)", 
-                                        head, contents.length)); 
-        }
-        return true;
+                                        head, contents.length));         
+        else           
+            return true;
     }
 	
 	// a helper method which you will find useful.
@@ -54,6 +58,7 @@ public class Stack<T> implements Cloneable
         this.clazz = null;
         this.contents = makeArray(DEFAULT_CAPACITY);
         this.head = -1;
+        
         assert wellFormed() : "Invariant failed at end of Stack constructor (generic)";
     }
     
@@ -67,6 +72,7 @@ public class Stack<T> implements Cloneable
         this.clazz = clazz;
         this.contents = makeArray(DEFAULT_CAPACITY);
         this.head = -1;
+        
         assert wellFormed() : "Invariant failed at end of Stack constructor (class specified)";
     }
     
@@ -77,9 +83,10 @@ public class Stack<T> implements Cloneable
      */
     public void push(T t) {
         assert wellFormed() : "Invariant failed at start of push";
+        
         ensureCapacity(head + 2);
-        ++head;
-        contents[head] = t;
+        contents[++head] = t;
+        
         assert wellFormed() : "Invariant failed at end of push";
     } 
     
@@ -91,11 +98,16 @@ public class Stack<T> implements Cloneable
      */
     public T pop() {
         assert wellFormed() : "Invariant failed at start of pop";
-        if (isEmpty()) { throw new EmptyStackException(); }
+        
+        if (isEmpty()) 
+            throw new EmptyStackException();
+        
         T element = contents[head];
         contents[head] = null;
         --head;
+        
         assert wellFormed() : "Invariant failed at end of pop";
+        
         return element;
     }
     
@@ -107,7 +119,10 @@ public class Stack<T> implements Cloneable
      */
     public T peek() {
         assert wellFormed() : "Invariant failed at start of peek";
-        if (isEmpty()) { throw new EmptyStackException(); }
+        
+        if (isEmpty()) 
+            throw new EmptyStackException();
+        
         return contents[head];
     }
     
@@ -118,17 +133,23 @@ public class Stack<T> implements Cloneable
      */
     public boolean isEmpty() {
         assert wellFormed() : "Invariant failed at start of isEmpty";
+        
         return head == -1;
     }
     
     private void ensureCapacity(int min) {
-        if (min <= contents.length) { return; }
+        if (min <= contents.length) 
+            return; 
+        
         int newCap = contents.length * 2;
-        if (newCap < min) { newCap = min; }
-        T[] newArray = makeArray(newCap);
+        if (newCap < min) 
+            newCap = min;
+        
+        T[] newArray = makeArray(newCap); 
         for (int i=0; i < contents.length; ++i) {
             newArray[i] = contents[i];
         }
+        
         contents = newArray;
     }
     
@@ -136,7 +157,9 @@ public class Stack<T> implements Cloneable
     @SuppressWarnings("unchecked")
     public Stack<T> clone() {
         assert wellFormed() : "Invariant failed at start of clone";
+        
         Stack<T> answer;
+        
         try {
             answer = (Stack<T>) super.clone();
         } catch (CloneNotSupportedException e) {
@@ -146,9 +169,12 @@ public class Stack<T> implements Cloneable
             // clause at the start of this class.
             throw new RuntimeException("This class does not implement Cloneable");
         }
+        
         answer.contents = contents.clone();
+        
         assert answer.wellFormed() : "Invariant failed at end of answer's clone";  
         assert wellFormed() : "Invariant failed at end of clone";
+        
         return answer;
     }
     
@@ -157,16 +183,14 @@ public class Stack<T> implements Cloneable
      */
     public void clear() {
         assert wellFormed() : "Invariant failed at start of clear";
-        if (isEmpty()) { return; }
+        
+        if (isEmpty()) 
+            return;
+        
         contents = makeArray(DEFAULT_CAPACITY);
         head = -1;
+        
         assert wellFormed() : "Invariant failed at end of clear";
     }
 
-	// TODO: rest of class
-	// You need two constructors: one taking a class value (used by makeArray)
-	// and one without such a value.  In the former case, makeArray
-	// won't need to lie in its array creation.
-	// Make sure to assert the invariant at end of each constructor
-	// and at start (and end, if they mutate anything) of public methods.
 }
