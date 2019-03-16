@@ -91,6 +91,9 @@ public class Calculator {
         if (state == 0) 
             operands.push(defaultValue);
         
+        if (!operators.isEmpty() && (op.precedence() < operators.peek().precedence()))
+            operands.push(compute());
+        
         operators.push(op);
         state = 2;  // 'waiting'
     }
