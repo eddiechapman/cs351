@@ -188,19 +188,18 @@ public class Calculator {
             throw new IllegalStateException("Cannot compute values in a waiting state");
      
         if (state == 0)
-            return defaultValue;
+            operands.push(defaultValue);
         
-        long current = operands.pop();
+        defaultValue = operands.pop();
 
         while (!operators.isEmpty()) {
             Operation op = operators.pop();
             if ((op != Operation.LPAREN) && (op != Operation.RPAREN))
-                current = op.operate(operands.pop(), current);
+                defaultValue = op.operate(operands.pop(), defaultValue);
         }
         
         state = 0;
-        
-        return current;
+        return defaultValue;
     }
     
     /**
