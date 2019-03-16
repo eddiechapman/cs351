@@ -77,10 +77,16 @@ public class Calculator {
      *                  
      * @throws          IllegalStateException if the Calculator is in an waiting state 
      *                  before calling this method.
+     * 
+     * @throws          IllegalArgumentException if the Operation is not a binary operator. 
      */
-    public void binop(Operation op) throws IllegalStateException {
+    public void binop(Operation op) throws IllegalStateException, IllegalArgumentException {
         if (state == 2) 
             throw new IllegalStateException("A binary operation cannot be entered to a calculator in a waiting state");
+        
+        if ((op == Operation.LPAREN) || (op == Operation.RPAREN))
+            throw new IllegalArgumentException(String.format("This method only accepts binary operations. Invalid: %s",
+                                               op.toString()));
         
         if (state == 0) 
             operands.push(defaultValue);
