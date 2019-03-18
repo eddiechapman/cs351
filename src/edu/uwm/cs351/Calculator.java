@@ -69,7 +69,6 @@ public class Calculator {
             numbers.pop();
         
         if (state == 1) {
-            cleanUp();
             throw new IllegalStateException("Cannot add a value to a calculator in a ready state"); 
         }
             
@@ -96,9 +95,9 @@ public class Calculator {
             throw new IllegalArgumentException("Parenthesis are not binary operators. Please use open() and close() instead.");
         
         if (state == 2) {
-            cleanUp();
             throw new IllegalStateException("A binary operation cannot be entered to a calculator in a waiting state");
         }
+        
         while (!operators.isEmpty() && (op.precedence() <= operators.peek().precedence())) {
             activateTop();
         }
@@ -120,7 +119,6 @@ public class Calculator {
      */
     public void sqrt() throws IllegalStateException {
         if (state == 2) {
-            cleanUp();
             throw new IllegalStateException("A binary operation cannot be entered to a calculator in a waiting state");
         }
         Long sqrt = IntMath.isqrt(numbers.pop());
@@ -146,7 +144,6 @@ public class Calculator {
             numbers.pop();
         
         if (state == 1) {
-            cleanUp();
             throw new IllegalStateException("Cannot add a parenthesis when the Calculator is in a ready state.");
         }
         
@@ -170,7 +167,6 @@ public class Calculator {
      */
     public void close() throws IllegalStateException, EmptyStackException {
         if (state != 1) {
-            cleanUp();
             throw new IllegalStateException("The Calculator must be in a ready state to attempt a close operation.");  
         }
         
@@ -197,7 +193,6 @@ public class Calculator {
      */
     public long compute() { 
         if (state == 2) {
-            cleanUp();
             throw new IllegalStateException("Cannot compute values in a waiting state");  
         }
  
