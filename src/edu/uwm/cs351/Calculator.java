@@ -13,9 +13,8 @@ import edu.uwm.cs351.Operation;
  */
 public class Calculator {
     private Stack<Operation> operators;     // Stores operators for applying to the operands upon calculation
-    private Stack<Long> operands;           // Stores long integers for calculating
+    private Stack<Long> numbers;            // Stores long integers for calculating
     private Long defaultValue;              // The result of the most recent compute operation
-    private boolean receiving;
     private int state;                      // Indicates which operations are legal
     
     /**
@@ -26,7 +25,7 @@ public class Calculator {
      */
     public Calculator() {
         operators = new Stack<Operation>();
-        operands = new Stack<Long>();
+        numbers = new Stack<Long>();
         defaultValue = 0L;
         state = 0;  // 'empty'
     }
@@ -39,7 +38,7 @@ public class Calculator {
      */
     public void clear() {
         operators.clear();
-        operands.clear();
+        numbers.clear();
         defaultValue = 0L;
         state = 0;  // 'empty'
     }
@@ -60,7 +59,7 @@ public class Calculator {
         if (state == 1) 
             throw new IllegalStateException("Cannot add a value to a calculator in a ready state"); 
         
-        operands.push(val);
+        numbers.push(val);
         state = 1;  // 'ready'
     }
     
@@ -90,13 +89,13 @@ public class Calculator {
             throw new IllegalStateException("A binary operation cannot be entered to a calculator in a waiting state");
         
         if (state == 0) 
-            operands.push(defaultValue);
+            numbers.push(defaultValue);
         
         while (!operators.isEmpty() && (op.precedence() <= operators.peek().precedence())) {
             op2 = operators.pop();
-            operand1 = operands.pop();
-            operand2 = operands.pop();
-            operands.push(op2.operate(operand2, operand1));
+            operand1 = numbers.pop();
+            operand2 = numbers.pop();
+            numbers.push(op2.operate(operand2, operand1));
         }
         
         operators.push(op);
@@ -121,9 +120,9 @@ public class Calculator {
         Long sqrt = IntMath.isqrt(getCurrent());
         
         if (state == 1)
-            operands.pop();
+            numbers.pop();
         
-        operands.push(sqrt);  
+        numbers.push(sqrt);  
         
         state = 1;
     }
@@ -198,16 +197,16 @@ public class Calculator {
             throw new IllegalStateException("Cannot compute values in a waiting state");
      
         if (state == 0)
-            operands.push(defaultValue);
+            numbers.push(defaultValue);
                
         while (!operators.isEmpty()) {
             op = operators.pop();
-            defaultValue = operands.pop();
-            defaultValue = op.operate(operands.pop(), defaultValue);
-            operands.push(defaultValue);
+            defaultValue = numbers.pop();
+            defaultValue = op.operate(numbers.pop(), defaultValue);
+            numbers.push(defaultValue);
         }
         
-        defaultValue = operands.pop();
+        defaultValue = numbers.pop();
         
         state = 0;
         
@@ -224,7 +223,7 @@ public class Calculator {
         if (state == 0) 
             return defaultValue;
         else
-            return operands.peek();
+            return numbers.peek();
     }
         
     
