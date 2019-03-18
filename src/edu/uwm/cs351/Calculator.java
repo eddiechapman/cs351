@@ -159,19 +159,12 @@ public class Calculator {
         if (state != 1) 
             throw new IllegalStateException("The Calculator must be in a ready state to attempt a close operation.");  
         
-        Stack<Operation> temp = operators.clone();
-        int unclosed = 0;
-        
-        while (!temp.isEmpty()) {
-            Operation op = temp.pop();
-            if (op == Operation.LPAREN) ++unclosed;
-            if (op == Operation.RPAREN) --unclosed;
-        }     
-        
-        if (unclosed > 1) 
-            throw new EmptyStackException();
-        else
-            operators.push(Operation.RPAREN);
+        while (operators.peek() != Operation.LPAREN) {
+            activateTop();
+            if (operators.isEmpty())
+                throw new EmptyStackException();
+        }
+        operators.pop();       
     }
     
     /**
