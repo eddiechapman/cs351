@@ -221,6 +221,14 @@ public class Calculator {
         return defaultValue;
     }
     
+    private void computeTop() {
+        Operation op = operators.pop();
+        long val1 = numbers.pop();
+        long val2 = numbers.pop();
+        long result = op.operate(val2, val1);
+        numbers.push(result);
+    }
+    
     /**
      * Return the current value.
      * 
