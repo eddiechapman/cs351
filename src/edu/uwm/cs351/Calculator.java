@@ -144,6 +144,9 @@ public class Calculator {
      *                  when this method is called. 
      */
     public void open() throws IllegalStateException {
+        if (state == 0)
+            numbers.pop();
+        
         if (state == 1) 
             throw new IllegalStateException("Cannot add a parenthesis when the Calculator is in a ready state.");
         
