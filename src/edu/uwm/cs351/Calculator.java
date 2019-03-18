@@ -112,7 +112,7 @@ public class Calculator {
         if (state == 2) 
             throw new IllegalStateException("A binary operation cannot be entered to a calculator in a waiting state");
         
-        Long sqrt = IntMath.isqrt(Math.abs(numbers.pop()));
+        Long sqrt = IntMath.isqrt(numbers.pop());
         
         numbers.push(sqrt);  
         
