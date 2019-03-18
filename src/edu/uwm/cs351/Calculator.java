@@ -83,24 +83,14 @@ public class Calculator {
      *                  before calling this method.
      */
     public void binop(Operation op) throws IllegalStateException{
-        Operation op2;
-        long operand1;
-        long operand2;
-        
         if ((op == Operation.RPAREN) || (op == Operation.LPAREN)) 
             throw new IllegalArgumentException("Parenthesis are not binary operators. Please use open() and close() instead.");
         
         if (state == 2) 
             throw new IllegalStateException("A binary operation cannot be entered to a calculator in a waiting state");
-        
-        if (state == 0) 
-            numbers.push(defaultValue);
-        
+
         while (!operators.isEmpty() && (op.precedence() <= operators.peek().precedence())) {
-            op2 = operators.pop();
-            operand1 = numbers.pop();
-            operand2 = numbers.pop();
-            numbers.push(op2.operate(operand2, operand1));
+            activateTop();
         }
         
         operators.push(op);
@@ -221,7 +211,7 @@ public class Calculator {
         return defaultValue;
     }
     
-    private void computeTop() {
+    private void activateTop() {
         Operation op = operators.pop();
         long val1 = numbers.pop();
         long val2 = numbers.pop();
