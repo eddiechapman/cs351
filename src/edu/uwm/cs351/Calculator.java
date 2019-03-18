@@ -228,7 +228,10 @@ public class Calculator {
      *                  or the default value if the Calculator is in an empty state.          
      */
     public long getCurrent() {
-        return numbers.peek();
+        if (numbers.isEmpty())
+            return defaultValue;
+        else
+            return numbers.peek();
     }
         
     
