@@ -179,25 +179,19 @@ public class Calculator {
      * @postcondition
      */
     public long compute() { 
-        Operation op;
-        
         if (state == 2)
             throw new IllegalStateException("Cannot compute values in a waiting state");
-     
-        if (state == 0)
-            numbers.push(defaultValue);
                
         while (!operators.isEmpty()) {
-            op = operators.pop();
-            defaultValue = numbers.pop();
-            defaultValue = op.operate(numbers.pop(), defaultValue);
-            numbers.push(defaultValue);
+            if (operators.peek() != Operation.LPAREN)
+                activateTop();
+            else
+                operators.pop();
         }
         
-        defaultValue = numbers.pop();
-        
+        defaultValue = numbers.peek();
         state = 0;
-        
+
         return defaultValue;
     }
     
