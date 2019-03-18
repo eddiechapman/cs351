@@ -192,7 +192,6 @@ public class Calculator {
      * @postcondition
      */
     public long compute() { 
-        long currentValue;
         Operation op;
         
         if (state == 2)
@@ -203,16 +202,16 @@ public class Calculator {
                
         while (!operators.isEmpty()) {
             op = operators.pop();
-            currentValue = operands.pop();
-            currentValue = op.operate(operands.pop(), currentValue);
-            operands.push(currentValue);
+            defaultValue = operands.pop();
+            defaultValue = op.operate(operands.pop(), defaultValue);
+            operands.push(defaultValue);
         }
         
-        currentValue = operands.pop();
+        defaultValue = operands.pop();
         
         state = 0;
         
-        return currentValue;
+        return defaultValue;
     }
     
     /**
