@@ -156,7 +156,7 @@ public class Calculator {
      * @postcondition   the most recent unclosed parenthetical expression has been closed. 
      *                  The Calculator is in a ready state.
      * 
-     * @throws          EmptyStackException if the operators stack is missing an unclosed open.
+     * @throws          EmptyStackException if the operators stack is missing an unclo sed open.
      * 
      * @throws          IllegalStateException if the Calculator is in an empty or waiting state
      *                  when this this method is called.
@@ -200,10 +200,15 @@ public class Calculator {
      
         if (state == 0)
             operands.push(defaultValue);
-
-        op = operators.pop();
+               
+        while (!operators.isEmpty()) {
+            op = operators.pop();
+            currentValue = operands.pop();
+            currentValue = op.operate(operands.pop(), currentValue);
+            operands.push(currentValue);
+        }
+        
         currentValue = operands.pop();
-        currentValue = op.operate(operands.pop(), currentValue);
         
         state = 0;
         
