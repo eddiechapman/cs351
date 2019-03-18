@@ -58,11 +58,14 @@ public class Calculator {
      * @throws          IllegalStateException if the Calculator is in a ready state.
      */
     public void value(long val) throws IllegalStateException {
-        if (state == 1) 
+        if (state == 0)
+            numbers.pop();
+        
+        if (state == 1)
             throw new IllegalStateException("Cannot add a value to a calculator in a ready state"); 
         
         numbers.push(val);
-        state = 1;  // 'ready'
+        state = 1;
     }
     
     /**
