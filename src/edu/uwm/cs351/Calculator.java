@@ -176,9 +176,10 @@ public class Calculator {
         
         while (operators.peek() != Operation.LPAREN) {
             activateTop();
-            if (operators.isEmpty())
+            if (operators.isEmpty()) {
                 cleanUp();
                 throw new EmptyStackException();
+            }
         }
         operators.pop();       
     }
