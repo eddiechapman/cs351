@@ -50,6 +50,7 @@ public class Calculator {
         operators.clear();
         numbers.clear();
         numbers.push(defaultValue);
+        state = 0;
     }
     
     /**
@@ -173,7 +174,6 @@ public class Calculator {
         while (operators.peek() != Operation.LPAREN) {
             activateTop();
             if (operators.isEmpty()) {
-                cleanUp();
                 throw new EmptyStackException();
             }
         }
