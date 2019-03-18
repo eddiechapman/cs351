@@ -77,22 +77,27 @@ public class Calculator {
      *                  
      * @throws          IllegalStateException if the Calculator is in an waiting state 
      *                  before calling this method.
-     * 
-     * @throws          IllegalArgumentException if the Operation is not a binary operator. 
      */
-    public void binop(Operation op) throws IllegalStateException, IllegalArgumentException {
+    public void binop(Operation op) throws IllegalStateException{
+        Operation op2;
+        long operand1;
+        long operand2;
+        
+        if ((op == Operation.RPAREN) || (op == Operation.LPAREN)) 
+            throw new IllegalArgumentException("Parenthesis are not binary operators. Please use open() and close() instead.");
+        
         if (state == 2) 
             throw new IllegalStateException("A binary operation cannot be entered to a calculator in a waiting state");
-        
-        if ((op == Operation.LPAREN) || (op == Operation.RPAREN))
-            throw new IllegalArgumentException(String.format("This method only accepts binary operations. Invalid: %s",
-                                               op.toString()));
         
         if (state == 0) 
             operands.push(defaultValue);
         
-        if (!operators.isEmpty() && (op.precedence() < operators.peek().precedence()))
-            operands.push(compute());
+        while (!operators.isEmpty() && (op.precedence() <= operators.peek().precedence())) {
+            op2 = operators.pop();
+            operand1 = operands.pop();
+            operand2 = operands.pop();
+            operands.push(op2.operate(operand2, operand1));
+        }
         
         operators.push(op);
         state = 2;  // 'waiting'
@@ -187,22 +192,22 @@ public class Calculator {
      * @postcondition
      */
     public long compute() { 
+        long currentValue;
+        Operation op;
+        
         if (state == 2)
             throw new IllegalStateException("Cannot compute values in a waiting state");
      
         if (state == 0)
             operands.push(defaultValue);
-        
-        defaultValue = operands.pop();
 
-        while (!operators.isEmpty()) {
-            Operation op = operators.pop();
-            if ((op != Operation.LPAREN) && (op != Operation.RPAREN))
-                defaultValue = op.operate(operands.pop(), defaultValue);
-        }
+        op = operators.pop();
+        currentValue = operands.pop();
+        currentValue = op.operate(operands.pop(), currentValue);
         
         state = 0;
-        return defaultValue;
+        
+        return currentValue;
     }
     
     /**
