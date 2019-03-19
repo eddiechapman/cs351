@@ -45,14 +45,6 @@ public class Calculator {
         state = 0;  // 'empty'
     }
     
-    private void cleanUp() {
-        defaultValue = getCurrent();
-        operators.clear();
-        numbers.clear();
-        numbers.push(defaultValue);
-        state = 0;
-    }
-    
     /**
      * Enter a number.
      * 
@@ -95,9 +87,8 @@ public class Calculator {
         if ((op == Operation.RPAREN) || (op == Operation.LPAREN)) 
             throw new IllegalArgumentException("Parenthesis are not binary operators. Please use open() and close() instead.");
         
-        if (state == 2) {
+        if (state == 2)
             throw new IllegalStateException("A binary operation cannot be entered to a calculator in a waiting state");
-        }
         
         while (!operators.isEmpty() && (op.precedence() <= operators.peek().precedence())) {
             activateTop();
@@ -119,9 +110,9 @@ public class Calculator {
      *                      state when this method is called.
      */
     public void sqrt() throws IllegalStateException {
-        if (state == 2) {
+        if (state == 2)
             throw new IllegalStateException("A binary operation cannot be entered to a calculator in a waiting state");
-        }
+        
         Long sqrt = IntMath.isqrt(numbers.pop());
         
         numbers.push(sqrt);  
@@ -141,11 +132,12 @@ public class Calculator {
      *                  when this method is called. 
      */
     public void open() throws IllegalStateException {
-        if (state == 0)
-            numbers.pop();
-        
         if (state == 1) {
             throw new IllegalStateException("Cannot add a parenthesis when the Calculator is in a ready state.");
+        }
+        
+        if (state == 0) {
+            numbers.pop();
         }
         
         operators.push(Operation.LPAREN);
@@ -172,10 +164,11 @@ public class Calculator {
         }
         
         while (operators.peek() != Operation.LPAREN) {
-            activateTop();
-            if (operators.isEmpty()) {
+            if (!operators.isEmpty()) {
+                activateTop();
+            } else {
                 throw new EmptyStackException();
-            }
+            }    
         }
         operators.pop();       
     }
@@ -197,24 +190,32 @@ public class Calculator {
         }
  
         while (!operators.isEmpty()) {
-            if (operators.peek() != Operation.LPAREN)
+            if (operators.peek() != Operation.LPAREN) {
                 activateTop();
-            else
+            } else {
                 operators.pop();
+            }
         }
         
         defaultValue = numbers.peek();
         state = 0;
 
-        return defaultValue;
+        return numbers.peek();
     }
     
     private void activateTop() {
-        Operation op = operators.pop();
-        long val1 = numbers.pop();
-        long val2 = numbers.pop();
-        long result = op.operate(val2, val1);
-        numbers.push(result);
+        try {
+            Operation op = operators.pop();
+            long val1 = numbers.pop();
+            long val2 = numbers.pop();
+            long result = op.operate(val2, val1);
+            numbers.push(result);
+        } catch (ArithmeticException ae) {
+            numbers.clear();
+            operators.clear();
+            numbers.push(defaultValue);
+            throw new ArithmeticException();
+        }
     }
     
     /**
