@@ -6,10 +6,15 @@ import edu.uwm.cs351.util.Stack;
 import edu.uwm.cs351.util.IntMath;
 import edu.uwm.cs351.Operation;
 
-
 /**
+ * A class to represent a calculator. Implemented with two stacks - one for numbers
+ * and one for operators. The calculator supports the use of parenthetical 
+ * expressions.
+ * 
  * @author Eddie Chapman (chapman4@uwm.edu)
  *
+ * I completed this assignment by referencing the assigned readings, lecture notes,
+ * and the Oracle documentation. 
  */
 public class Calculator {
     private Stack<Operation> operators;     // Stores operators for applying to the operands upon calculation

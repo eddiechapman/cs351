@@ -8,7 +8,12 @@ import java.util.EmptyStackException;
  * When an instance is created, one may optionally pass in a
  * class descriptor. This makes the implementation more robust.
  * 
- * @param T     element type of stack
+ * @param T         element type of stack
+ * 
+ * @author Eddie Chapman (chapman4@uwm.edu)
+ *
+ * I completed this assignment by referencing the assigned readings, lecture notes,
+ * and the Oracle documentation. 
  */
 public class Stack<T> implements Cloneable 
 {
@@ -64,9 +69,11 @@ public class Stack<T> implements Cloneable
     
      /**
      * Stack constructor of a specified type.
-     * 
-     * @postcondition   the stack is empty and initialized to accept elements of the type clazz
+     *                  
      * @param clazz     the class of elements stored in the stack
+     * 
+     * @postcondition   the stack is empty and initialized to accept elements of the 
+     *                  type clazz
      */
     public Stack(Class<T> clazz) {
         this.clazz = clazz;
@@ -79,7 +86,9 @@ public class Stack<T> implements Cloneable
     /**
      * Adds a specified element to the top of this stack.
      * 
-     * @param t     the element to be added to the top of the stack 
+     * @param t         the element to be added to the top of the stack 
+     * 
+     * @postcondition   the stack has another element and may have been resized if needed
      */
     public void push(T t) {
         assert wellFormed() : "Invariant failed at start of push";
@@ -91,10 +100,17 @@ public class Stack<T> implements Cloneable
     } 
     
     /**
-     * Retrieves and removes the top of this stack, which must not be empty. If the stack is empty,this methods throws an instance ofEmptyStackException.
+     * Retrieves and removes the top of this stack, which must not be empty. If the 
+     * stack is empty,this methods throws an instance ofEmptyStackException.
      * 
-     * @return the top element of the stack, which is removed from the stack in the process
-     * @throws EmptyStackException  if the stack is empty before calling pop
+     * @precondition    the stack is not empty
+     * 
+     * @postcondition   the top element of the stack has been removed
+     * 
+     * @return          the top element of the stack, which is removed from the stack 
+     *                  in the process
+     *                  
+     * @throws          EmptyStackException  if the stack is empty before calling pop
      */
     public T pop() {
         assert wellFormed() : "Invariant failed at start of pop";
@@ -114,8 +130,12 @@ public class Stack<T> implements Cloneable
     /**
      * Retrieves, but does not remove, the top of this stack, which must not be empty.
      *
-     * @return the top element of the stack, which is not removed from the stack
-     * @throws EmptyStackException  if the stack is empty before calling peek
+     * @precondition    the stack is not empty
+     * 
+     * @throws          EmptyStackException if the stack is empty before calling peek
+     * 
+     * @return          the top element of the stack, which is not removed from the 
+     *                  stack
      */
     public T peek() {
         assert wellFormed() : "Invariant failed at start of peek";
@@ -129,7 +149,7 @@ public class Stack<T> implements Cloneable
     /**
      * Return true if this stack is empty.
      * 
-     * @return <code>true</code> if the stack is empty, <code>false</code> otherwise. 
+     * @return          true if the stack is empty, false otherwise. 
      */
     public boolean isEmpty() {
         assert wellFormed() : "Invariant failed at start of isEmpty";
@@ -180,6 +200,8 @@ public class Stack<T> implements Cloneable
     
     /**
      * Discard everything from the stack.
+     * 
+     * @postcondition       the stack is returned to an initial state
      */
     public void clear() {
         assert wellFormed() : "Invariant failed at start of clear";
