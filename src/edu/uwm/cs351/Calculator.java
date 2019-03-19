@@ -211,11 +211,12 @@ public class Calculator {
             long result = op.operate(val2, val1);
             numbers.push(result);
         } catch (ArithmeticException ae) {
-            defaultValue = getCurrent();
-            numbers.clear();
-            operators.clear();
-            numbers.push(defaultValue);
-            state = 0;
+//            defaultValue = getCurrent();
+//            numbers.clear();
+//            operators.clear();
+//            numbers.push(defaultValue);
+//            state = 0;
+            clear();
             throw new ArithmeticException();
         }
     }
