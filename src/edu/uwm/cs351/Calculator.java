@@ -61,9 +61,8 @@ public class Calculator {
         if (state == 0)
             numbers.pop();
         
-        if (state == 1) {
+        if (state == 1)
             throw new IllegalStateException("Cannot add a value to a calculator in a ready state"); 
-        }
             
         numbers.push(val);
         state = 1;
@@ -83,7 +82,7 @@ public class Calculator {
      * @throws          IllegalStateException if the Calculator is in an waiting state 
      *                  before calling this method.
      */
-    public void binop(Operation op) throws IllegalStateException{
+    public void binop(Operation op) throws IllegalStateException {
         if ((op == Operation.RPAREN) || (op == Operation.LPAREN)) 
             throw new IllegalArgumentException("Parenthesis are not binary operators. Please use open() and close() instead.");
         
@@ -132,13 +131,11 @@ public class Calculator {
      *                  when this method is called. 
      */
     public void open() throws IllegalStateException {
-        if (state == 1) {
+        if (state == 1)
             throw new IllegalStateException("Cannot add a parenthesis when the Calculator is in a ready state.");
-        }
-        
-        if (state == 0) {
+
+        if (state == 0)
             numbers.pop();
-        }
         
         operators.push(Operation.LPAREN);
         state = 2;
@@ -159,16 +156,11 @@ public class Calculator {
      *                  when this this method is called.
      */
     public void close() throws IllegalStateException, EmptyStackException {
-        if (state != 1) {
+        if (state != 1)
             throw new IllegalStateException("The Calculator must be in a ready state to attempt a close operation.");  
-        }
         
         while (operators.peek() != Operation.LPAREN) {
-            if (!operators.isEmpty()) {
-                activateTop();
-            } else {
-                throw new EmptyStackException();
-            }    
+            activateTop();
         }
         operators.pop();       
     }
@@ -185,16 +177,14 @@ public class Calculator {
      * @postcondition
      */
     public long compute() { 
-        if (state == 2) {
+        if (state == 2)
             throw new IllegalStateException("Cannot compute values in a waiting state");  
-        }
  
         while (!operators.isEmpty()) {
-            if (operators.peek() != Operation.LPAREN) {
-                activateTop();
-            } else {
+            if (operators.peek() == Operation.LPAREN)
                 operators.pop();
-            }
+            else
+                activateTop();
         }
         
         defaultValue = numbers.peek();
@@ -211,11 +201,6 @@ public class Calculator {
             long result = op.operate(val2, val1);
             numbers.push(result);
         } catch (ArithmeticException ae) {
-//            defaultValue = getCurrent();
-//            numbers.clear();
-//            operators.clear();
-//            numbers.push(defaultValue);
-//            state = 0;
             clear();
             throw new ArithmeticException();
         }
