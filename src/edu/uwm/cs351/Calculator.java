@@ -20,40 +20,49 @@ public class Calculator {
     /**
      * Initialize an empty calculator.
      * 
-     * @postcondition   The calculator has an empty state with no stored operators, 
-     *                  operands, or recently calculated values.         
+     * @postcondition   The calculator is in an empty state with no pending
+     *                  computations and no saved values. The default value
+     *                  is stored on the numbers stack to avoid special cases,
+     *                  but it is not considered to be a stored operand until
+     *                  it is needed in another method.         
      */
     public Calculator() {
         operators = new Stack<Operation>();
         numbers = new Stack<Long>();
         defaultValue = 0L;
         numbers.push(defaultValue);
-        state = 0;  // 'empty'
+        state = 0;  // empty
     }
     
     /**
      * Clear the calculator and default value.
      * 
-     * @postcondition   the calculator has an empty state with no stored operators, 
-     *                  operands, or recently calculated values.
+     * @postcondition   The calculator is in an empty state with no pending
+     *                  computations and no saved values. The default value
+     *                  is stored on the numbers stack to avoid special cases,
+     *                  but it is not considered to be a stored operand until
+     *                  it is needed in another method.
      */
     public void clear() {
         operators.clear();
         numbers.clear();
         defaultValue = 0L;
         numbers.push(defaultValue);
-        state = 0;  // 'empty'
+        state = 0;  // empty
     }
     
     /**
      * Enter a number.
+     * 
+     * If the calculator is in an empty state, the default value is removed from
+     * the number stack before the new number is added.
      * 
      * @precondition    the Calculator is in an empty or waiting state.
      * 
      * @postcondition   the number is added to the top of the operands Stack. 
      *                  The Calculator is a ready state. 
      *                  
-     * @param val       a Long to be entered in the Calculator.
+     * @param val       a long integer to be entered in the Calculator.
      * 
      * @throws          IllegalStateException if the Calculator is in a ready state.
      */
@@ -71,18 +80,29 @@ public class Calculator {
     /**
      * Enter a binary operator.
      * 
+     * This method also resolves any pending operations of lower precedence before 
+     * adding the new operator. 
+     * 
      * @precondition    the Calculator is in an empty or ready state.
      * 
-     * @postcondition   an Operation has been added to the operators Stack and the 
-     *                  Calculator is in a waiting state.
+     * @postcondition   an Operation has been added to the operators Stack. Pending 
+     *                  operations of lower precedence have been activated, 
+     *                  potentially creating a new current value. The Calculator is 
+     *                  in a waiting state.
      *                  
-     * @param op        an Operation that will be performed on the long integers in the 
-     *                  operators Stack.
+     * @param op        an Operation that will be performed on the long integers in 
+     *                  the operators Stack.
      *                  
-     * @throws          IllegalStateException if the Calculator is in an waiting state 
-     *                  before calling this method.
+     * @throws          IllegalStateException if the Calculator is in an waiting 
+     *                  state before calling this method.
+     * 
+     * @throws          IllegalArgumentException if the caller passes invalid 
+     *                  Operations to this method such as parenthesis. 
+     * 
+     * @throws          ArithmeticException if the pending operations activated by 
+     *                  this method lead to dividing by zero.
      */
-    public void binop(Operation op) throws IllegalStateException {
+    public void binop(Operation op) throws IllegalStateException, IllegalArgumentException, ArithmeticException {
         if ((op == Operation.RPAREN) || (op == Operation.LPAREN)) 
             throw new IllegalArgumentException("Parenthesis are not binary operators. Please use open() and close() instead.");
         
@@ -94,7 +114,7 @@ public class Calculator {
         }
         
         operators.push(op);
-        state = 2;  // 'waiting'
+        state = 2;  // waiting
     }
     
     /**
@@ -122,6 +142,9 @@ public class Calculator {
     /**
      * Start a parenthetical expression.
      * 
+     * In the case of an empty calculator, the default value is booted from the
+     * numbers stack before the parentheses is added.
+     * 
      * @precondition    The Calculator is in an empty or waiting state.
      * 
      * @postcondition   A left parenthesis has been added to the operators stack,
@@ -138,24 +161,32 @@ public class Calculator {
             numbers.pop();
         
         operators.push(Operation.LPAREN);
-        state = 2;
+        state = 2;  // ready
     }
     
     /**
-     * End a parenthetical expression
+     * End the most recent parenthetical expression. All pending operations found within 
+     * the expression are activated. 
+     * 
+     * If the calculator does not include an unclosed parenthetical expression, all
+     * operators will be activated before throwing an error.
      * 
      * @precondition    the Calculator is in a ready state and the operators stack includes 
      *                  an unclosed parenthetical expression.
      * 
-     * @postcondition   the most recent unclosed parenthetical expression has been closed. 
-     *                  The Calculator is in a ready state.
+     * @postcondition   all operations within the most recent parenthetical expression are 
+     *                  activated and their parenthesis removed. The Calculator is in a ready 
+     *                  state.
      * 
-     * @throws          EmptyStackException if the operators stack is missing an unclo sed open.
+     * @throws          EmptyStackException if the operators stack is missing an unclosed open.
      * 
      * @throws          IllegalStateException if the Calculator is in an empty or waiting state
      *                  when this this method is called.
+     *              
+     * @throws          ArithmeticException if the pending operations of the completed 
+     *                  parenthetical expression result in division by zero.
      */
-    public void close() throws IllegalStateException, EmptyStackException {
+    public void close() throws IllegalStateException, EmptyStackException, ArithmeticException {
         if (state != 1)
             throw new IllegalStateException("The Calculator must be in a ready state to attempt a close operation.");  
         
@@ -168,13 +199,21 @@ public class Calculator {
     /**
      * Perform all pending computations.
      * 
-     * In the process, all incomplete parenthetical expressions are ended. If we were 
-     * in an empty state before, the result is just the default value. Afterwards, the 
-     * default value is the result which is returned.
+     * In the process, all incomplete parenthetical expressions are ended. A new default
+     * value is set, and the calculator is otherwise returned to a default state.
      * 
-     * @precondition
+     * @precondition    the calculator is in an empty or ready state
      * 
-     * @postcondition
+     * @postcondition   all pending operations have been activated. The result is stored
+     *                  as a new default value. The calculator is otherwise reset to a 
+     *                  default state.
+     *                 
+     * @throws          IllegalStateException if the calculator is in a waiting state.
+     * 
+     * @throws          ArithmeticException if the pending computations result in
+     *                  division by zero.
+     *                  
+     * @returns         the number resulting from the activation of all pending operations.
      */
     public long compute() { 
         if (state == 2)
@@ -193,6 +232,12 @@ public class Calculator {
         return numbers.peek();
     }
     
+    /**
+     * A helper method to activate the most recent operation on the stacks.
+     * 
+     * If an operation would result in division by zero, the calculator is
+     * restored to a default state and an error is thrown.
+     */
     private void activateTop() {
         try {
             Operation op = operators.pop();
@@ -209,8 +254,11 @@ public class Calculator {
     /**
      * Return the current value.
      * 
-     * @return          the long integer most recently added to the operands Stack, 
-     *                  or the default value if the Calculator is in an empty state.          
+     * @return          the long integer most recently added to the operands Stack.
+     *                  In an empty calculator, this is the default value. 
+     *                  Occasionally the default value will be booted from the stack
+     *                  as part of a different method. If this method is called 
+     *                  at that point, the defaultValue attribute is returned instead.          
      */
     public long getCurrent() {
         if (numbers.isEmpty())
@@ -219,8 +267,4 @@ public class Calculator {
             return numbers.peek();
     }
         
-    
-    
-    
-    
 }
