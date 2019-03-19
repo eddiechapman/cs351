@@ -215,6 +215,7 @@ public class Calculator {
             numbers.clear();
             operators.clear();
             numbers.push(defaultValue);
+            state = 0;
             throw new ArithmeticException();
         }
     }
