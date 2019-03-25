@@ -17,7 +17,6 @@ public class HexBoard extends AbstractCollection<HexTile> {
 
 	private static int compare(HexCoordinate h1, HexCoordinate h2) {
 		return 0; // TODO: return comparison value: row first and then left->right in row
-		 */
 	}
 	
 	private static class Node {
