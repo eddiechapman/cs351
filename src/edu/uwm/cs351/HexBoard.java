@@ -42,8 +42,22 @@ public class HexBoard extends AbstractCollection<HexTile>
         return false;
     }
 	
+	/**
+	 * Compare two hex coordinates so that it does one full row before the next one 
+	 * in order.  That means that the b()coordinate (the row) must be checked first, 
+	 * and then a()if the rows are the same.  
+	 * 
+	 * This method can be implemented with a single “if” statement.
+	 * 
+	 * @param h1
+	 * @param h2
+	 * @return         -1 if h1 comes before h2, 0 if they are equal, and 1 if h1 
+	 *                 comes after h2. 
+	 */
 	private static int compare(HexCoordinate h1, HexCoordinate h2) {
-        return 0; // TODO: return comparison value: row first and then left->right in row
+	    int c = Integer.compare(h1.b(), h2.b());
+	    if (c == 0) c = Integer.compare(h1.a(), h2.a());
+	    return c;
     }
 	
 	/**
@@ -69,9 +83,9 @@ public class HexBoard extends AbstractCollection<HexTile>
 	}
 	
 	private boolean wellFormed() {
-		// Use helper methods to check the tree.
-		return true;
-	}
+        // Use helper methods to check the tree.
+        return true;
+    }
 	
 	/** Return the terrain at the given coordinate or null
 	 * if nothing at this coordinate.
