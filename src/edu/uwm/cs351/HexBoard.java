@@ -61,25 +61,29 @@ public class HexBoard extends AbstractCollection<HexTile>
     }
 	
 	/**
-	 * Return true if the nodes in this BST are properly
-	 * ordered with respect to the {@link #compare(HexCoordinate, HexCoordinate)}
-	 * method.  If a problem is found, it should be reported (once).
-	 * @param r subtree to check (may be null)
-	 * @param lo lower bound (if any)
-	 * @param hi upper bound (if any)
-	 * @return whether there are any problems in the tree.
+	 * Return true if the nodes in this BST are properly ordered with respect to the 
+	 * {@link #compare(HexCoordinate, HexCoordinate)} method.  If a problem is found, 
+	 * it should be reported (once).
+	 * 
+	 * @param          r subtree to check (may be null)
+	 * @param          lo lower bound (if any)
+	 * @param          hi upper bound (if any)
+	 * @return         whether there are any problems in the tree.
+	 * 
 	 */
 	private static boolean isInProperOrder(Node r, HexCoordinate lo, HexCoordinate hi) {
-		return true; // TODO
+	    return true;
 	}
 	
 	/**
 	 * Return the count of the nodes in this subtree.
-	 * @param p subtree to count nodes for (may be null)
-	 * @return number of nodes in the subtree.
+	 * 
+	 * @param          p subtree to count nodes for (may be null)
+	 * @return         number of nodes in the subtree.
 	 */
 	private static int countNodes(Node p) {
-		return 0; // TODO
+	    if (p == null) return 0;
+		return countNodes(p.left) + countNodes(p.right) + 1;
 	}
 	
 	private boolean wellFormed() {
