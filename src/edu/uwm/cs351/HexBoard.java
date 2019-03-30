@@ -8,10 +8,9 @@ import java.util.NoSuchElementException;
 import junit.framework.TestCase;
 
 /**
- * An implementation of the HexBoard ADT using 
- * a binary search tree implementation.
- * A hex board is a collection of hex tiles except that there can 
- * never be two tiles at the same location. 
+ * An implementation of the HexBoard ADT using a binary search tree 
+ * implementation. A hex board is a collection of hex tiles except 
+ * that there can never be two tiles at the same location. 
  */
 public class HexBoard extends AbstractCollection<HexTile> 
 {
@@ -32,7 +31,9 @@ public class HexBoard extends AbstractCollection<HexTile>
      * Create an empty hex board.
      */
     public HexBoard() {
-        // TODO: initialize fields (if necessary)
+        root = null;
+        size = 0;
+        version = 0;
         assert wellFormed() : "in constructor";
     }
     
