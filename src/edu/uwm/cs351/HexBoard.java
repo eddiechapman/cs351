@@ -13,26 +13,37 @@ import junit.framework.TestCase;
  * A hex board is a collection of hex tiles except that there can 
  * never be two tiles at the same location. 
  */
-public class HexBoard extends AbstractCollection<HexTile> {
+public class HexBoard extends AbstractCollection<HexTile> 
+{
+    private static boolean doReport = true;
+    
+    private Node root;
+    private int size;
+    private int version;
 
-	private static int compare(HexCoordinate h1, HexCoordinate h2) {
-		return 0; // TODO: return comparison value: row first and then left->right in row
-	}
-	
-	private static class Node {
-		HexCoordinate loc;
-		Terrain terrain;
-		Node left, right;
-		Node(HexCoordinate l, Terrain t) { loc = l; terrain = t; }
-	}
-	
-	// TODO: declare fields (see homework assignment)
-	
-	private static boolean doReport = true; 
+    private static class Node {
+        HexCoordinate loc;
+        Terrain terrain;
+        Node left, right;
+        Node(HexCoordinate l, Terrain t) { loc = l; terrain = t; }
+    }
+    
+    /**
+     * Create an empty hex board.
+     */
+    public HexBoard() {
+        // TODO: initialize fields (if necessary)
+        assert wellFormed() : "in constructor";
+    }
+    
 	private static boolean report(String s) {
-		if (doReport) System.err.println("Invariant error: " + s);
-		return false;
-	}
+        if (doReport) System.err.println("Invariant error: " + s);
+        return false;
+    }
+	
+	private static int compare(HexCoordinate h1, HexCoordinate h2) {
+        return 0; // TODO: return comparison value: row first and then left->right in row
+    }
 	
 	/**
 	 * Return true if the nodes in this BST are properly
@@ -59,14 +70,6 @@ public class HexBoard extends AbstractCollection<HexTile> {
 	private boolean wellFormed() {
 		// Use helper methods to check the tree.
 		return true;
-	}
-	
-	/**
-	 * Create an empty hex board.
-	 */
-	public HexBoard() {
-		// TODO: initialize fields (if necessary)
-		assert wellFormed() : "in constructor";
 	}
 	
 	/** Return the terrain at the given coordinate or null
