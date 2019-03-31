@@ -65,9 +65,9 @@ public class HexBoard extends AbstractCollection<HexTile>
 	 * {@link #compare(HexCoordinate, HexCoordinate)} method.  If a problem is found, 
 	 * it should be reported (once).
 	 * 
-	 * @param          r subtree to check (may be null)
-	 * @param          lo lower bound (if any)
-	 * @param          hi upper bound (if any)
+	 * @param r        subtree to check (may be null)
+	 * @param lo       lower bound (if any)
+	 * @param hi       upper bound (if any)
 	 * @return         whether there are any problems in the tree.
 	 * 
 	 */
@@ -90,7 +90,7 @@ public class HexBoard extends AbstractCollection<HexTile>
 	/**
 	 * Return the count of the nodes in this subtree.
 	 * 
-	 * @param          p subtree to count nodes for (may be null)
+	 * @param p        subtree to count nodes for (may be null)
 	 * @return         number of nodes in the subtree.
 	 */
 	private static int countNodes(Node p) {
@@ -110,8 +110,8 @@ public class HexBoard extends AbstractCollection<HexTile>
 	
 	/** Return the terrain at the given coordinate or null
 	 * if nothing at this coordinate.
-	 * @param c hex coordinate to look for (null OK but pointless)
-	 * @return terrain at that coordinate, or null if nothing
+	 * @param c        hex coordinate to look for (null OK but pointless)
+	 * @return         terrain at that coordinate, or null if nothing
 	 */
 	public Terrain terrainAt(HexCoordinate l) {
 		assert wellFormed() : "in terrainAt";
