@@ -103,13 +103,16 @@ public class HexBoard extends AbstractCollection<HexTile>
             return report("Tree is out of proper order.");
   
         if (size != countNodes(root)) 
-            return report(String.format("Size disparity. Field: %d\tMethod: %d", size, countNodes(root)));
+            return report(String.format("Size disparity. Field: %d\tMethod: %d", 
+                                        size, countNodes(root)));
         
         return true;
     }
 	
-	/** Return the terrain at the given coordinate or null
-	 * if nothing at this coordinate.
+	/** 
+	 * Return the terrain at the given coordinate or null if nothing at this 
+	 * coordinate.
+	 * 
 	 * @param c        hex coordinate to look for (null OK but pointless)
 	 * @return         terrain at that coordinate, or null if nothing
 	 */
@@ -178,6 +181,14 @@ public class HexBoard extends AbstractCollection<HexTile>
 	
 	private class MyIterator implements Iterator<HexTile> {
 		// TODO: fields, constructor, any helper method(s) (see homework description)
+	    private int myVersion;
+	    private int currentRow;
+	    private int nextColumn;
+	    
+	    public MyIterator() {
+	        myVersion = version;
+	        currentRow = getFirstRow();
+	    }
 		
 		@Override // required by Java
 		public boolean hasNext() {
