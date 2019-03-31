@@ -71,7 +71,19 @@ public class HexBoard extends AbstractCollection<HexTile>
 	 * @return         whether there are any problems in the tree.
 	 * 
 	 */
-	private static boolean isInProperOrder(Node r, HexCoordinate lo, HexCoordinate hi) {
+	private static boolean isInProperOrder(Node r, HexCoordinate lo, HexCoordinate hi) {   
+	    if (r != null) {
+	        try {
+	            assert r.loc != null;
+	            assert r.terrain != null;
+	            if (lo != null) assert compare(r.loc, lo) > 0;
+	            if (hi != null) assert compare(r.loc, hi) < 0;
+	        }
+	        catch(AssertionError e) {
+	            return false;
+	        }
+	        return isInProperOrder(r.left, lo, r.loc) && isInProperOrder(r.right, r.loc, hi);
+	    }
 	    return true;
 	}
 	
