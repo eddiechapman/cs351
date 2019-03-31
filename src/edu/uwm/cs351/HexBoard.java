@@ -136,13 +136,20 @@ public class HexBoard extends AbstractCollection<HexTile>
 	// new methods (used by the iterator)
 	
 	/**
-	 * Return the "b" coordinate of the first tile in the
-	 * hex board, or 0 if the board is empty.
-	 * @return row of first tile or zero if none
+	 * Return the "b" coordinate of the first tile in the hex board, or 
+	 * 0 if the board is empty.
+	 * 
+	 * @return         row of first tile or zero if none
 	 */
 	private int getFirstRow() {
 		assert wellFormed() : "in getFirstRow()";
-		return 0; // TODO
+		int firstRow = 0;
+		Node n = root;
+		while (n != null) {
+		    firstRow = n.loc.b();
+		    n = n.left;
+		}
+		return firstRow;
 	}
 	
 	/**
@@ -152,7 +159,7 @@ public class HexBoard extends AbstractCollection<HexTile>
 	 */
 	private int getLastRow() {
 		assert wellFormed() : "in getLastRow()";
-		return 0; // TODO
+		return 0;
 	}
 	
 	/**
