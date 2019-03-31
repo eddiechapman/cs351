@@ -179,10 +179,13 @@ public class HexBoard extends AbstractCollection<HexTile>
 	 */
 	private HexTile getFirstInRow(int b) {
 		assert wellFormed() : "in getFirstInRow()";
-		Node n = root;
 		HexTile leftMost = null;
+		Node n = root;
 		while (n != null) {
-		    if (n.loc.b() == b) {
+		    if (n.loc.b() < b) {
+		        n = n.right;
+		    }
+		    else if (n.loc.b() == b) {
 		        if (leftMost == null) {
 		            leftMost = new HexTile(n.terrain, n.loc);
 		        }
@@ -190,14 +193,11 @@ public class HexBoard extends AbstractCollection<HexTile>
 		            leftMost = new HexTile(n.terrain, n.loc);
 		        }
 		        if (compare(n.loc, leftMost.getLocation()) > 0) {
-		            n = n.right;
-		        }
-		        if (compare(n.loc, leftMost.getLocation()) < 1) {
+                    n = n.right;
+                }
+                if (compare(n.loc, leftMost.getLocation()) < 1) {
                     n = n.left;
                 }
-		    }
-		    else if (n.loc.b() > b) {
-		        n = n.right;
 		    }
 		    else {
 		        n = n.left;
@@ -205,16 +205,43 @@ public class HexBoard extends AbstractCollection<HexTile>
 		}
 		return leftMost;
 	}
+
 	
 	/**
-	 * Return the first (rightmost) hex tile in the given row, if any
-	 * @param b row number (second [part of hex coordinate)
-	 * @return hex tile with highest a with this b location, 
-	 * or null if no such hex tile.
+	 * Return the first (rightmost) hex tile in the given row, if any.
+	 * 
+	 * @param b        row number (second [part of hex coordinate)
+	 * 
+	 * @return         hex tile with highest a with this b location, 
+	 *                 or null if no such hex tile.
 	 */
 	private HexTile getLastInRow(int b) {
 		assert wellFormed() : "in getLastInRow()";
-		return null; // TODO
+        Node n = root;
+        HexTile rightMost = null;
+        while (n != null) {
+            if (n.loc.b() < b) {
+                n = n.right;
+            }
+            else if (n.loc.b() == b) {
+                if (rightMost == null) {
+                    rightMost = new HexTile(n.terrain, n.loc);
+                }
+                if (n.loc.a() > rightMost.getLocation().a()) {
+                    rightMost = new HexTile(n.terrain, n.loc);
+                }
+                if (compare(n.loc, rightMost.getLocation()) > 0) {
+                    n = n.right;
+                }
+                if (compare(n.loc, rightMost.getLocation()) < 1) {
+                    n = n.left;
+                }
+            }
+            else {
+                n = n.left;
+            }
+        }
+        return rightMost;
 	}
 
 	// TODO: What else?
