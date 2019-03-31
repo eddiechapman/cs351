@@ -99,7 +99,12 @@ public class HexBoard extends AbstractCollection<HexTile>
 	}
 	
 	private boolean wellFormed() {
-        // Use helper methods to check the tree.
+        if (!isInProperOrder(root, null, null)) 
+            return report("Tree is out of proper order.");
+  
+        if (size != countNodes(root)) 
+            return report(String.format("Size disparity. Field: %d\tMethod: %d", size, countNodes(root)));
+        
         return true;
     }
 	
