@@ -130,7 +130,7 @@ public class HexBoard extends AbstractCollection<HexTile>
 	@Override // required by Java
 	public int size() {
 		assert wellFormed() : "in size";
-		return 0; // TODO
+		return size;
 	}
 
 	// new methods (used by the iterator)
