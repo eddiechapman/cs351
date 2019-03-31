@@ -159,7 +159,13 @@ public class HexBoard extends AbstractCollection<HexTile>
 	 */
 	private int getLastRow() {
 		assert wellFormed() : "in getLastRow()";
-		return 0;
+		int lastRow = 0;
+		Node n = root;
+		while (n != null) {
+		    lastRow = n.loc.b();
+		    n = n.right;
+		}
+		return lastRow;
 	}
 	
 	/**
