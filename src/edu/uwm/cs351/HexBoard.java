@@ -153,9 +153,10 @@ public class HexBoard extends AbstractCollection<HexTile>
 	}
 	
 	/**
-	 * Return the "b" coordinate of the last tile in the
-	 * hex board, or 0 if the board is empty.
-	 * @return row of last tile, or zero if none
+	 * Return the "b" coordinate of the last tile in the hex board, or 0 
+	 * if the board is empty.
+	 * 
+	 * @return         row of last tile, or zero if none
 	 */
 	private int getLastRow() {
 		assert wellFormed() : "in getLastRow()";
@@ -169,14 +170,40 @@ public class HexBoard extends AbstractCollection<HexTile>
 	}
 	
 	/**
-	 * Return the first (leftmost) hex tile in the given row, if any
-	 * @param b row number (second [part of hex coordinate)
-	 * @return hex tile with lowest a with this b location, 
-	 * or null if no such hex tile.
+	 * Return the first (leftmost) hex tile in the given row, if any.
+	 * 
+	 * @param b        row number (second part of hex coordinate)
+	 * 
+	 * @return         hex tile with lowest a with this b location, 
+	 *                 or null if no such hex tile.
 	 */
 	private HexTile getFirstInRow(int b) {
 		assert wellFormed() : "in getFirstInRow()";
-		return null; // TODO
+		Node n = root;
+		HexTile leftMost = null;
+		while (n != null) {
+		    if (n.loc.b() == b) {
+		        if (leftMost == null) {
+		            leftMost = new HexTile(n.terrain, n.loc);
+		        }
+		        if (n.loc.a() < leftMost.getLocation().a()) {
+		            leftMost = new HexTile(n.terrain, n.loc);
+		        }
+		        if (compare(n.loc, leftMost.getLocation()) > 0) {
+		            n = n.right;
+		        }
+		        if (compare(n.loc, leftMost.getLocation()) < 1) {
+                    n = n.left;
+                }
+		    }
+		    else if (n.loc.b() > b) {
+		        n = n.right;
+		    }
+		    else {
+		        n = n.left;
+		    }
+		}
+		return leftMost;
 	}
 	
 	/**
