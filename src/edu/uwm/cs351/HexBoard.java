@@ -151,10 +151,36 @@ public class HexBoard extends AbstractCollection<HexTile>
     public boolean contains(Object o) {
         return super.contains(o);
     }
+	
+	private Node _add(Node n, HexTile t) {
+	    if (n == null) {
+	        return new Node(t.getLocation(), t.getTerrain());
+	    }
+	    switch (compare(n.loc, t.getLocation())) {
+            case -1:
+                n.right = _add(n.right, t);
+                break;
+            case 0:
+                n.terrain = t.getTerrain();
+                break;
+            case 1:
+                n.left = _add(n.left, t);
+                break;
+        }
+	    return n;
+	}
 
-    @Override
-    public boolean add(HexTile e) {
-        return super.add(e);
+	@Override
+    public boolean add(HexTile t) {
+        assert wellFormed() : "in public add()";
+        if (t == null) 
+            return false;
+        if (terrainAt(t.getLocation()) == t.getTerrain())
+            return false;
+        root = _add(root, t);
+        ++size;
+        ++version;
+        return true;
     }
 
 	// new methods (used by the iterator)
