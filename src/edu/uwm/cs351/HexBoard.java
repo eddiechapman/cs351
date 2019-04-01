@@ -291,17 +291,21 @@ public class HexBoard extends AbstractCollection<HexTile>
 	    public MyIterator() {
 	        myVersion = version;
 	        currentRow = getFirstRow();
+	        nextColumn = getFirstInRow(currentRow).getLocation().a();
 	    }
 		
 		@Override // required by Java
 		public boolean hasNext() {
 		    checkStale();
-			return false; // TODO
+		    int lastColumnInRow = getLastInRow(currentRow).getLocation().a();
+		    return ((nextColumn <= lastColumnInRow) || (currentRow < getLastRow()));
 		}
 
 		@Override // required by Java
 		public HexTile next() {
 		    checkStale();
+		    if (!hasNext()) throw new NoSuchElementException("Iterator exhausted");
+		    
 			return null; // TODO: find next entry and generate hex tile on demand
 		}
 
