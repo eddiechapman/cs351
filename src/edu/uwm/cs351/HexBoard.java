@@ -245,15 +245,19 @@ public class HexBoard extends AbstractCollection<HexTile>
 		
 		@Override // required by Java
 		public boolean hasNext() {
+		    checkStale();
 			return false; // TODO
 		}
 
 		@Override // required by Java
 		public HexTile next() {
+		    checkStale();
 			return null; // TODO: find next entry and generate hex tile on demand
 		}
 
-		// TODO: anything else?
+		private void checkStale() {
+            if (myVersion != version) throw new ConcurrentModificationException("This iterator is stale.");
+        }
 	}
 
 	// Do not change anything in this test class:
