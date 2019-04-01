@@ -120,6 +120,7 @@ public class HexBoard extends AbstractCollection<HexTile>
 		assert wellFormed() : "in terrainAt";
 		return null; // TODO
 	}
+	
 
 	@Override // required by Java
 	public Iterator<HexTile> iterator() {
@@ -132,6 +133,16 @@ public class HexBoard extends AbstractCollection<HexTile>
 		assert wellFormed() : "in size";
 		return size;
 	}
+	
+	@Override
+    public boolean contains(Object o) {
+        return super.contains(o);
+    }
+
+    @Override
+    public boolean add(HexTile e) {
+        return super.add(e);
+    }
 
 	// new methods (used by the iterator)
 	
