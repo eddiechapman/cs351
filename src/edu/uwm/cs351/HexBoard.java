@@ -184,22 +184,15 @@ public class HexBoard extends AbstractCollection<HexTile>
 		while (n != null) {
 		    if (n.loc.b() < b) {
 		        n = n.right;
-		    }
-		    else if (n.loc.b() == b) {
+		    } else if (n.loc.b() == b) {
 		        if (leftMost == null) {
 		            leftMost = new HexTile(n.terrain, n.loc);
 		        }
 		        if (n.loc.a() < leftMost.getLocation().a()) {
 		            leftMost = new HexTile(n.terrain, n.loc);
 		        }
-		        if (compare(n.loc, leftMost.getLocation()) > 0) {
-                    n = n.right;
-                }
-                if (compare(n.loc, leftMost.getLocation()) < 1) {
-                    n = n.left;
-                }
-		    }
-		    else {
+		        n = n.left;
+		    } else {
 		        n = n.left;
 		    }
 		}
@@ -222,22 +215,15 @@ public class HexBoard extends AbstractCollection<HexTile>
         while (n != null) {
             if (n.loc.b() < b) {
                 n = n.right;
-            }
-            else if (n.loc.b() == b) {
+            } else if (n.loc.b() == b) {
                 if (rightMost == null) {
                     rightMost = new HexTile(n.terrain, n.loc);
                 }
                 if (n.loc.a() > rightMost.getLocation().a()) {
                     rightMost = new HexTile(n.terrain, n.loc);
                 }
-                if (compare(n.loc, rightMost.getLocation()) > 0) {
-                    n = n.right;
-                }
-                if (compare(n.loc, rightMost.getLocation()) < 1) {
-                    n = n.left;
-                }
-            }
-            else {
+                n = n.right;
+            } else {
                 n = n.left;
             }
         }
