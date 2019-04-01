@@ -118,7 +118,20 @@ public class HexBoard extends AbstractCollection<HexTile>
 	 */
 	public Terrain terrainAt(HexCoordinate l) {
 		assert wellFormed() : "in terrainAt";
-		return null; // TODO
+		Node n = root;
+		while (n != null) {
+		    switch (compare(n.loc, l)) {
+		        case -1:
+		            n = n.right;
+		            break;
+		        case 0:
+		            return n.terrain;
+		        case 1:
+		            n = n.left;
+		            break;
+		    }
+		}
+		return null;
 	}
 	
 
