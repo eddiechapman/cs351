@@ -299,18 +299,23 @@ public class HexBoard extends AbstractCollection<HexTile>
 	private class MyIterator implements Iterator<HexTile> {
 		// TODO: fields, constructor, any helper method(s) (see homework description)
 	    private int myVersion;
-	    private int currentRow;
-	    private int nextColumn;
+	    private Integer currentRow;
+	    private Integer nextColumn;
 	    
 	    public MyIterator() {
 	        myVersion = version;
-	        currentRow = getFirstRow();
-	        nextColumn = getFirstInRow(currentRow).getLocation().a();
+	        currentRow = null;
+	        nextColumn = null;
 	    }
 		
 		@Override // required by Java
 		public boolean hasNext() {
 		    checkStale();
+		    if (size == 0) return false;
+		    if (currentRow == null && nextColumn == null) {
+		        currentRow = getFirstRow();
+	            nextColumn = getFirstInRow(currentRow).getLocation().a();
+		    }
 		    int lastColumnInRow = getLastInRow(currentRow).getLocation().a();
 		    return ((nextColumn <= lastColumnInRow) || (currentRow < getLastRow()));
 		}
