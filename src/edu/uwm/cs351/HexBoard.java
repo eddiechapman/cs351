@@ -147,11 +147,16 @@ public class HexBoard extends AbstractCollection<HexTile>
 		return size;
 	}
 	
-	@Override
+
+    @Override
     public boolean contains(Object o) {
-        HexCoordinate t = (HexCoordinate)o;
-        return terrainAt(t) != null;
+        if (!(o instanceof HexTile)) return false;
+        HexTile tile = (HexTile) o;
+        if (terrainAt(tile.getLocation()) == null) return false;
+        HexTile stored = new HexTile(terrainAt(tile.getLocation()), tile.getLocation());
+        return stored.equals(tile);
     }
+
 
     @Override
     public void clear() {
