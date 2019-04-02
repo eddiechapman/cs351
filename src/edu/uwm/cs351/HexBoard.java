@@ -10,7 +10,12 @@ import junit.framework.TestCase;
 /**
  * An implementation of the HexBoard ADT using a binary search tree 
  * implementation. A hex board is a collection of hex tiles except 
- * that there can never be two tiles at the same location. 
+ * that there can never be two tiles at the same location.
+ *
+ * @author Eddie Chapman (chapman4@uwm.edu)
+ *
+ * I completed this assignment by referencing the assigned readings, lecture notes,
+ * and the Oracle documentation. 
  */
 public class HexBoard extends AbstractCollection<HexTile> 
 {
@@ -30,6 +35,8 @@ public class HexBoard extends AbstractCollection<HexTile>
     
     /**
      * Create an empty hex board.
+     * 
+     * @returns an empty hex board.
      */
     public HexBoard() {
         root = null;
