@@ -165,12 +165,15 @@ public class HexBoard extends AbstractCollection<HexTile>
 	@Override
     public boolean add(HexTile t) {
         assert wellFormed() : "in public add()";
+        
         if (t == null) 
             return false;
-        if (terrainAt(t.getLocation()) == t.getTerrain())
+        
+        Terrain currentTerrain = terrainAt(t.getLocation());
+        if (currentTerrain == t.getTerrain())
             return false;
         root = _add(root, t);
-        ++size;
+        if (currentTerrain == null) ++size;
         ++version;
         return true;
     }
