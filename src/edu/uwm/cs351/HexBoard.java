@@ -116,11 +116,11 @@ public class HexBoard extends AbstractCollection<HexTile>
 	 * @param c        hex coordinate to look for (null OK but pointless)
 	 * @return         terrain at that coordinate, or null if nothing
 	 */
-	public Terrain terrainAt(HexCoordinate l) {
+	public Terrain terrainAt(HexCoordinate c) {
 		assert wellFormed() : "in terrainAt";
 		Node n = root;
 		while (n != null) {
-		    switch (compare(n.loc, l)) {
+		    switch (compare(n.loc, c)) {
 		        case -1:
 		            n = n.right;
 		            break;
@@ -134,7 +134,6 @@ public class HexBoard extends AbstractCollection<HexTile>
 		return null;
 	}
 	
-
 	@Override // required by Java
 	public Iterator<HexTile> iterator() {
 		assert wellFormed() : "in iterator";
@@ -147,15 +146,8 @@ public class HexBoard extends AbstractCollection<HexTile>
 		return size;
 	}
 	
-	@Override
-    public boolean contains(Object o) {
-        return super.contains(o);
-    }
-	
 	private Node _add(Node n, HexTile t) {
-	    if (n == null) {
-	        return new Node(t.getLocation(), t.getTerrain());
-	    }
+	    if (n == null) return new Node(t.getLocation(), t.getTerrain());
 	    switch (compare(n.loc, t.getLocation())) {
             case -1:
                 n.right = _add(n.right, t);
@@ -301,13 +293,46 @@ public class HexBoard extends AbstractCollection<HexTile>
 		    return ((nextColumn <= lastColumnInRow) || (currentRow < getLastRow()));
 		}
 
+		
 		@Override // required by Java
 		public HexTile next() {
-		    checkStale();
-		    if (!hasNext()) throw new NoSuchElementException("Iterator exhausted");
-		    
-			return null; // TODO: find next entry and generate hex tile on demand
+		    if (!hasNext()) 
+                throw new NoSuchElementException("Iterator exhausted");
+           
+            checkStale();
+            
+            HexCoordinate mostRecent = new HexCoordinate(nextColumn, currentRow);
+            HexTile tile = null;
+            
+            // Iterate over rows
+            for (int r = currentRow; tile == null && r <= getLastRow(); ++r) {
+                
+                // Skips rows without tiles
+                if (getFirstInRow(r) != null) {
+                    
+                    // Row boundaries
+                    int firstInRow = getFirstInRow(r).getLocation().a();
+                    int lastInRow = getLastInRow(r).getLocation().a();
+                    
+                    // Iterate over columns
+                    for (int c = firstInRow; tile == null && c <= lastInRow; ++c) {
+                        
+                        HexCoordinate current = new HexCoordinate(c, r);
+                        
+                        // Accounts c starting before the mostRecent during first loop
+                        if (compare(current, mostRecent) >= 0 && (terrainAt(current) != null)) {
+                            tile = new HexTile(terrainAt(current), current);
+                            currentRow = r;
+                            nextColumn = c + 1;
+                        }
+                        
+                    }
+                }
+            }
+            
+            return tile;
 		}
+                     
 
 		private void checkStale() {
             if (myVersion != version) throw new ConcurrentModificationException("This iterator is stale.");
