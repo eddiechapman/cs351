@@ -14,6 +14,7 @@ import junit.framework.TestCase;
  */
 public class HexBoard extends AbstractCollection<HexTile> 
 {
+    
     private static boolean doReport = true;
     
     private Node root;
@@ -145,6 +146,19 @@ public class HexBoard extends AbstractCollection<HexTile>
 		assert wellFormed() : "in size";
 		return size;
 	}
+	
+	@Override
+    public boolean contains(Object o) {
+        HexCoordinate t = (HexCoordinate)o;
+        return terrainAt(t) != null;
+    }
+
+    @Override
+    public void clear() {
+        root = null;
+        size = 0;
+    }
+	
 	
 	private Node _add(Node n, HexTile t) {
 	    if (n == null) return new Node(t.getLocation(), t.getTerrain());
