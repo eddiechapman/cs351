@@ -167,7 +167,7 @@ public class HexBoard extends AbstractCollection<HexTile>
         assert wellFormed() : "in public add()";
         
         if (t == null) 
-            return false;
+            throw new NullPointerException("No adding null tiles");
         
         Terrain currentTerrain = terrainAt(t.getLocation());
         if (currentTerrain == t.getTerrain())
