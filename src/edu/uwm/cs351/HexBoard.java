@@ -162,6 +162,7 @@ public class HexBoard extends AbstractCollection<HexTile>
     public void clear() {
         root = null;
         size = 0;
+        ++version;
     }
 	
 	
