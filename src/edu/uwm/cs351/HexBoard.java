@@ -17,7 +17,15 @@ import junit.framework.TestCase;
  */
 public class HexBoard extends AbstractCollection<HexTile> {
 
-	private static int compare(HexCoordinate h1, HexCoordinate h2) {
+	/**
+	 * Determines the order of two HexCoordinates.
+	 * 
+	 * @param h1       a HexCoordinate that is being compared
+	 * @param h2       a HexCoordinate that h1 is being compared to
+	 * @return         -1 if h1 comes first, 0 if they are equal, and
+	 *                 1 if h1 comes second.             
+	 */
+    private static int compare(HexCoordinate h1, HexCoordinate h2) {
 		if (h1.b() == h2.b()) {
 			return h1.a() - h2.a();
 		}
@@ -193,7 +201,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		
 		@Override // required by Java
 		public boolean hasNext() {
-			return false; // TODO
+			return !pending.empty();
 		}
 
 		@Override // required by Java
