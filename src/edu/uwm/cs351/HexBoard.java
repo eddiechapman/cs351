@@ -250,18 +250,25 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		
 		@Override // required by Java
 		public boolean hasNext() {
-		    
+		    assert wellFormed() : "at beginning of hasNext";
+		    checkVersion();
 			return !pending.empty();
 		}
 
 		@Override // required by Java
 		public HexTile next() {
+		    assert wellFormed() : "at beginning of next";
+		    checkVersion();
+		    assert wellFormed() : "at end of next";
 			return null; // TODO: find next entry and generate hex tile on demand
 		}
 
 		@Override // required for functionality
 		public void remove() {
-			throw new UnsupportedOperationException("no removal yet"); // TODO
+		    assert wellFormed() : "at beginning of iterator remove";
+		    checkVersion();
+			//throw new UnsupportedOperationException("no removal yet"); // TODO
+			assert wellFormed() : "at end of iterator remove";
 		}
 
 	}
