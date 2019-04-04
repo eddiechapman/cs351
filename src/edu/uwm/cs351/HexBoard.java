@@ -179,10 +179,6 @@ public class HexBoard extends AbstractCollection<HexTile> {
 	private Node doRemove(Node n, HexTile t) {
 	    return null;
 	}
-	
-	private HexTile generateTile(Node n) {
-	    return new HexTile(n.terrain, n.loc);
-	}
 
     private class MyIterator implements Iterator<HexTile> 
 	{
@@ -241,6 +237,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		    return null;
 		}
 		
+		private void processSubTree(Node n) {}
 		
 		private Node immediateSuccessor(HexTile t) {
 		    return null;
@@ -268,11 +265,15 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		}
 
 		@Override // required by Java
-		public HexTile next() {
+		public HexTile next() throws NoSuchElementException {
 		    assert wellFormed() : "at beginning of next";
 		    checkVersion();
+		    if (!hasNext()) throw new NoSuchElementException("Iterator exhausted");
+		    Node next = pending.pop();
+		    processSubTree(next);
+		    current = new HexTile(next.terrain, next.loc);
 		    assert wellFormed() : "at end of next";
-			return null; // TODO: find next entry and generate hex tile on demand
+			return current;
 		}
 
 		@Override // required for functionality
@@ -280,10 +281,9 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		    assert wellFormed() : "at beginning of iterator remove";
 		    checkVersion();
 		    if (current == null) throw new IllegalStateException();
-			doRemove(root, current);
-			pending = greaterAncestors(current);
+			HexBoard.this.remove(current);
 			current = null;
-			myVersion = version;
+			++myVersion;
 			assert wellFormed() : "at end of iterator remove";
 		}
 
