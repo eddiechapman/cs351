@@ -9,10 +9,11 @@ import java.util.Stack;
 import junit.framework.TestCase;
 
 /**
- * An implementation of the HexBoard ADT using 
- * a binary search tree implementation.
- * A hex board is a collection of hex tiles except that there can 
- * never be two tiles at the same location. 
+ * An implementation of the HexBoard ADT using a binary search tree 
+ * implementation. A hex board is a collection of hex tiles except 
+ * that there can never be two tiles at the same location.
+ * 
+ * @author Eddie Chapman (chapman4@uwm.edu)
  */
 public class HexBoard extends AbstractCollection<HexTile> {
 
@@ -42,13 +43,14 @@ public class HexBoard extends AbstractCollection<HexTile> {
 	}
 	
 	/**
-	 * Return true if the nodes in this BST are properly
-	 * ordered with respect to the {@link #compare(HexCoordinate, HexCoordinate)}
+	 * Return true if the nodes in this BST are properly ordered with 
+	 * respect to the {@link #compare(HexCoordinate, HexCoordinate)} 
 	 * method.  If a problem is found, it should be reported (once).
-	 * @param r subtree to check (may be null)
-	 * @param lo lower bound (if any)
-	 * @param hi upper bound (if any)
-	 * @return whether there are any problems in the tree.
+	 * 
+	 * @param r        subtree to check (may be null)
+	 * @param lo       lower bound (if any)
+	 * @param hi       upper bound (if any)
+	 * @return         whether there are any problems in the tree.
 	 */
 	private static boolean isInProperOrder(Node r, HexCoordinate lo, HexCoordinate hi) {
 		if (r == null) return true;
@@ -61,8 +63,9 @@ public class HexBoard extends AbstractCollection<HexTile> {
 	
 	/**
 	 * Return the count of the nodes in this subtree.
-	 * @param p subtree to count nodes for (may be null)
-	 * @return number of nodes in the subtree.
+	 * 
+	 * @param p        subtree to count nodes for (may be null)
+	 * @return         number of nodes in the subtree.
 	 */
 	private static int countNodes(Node p) {
 		if (p == null) return 0;
@@ -85,10 +88,12 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		assert wellFormed() : "in constructor";
 	}
 	
-	/** Return the terrain at the given coordinate or null
-	 * if nothing at this coordinate.
-	 * @param c hex coordinate to look for (null OK but pointless)
-	 * @return terrain at that coordinate, or null if nothing
+	/** 
+	 * Return the terrain at the given coordinate or null if nothing 
+	 * at this coordinate.
+	 * 
+	 * @param c        HexCoordinate to look for (null OK but pointless)
+	 * @return         Terrain at that HexCoordinate, or null if nothing
 	 */
 	public Terrain terrainAt(HexCoordinate l) {
 		assert wellFormed() : "in terrainAt";
