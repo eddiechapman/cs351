@@ -181,7 +181,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 	    assert wellFormed() : "at the beginning of HexBoard.remove()";
 	    if (!(o instanceof HexTile)) return false;
         HexTile tile = (HexTile) o;
-        if (terrainAt(tile.getLocation()) == null) return false;
+        if (!contains(tile)) return false;
         root = doRemove(root, tile);
         --size;
         ++version;
@@ -190,7 +190,27 @@ public class HexBoard extends AbstractCollection<HexTile> {
     }
 
     private Node doRemove(Node n, HexTile t) {
-	    return null;
+	    if (n == null) return null;
+	    int c = compare(n.loc, t.getLocation());
+	    if (c == 0) {
+	        if (n.right == null) return n.left;
+	        if (n.left == null) return n.right;
+	        Node temp = n.right;
+	        while (temp.left != null) {
+	            temp = temp.left;
+	        }
+	        n.terrain = temp.terrain;
+	        n.loc = temp.loc;
+	        HexTile h = new HexTile(temp.terrain, temp.loc);
+	        n.right = doRemove(n.right, h);
+	    }
+	    if (c < 0) 
+	        n.right = doRemove(n.right, t);
+	    if (c > 0)
+	        n.left = doRemove(n.left, t);
+	    return n;   
+	}
+    
 	}
 
     private class MyIterator implements Iterator<HexTile> 
