@@ -176,12 +176,9 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		}
 	}
 	
-	
-	@Override
-    public boolean remove(Object o) {
-        // TODO Auto-generated method stub
-        return super.remove(o);
-    }
+	private Node doRemove(Node n, HexTile t) {
+	    return null;
+	}
 	
 	private HexTile generateTile(Node n) {
 	    return new HexTile(n.terrain, n.loc);
@@ -218,33 +215,40 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		private boolean wellFormed() {
 			if (!HexBoard.this.wellFormed()) 
 			    return report("HexBoard invariant failed in interator.");
+			
 			try {
 			    checkVersion();
 			} catch (ConcurrentModificationException e) {
 			    return true;
 			}
+			
 			if ((current != null) && (!contains(current))) 
 			    return report("Current is missing from the tree.");	    
-		    if ((current != null) && (!immediateSuccessor(current).equals(generateTile(pending.peek()))))
+		    
+			if ((current != null) && (!immediateSuccessor(current).equals(pending.peek())))
 		        return report("Pending node does not contain immediate successor to current.");
-			// TODO: #5
-			return true;
+		    
+			if ((current != null) && !pending.empty() && !pending.equals(greaterAncestors(current)))
+                return report("Pending node does not contain immediate successor to current.");
+			
+		    return true;
 		}
 		
 		private MyIterator(boolean ignored) {} // do not change, and do not use in your code
 		
 		
-		private HexTile immediateSuccessor(HexTile t) {
-		    return null;
-		}
-
-		private HexTile immediatePredecessor(HexTile n) {
+		private Stack<Node> greaterAncestors(HexTile t) {
 		    return null;
 		}
 		
-		private HexTile greaterAncestor(HexTile n) {
-            return null;
-        }
+		
+		private Node immediateSuccessor(HexTile t) {
+		    return null;
+		}
+
+		private Node immediatePredecessor(HexTile n) {
+		    return null;
+		}
 		
 		private void checkVersion() throws ConcurrentModificationException {
 		    if (myVersion != version) 
@@ -276,7 +280,8 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		    assert wellFormed() : "at beginning of iterator remove";
 		    checkVersion();
 			if (current == null) throw new IllegalStateException();
-			remove(current);
+			doRemove(root, current);
+			myVersion = version;
 			assert wellFormed() : "at end of iterator remove";
 		}
 
