@@ -9,9 +9,9 @@ import java.util.Stack;
 import junit.framework.TestCase;
 
 /**
- * An implementation of the HexBoard ADT using a binary search tree implementation. 
- * A hex board is a collection of hex tiles except that there can never be two tiles 
- * at the same location.
+ * An implementation of the HexBoard ADT using a binary search tree 
+ * implementation. A hex board is a collection of hex tiles except that 
+ * there can never be two tiles at the same location.
  * 
  * @author Eddie Chapman (chapman4@uwm.edu)
  */
@@ -22,8 +22,8 @@ public class HexBoard extends AbstractCollection<HexTile> {
 	 * 
 	 * @param h1       a HexCoordinate that is being compared
 	 * @param h2       a HexCoordinate that h1 is being compared to
-	 * @return         -1 if h1 comes first, 0 if they are equal, and1 if h1 comes 
-	 *                 second.             
+	 * @return         -1 if h1 comes first, 0 if they are equal, and1 if h1 
+	 *                 comes second.             
 	 */
     private static int compare(HexCoordinate h1, HexCoordinate h2) {
 		if (h1.b() == h2.b()) {
@@ -51,9 +51,9 @@ public class HexBoard extends AbstractCollection<HexTile> {
 	}
 	
 	/**
-	 * Return true if the nodes in this BST are properly ordered with respect to 
-	 * the {@link #compare(HexCoordinate, HexCoordinate)} method.  If a problem is 
-	 * found, it should be reported (once).
+	 * Return true if the nodes in this BST are properly ordered with 
+	 * respect to the {@link #compare(HexCoordinate, HexCoordinate)} method. 
+	 * If a problem is found, it should be reported (once).
 	 * 
 	 * @param r        subtree to check (may be null)
 	 * @param lo       lower bound (if any)
@@ -137,7 +137,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		}
 		return false;
 	}
-
+	
 	@Override // required for correctness
 	public boolean add(HexTile e) {
 		assert wellFormed() : "in add()";
@@ -176,7 +176,8 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		}
 	}
 	
-	private class MyIterator implements Iterator<HexTile> {
+	private class MyIterator implements Iterator<HexTile> 
+	{
 		// new data structure for iterator:
 		private Stack<Node> pending = new Stack<>();
 		private HexTile current; // if can be removed
@@ -184,18 +185,24 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		
 		
 		/**
-		 * Inspect the ADT's data structure, pointers, and redundant fields for 
-		 * breaches in the invariant.
+		 * Inspect the ADT's data structure, pointers, and redundant fields 
+		 * for breaches in the invariant.
 		 * 
-		 * 1. Check the outer invariant (see new syntax in homework description).
-		 * 2. If we are stale, don't check anything else, pretend no problems.
-		 * 3. If current isn't null, there should be a node for it in the tree.
-		 * 4. If current isn't null, the next node after it should be top of the 
-		 *    stack.
-		 * 5. If the stack isn't empty, then it should have all GT ancestors of 
-		 *    top of stack and nothing else.
+		 * <ol>
+		 *    <li>Check the outer invariant (see new syntax in homework 
+		 *    description).</li>
+		 *    <li>If we are stale, don't check anything else, pretend no 
+		 *    problems.</li>
+		 *    <li>If current isn't null, there should be a node for it in 
+		 *    the tree.</li>
+		 *    <li>If current isn't null, the next node after it should be 
+		 *    top of the stack.</li>
+		 *    <li>If the stack isn't empty, then it should have all GT 
+		 *    ancestors of top of stack and nothing else.</li>
+		 * </ol>
 		 *    
-		 * @return        true if invariant applies to current state, false if not.
+		 * @return        True if invariant applies to current state, false 
+		 *                if not.
 		 */
 		private boolean wellFormed() {
 			if (!HexBoard.this.wellFormed()) 
@@ -230,7 +237,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		}
 
 		private MyIterator() {
-			// TODO
+			pending.push(root);
 			assert wellFormed();
 		}
 		
@@ -248,6 +255,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		public void remove() {
 			throw new UnsupportedOperationException("no removal yet"); // TODO
 		}
+
 	}
 
 	// Do not change anything in this test class:
