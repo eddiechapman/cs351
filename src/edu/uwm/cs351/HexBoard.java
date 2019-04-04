@@ -9,9 +9,9 @@ import java.util.Stack;
 import junit.framework.TestCase;
 
 /**
- * An implementation of the HexBoard ADT using a binary search tree 
- * implementation. A hex board is a collection of hex tiles except 
- * that there can never be two tiles at the same location.
+ * An implementation of the HexBoard ADT using a binary search tree implementation. 
+ * A hex board is a collection of hex tiles except that there can never be two tiles 
+ * at the same location.
  * 
  * @author Eddie Chapman (chapman4@uwm.edu)
  */
@@ -22,8 +22,8 @@ public class HexBoard extends AbstractCollection<HexTile> {
 	 * 
 	 * @param h1       a HexCoordinate that is being compared
 	 * @param h2       a HexCoordinate that h1 is being compared to
-	 * @return         -1 if h1 comes first, 0 if they are equal, and
-	 *                 1 if h1 comes second.             
+	 * @return         -1 if h1 comes first, 0 if they are equal, and1 if h1 comes 
+	 *                 second.             
 	 */
     private static int compare(HexCoordinate h1, HexCoordinate h2) {
 		if (h1.b() == h2.b()) {
@@ -51,9 +51,9 @@ public class HexBoard extends AbstractCollection<HexTile> {
 	}
 	
 	/**
-	 * Return true if the nodes in this BST are properly ordered with 
-	 * respect to the {@link #compare(HexCoordinate, HexCoordinate)} 
-	 * method.  If a problem is found, it should be reported (once).
+	 * Return true if the nodes in this BST are properly ordered with respect to 
+	 * the {@link #compare(HexCoordinate, HexCoordinate)} method.  If a problem is 
+	 * found, it should be reported (once).
 	 * 
 	 * @param r        subtree to check (may be null)
 	 * @param lo       lower bound (if any)
@@ -64,8 +64,10 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		if (r == null) return true;
 		if (r.loc == null) return report("null location in tree");
 		if (r.terrain == null) return report("null terrain for " + r.loc);
-		if (lo != null && compare(lo,r.loc) >= 0) return report("out of order " + r.loc + " <= " + lo);
-		if (hi != null && compare(hi,r.loc) <= 0) return report("out of order " + r.loc + " >= " + hi);
+		if (lo != null && compare(lo,r.loc) >= 0) 
+		    return report("out of order " + r.loc + " <= " + lo);
+		if (hi != null && compare(hi,r.loc) <= 0) 
+		    return report("out of order " + r.loc + " >= " + hi);
 		return isInProperOrder(r.left,lo,r.loc) && isInProperOrder(r.right,r.loc,hi);
 	}
 	
@@ -97,8 +99,8 @@ public class HexBoard extends AbstractCollection<HexTile> {
 	}
 	
 	/** 
-	 * Return the terrain at the given coordinate or null if nothing 
-	 * at this coordinate.
+	 * Return the terrain at the given coordinate or null if nothing at this 
+	 * coordinate.
 	 * 
 	 * @param c        HexCoordinate to look for (null OK but pointless)
 	 * @return         Terrain at that HexCoordinate, or null if nothing
@@ -180,19 +182,52 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		private HexTile current; // if can be removed
 		private int myVersion = version;
 		
+		
+		/**
+		 * Inspect the ADT's data structure, pointers, and redundant fields for 
+		 * breaches in the invariant.
+		 * 
+		 * 1. Check the outer invariant (see new syntax in homework description).
+		 * 2. If we are stale, don't check anything else, pretend no problems.
+		 * 3. If current isn't null, there should be a node for it in the tree.
+		 * 4. If current isn't null, the next node after it should be top of the 
+		 *    stack.
+		 * 5. If the stack isn't empty, then it should have all GT ancestors of 
+		 *    top of stack and nothing else.
+		 *    
+		 * @return        true if invariant applies to current state, false if not.
+		 */
 		private boolean wellFormed() {
-			// TODO:
-			// 1. Check the outer invariant (see new syntax in homework description)
-			// 2. If we are stale, don't check anything else, pretend no problems
-			// 3. If current isn't null, there should be a node for it in the tree.
-			// 4. If current isn't null, the next node after it should be top of the stack
-			// 5. If the stack isn't empty, then it should have all GT ancestors of top of stack and nothing else.
+			if (!HexBoard.this.wellFormed()) 
+			    return report("HexBoard invariant failed in interator.");
+			if (!checkVersion()) 
+			    return true;
+			if ((current != null) && (!contains(current))) 
+			    return report("Current is missing from the tree.");
+			if ((current != null) && (!immediateSuccessor(current).equals(pending.peek())))
+			    return report("Current node's immediate successor is not the top of the stack.");
+			// TODO: #5
 			return true;
 		}
 		
 		private MyIterator(boolean ignored) {} // do not change, and do not use in your code
 		
-		// TODO: any helper method(s) (see homework description)
+		
+		private HexTile immediateSuccessor(HexTile t) {
+		    return null;
+		}
+
+		private HexTile immediatePredecessor(HexTile n) {
+		    return null;
+		}
+		
+		private HexTile greaterAncestor(HexTile n) {
+            return null;
+        }
+		
+		private boolean checkVersion() {
+		    return myVersion == version;
+		}
 
 		private MyIterator() {
 			// TODO
