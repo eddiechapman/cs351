@@ -176,7 +176,14 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		}
 	}
 	
-	private class MyIterator implements Iterator<HexTile> 
+	
+	@Override
+    public boolean remove(Object o) {
+        // TODO Auto-generated method stub
+        return super.remove(o);
+    }
+
+    private class MyIterator implements Iterator<HexTile> 
 	{
 		// new data structure for iterator:
 		private Stack<Node> pending = new Stack<>();
@@ -264,10 +271,11 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		}
 
 		@Override // required for functionality
-		public void remove() {
+		public void remove() throws IllegalStateException {
 		    assert wellFormed() : "at beginning of iterator remove";
 		    checkVersion();
-			//throw new UnsupportedOperationException("no removal yet"); // TODO
+			if (current == null) throw new IllegalStateException();
+			remove(current);
 			assert wellFormed() : "at end of iterator remove";
 		}
 
