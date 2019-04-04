@@ -182,6 +182,10 @@ public class HexBoard extends AbstractCollection<HexTile> {
         // TODO Auto-generated method stub
         return super.remove(o);
     }
+	
+	private HexTile generateTile(Node n) {
+	    return new HexTile(n.terrain, n.loc);
+	}
 
     private class MyIterator implements Iterator<HexTile> 
 	{
@@ -219,13 +223,10 @@ public class HexBoard extends AbstractCollection<HexTile> {
 			} catch (ConcurrentModificationException e) {
 			    return true;
 			}
-			if (current != null) {
-			    if (!contains(current)) return report("Current is missing from the tree.");	    
-			    HexTile nextUp = new HexTile(pending.peek().terrain, pending.peek().loc);
-			    HexTile immediateSuccessor = immediateSuccessor(current);
-			    if (!immediateSuccessor.equals(nextUp))
-			        return report("Pending node does not contain immediate successor to current.");
-			}
+			if ((current != null) && (!contains(current))) 
+			    return report("Current is missing from the tree.");	    
+		    if ((current != null) && (!immediateSuccessor(current).equals(generateTile(pending.peek()))))
+		        return report("Pending node does not contain immediate successor to current.");
 			// TODO: #5
 			return true;
 		}
