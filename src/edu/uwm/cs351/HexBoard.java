@@ -207,8 +207,11 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		private boolean wellFormed() {
 			if (!HexBoard.this.wellFormed()) 
 			    return report("HexBoard invariant failed in interator.");
-			if (!checkVersion()) 
+			try {
+			    checkVersion();
+			} catch (ConcurrentModificationException e) {
 			    return true;
+			}
 			if ((current != null) && (!contains(current))) 
 			    return report("Current is missing from the tree.");
 			if ((current != null) && (!immediateSuccessor(current).equals(pending.peek())))
@@ -232,8 +235,9 @@ public class HexBoard extends AbstractCollection<HexTile> {
             return null;
         }
 		
-		private boolean checkVersion() {
-		    return myVersion == version;
+		private void checkVersion() throws ConcurrentModificationException {
+		    if (myVersion != version) 
+		        throw new ConcurrentModificationException("Stale iterator.");
 		}
 
 		private MyIterator() {
@@ -243,6 +247,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		
 		@Override // required by Java
 		public boolean hasNext() {
+		    
 			return !pending.empty();
 		}
 
