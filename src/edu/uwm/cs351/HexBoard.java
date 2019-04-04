@@ -279,8 +279,10 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		public void remove() throws IllegalStateException {
 		    assert wellFormed() : "at beginning of iterator remove";
 		    checkVersion();
-			if (current == null) throw new IllegalStateException();
+		    if (current == null) throw new IllegalStateException();
 			doRemove(root, current);
+			pending = greaterAncestors(current);
+			current = null;
 			myVersion = version;
 			assert wellFormed() : "at end of iterator remove";
 		}
