@@ -211,7 +211,6 @@ public class HexBoard extends AbstractCollection<HexTile> {
 	    return n;   
 	}
     
-	}
 
     private class MyIterator implements Iterator<HexTile> 
 	{
