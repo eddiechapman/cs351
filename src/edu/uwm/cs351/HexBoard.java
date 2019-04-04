@@ -176,7 +176,20 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		}
 	}
 	
-	private Node doRemove(Node n, HexTile t) {
+	@Override
+    public boolean remove(Object o) {
+	    assert wellFormed() : "at the beginning of HexBoard.remove()";
+	    if (!(o instanceof HexTile)) return false;
+        HexTile tile = (HexTile) o;
+        if (terrainAt(tile.getLocation()) == null) return false;
+        root = doRemove(root, tile);
+        --size;
+        ++version;
+        assert wellFormed() : "at the end of HexBoard.remove()";
+        return true;
+    }
+
+    private Node doRemove(Node n, HexTile t) {
 	    return null;
 	}
 
