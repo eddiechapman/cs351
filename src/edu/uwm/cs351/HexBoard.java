@@ -237,7 +237,13 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		    return null;
 		}
 		
-		private void processSubTree(Node n) {}
+		private void processSubTree(Node n) {
+		    Node t = n.left;
+		    while (t != null) {
+		        pending.push(t);
+		        t = t.left;
+		    }
+		}
 		
 		private Node immediateSuccessor(HexTile t) {
 		    return null;
