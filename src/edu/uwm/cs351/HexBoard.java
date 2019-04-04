@@ -259,6 +259,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		}
 
 		private MyIterator() {
+		    pending.push(root);
 			processSubTree(root);
 			assert wellFormed();
 		}
