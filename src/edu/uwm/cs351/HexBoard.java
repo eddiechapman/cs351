@@ -22,8 +22,8 @@ public class HexBoard extends AbstractCollection<HexTile> {
 	 * 
 	 * @param h1       a HexCoordinate that is being compared
 	 * @param h2       a HexCoordinate that h1 is being compared to
-	 * @return         -1 if h1 comes first, 0 if they are equal, and1 if h1 
-	 *                 comes second.             
+	 * @return         -1 if h1 comes first, 0 if they are equal, and 1 if 
+	 *                 h1 comes second.             
 	 */
     private static int compare(HexCoordinate h1, HexCoordinate h2) {
 		if (h1.b() == h2.b()) {
@@ -108,7 +108,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 	public Terrain terrainAt(HexCoordinate l) {
 		assert wellFormed() : "in terrainAt";
 		for (Node p = root; p != null; ) {
-			int c = compare(l,p.loc);
+			int c = compare(l, p.loc);
 			if (c == 0) return p.terrain;
 			if (c < 0) p = p.left;
 			else p = p.right;
@@ -241,8 +241,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		 *                if not.
 		 */
 		private boolean wellFormed() {
-			if (!HexBoard.this.wellFormed()) 
-			    return report("HexBoard invariant failed in interator.");
+			if (!HexBoard.this.wellFormed()) return report("HexBoard invariant failed in interator.");
 			
 			try {
 			    checkVersion();
@@ -250,24 +249,46 @@ public class HexBoard extends AbstractCollection<HexTile> {
 			    return true;
 			}
 			
-			if ((current != null) && (!contains(current))) 
-			    return report("Current is missing from the tree.");	    
-		    
-			if ((current != null) && (!immediateSuccessor(current).equals(pending.peek())))
-		        return report("Pending node does not contain immediate successor to current.");
-		    
-			if ((current != null) && !pending.empty() && !pending.equals(greaterAncestors(current)))
-                return report("Pending node does not contain immediate successor to current.");
+			if ((current != null) && (!contains(current))) return report("Current is missing from the tree.");
+			    
+			if ((current != null) && (!pending.empty())) {
+			    if (!immediateSuccessor(current.getLocation()).equals(pending.peek())) 
+			        return report("Stack top is not immediate successor to current HexTile");
+			}
 			
+			if (!pending.empty()) {
+			    Stack<Node> temp = new Stack<Node>();		     
+			    for (Node t = root; t != null;) {
+			        switch (compare(t.loc, pending.peek().loc)) {
+			            case -1:
+			                t = t.right;
+			                break;          
+			            case 0:     
+			            case 1:
+			                temp.push(t);
+			                t = t.left;
+			                break;
+			        }
+			    }   
+			    if (!pending.equals(temp) || pending.contains(null)) 
+			        return report("Pending does not contain all GT ancestors stack top.");   
+			}
 		    return true;
 		}
 		
-		private MyIterator(boolean ignored) {} // do not change, and do not use in your code
-		
-		
-		private Stack<Node> greaterAncestors(HexTile t) {
-		    return null;
+		private Node immediateSuccessor(HexCoordinate t) {
+		    Node immediateSuccessor = null;
+		    for (Node n = root; n != null;) {
+		        int c = compare(n.loc, t);
+		        if (c <= 0) n = n.right;
+		        else
+		            n = n.left;
+		            immediateSuccessor = n;
+		    }
+		    return immediateSuccessor;
 		}
+		
+		private MyIterator(boolean ignored) {} // do not change, and do not use in your code
 		
 		private void processSubTree(Node n) {
 		    Node t = n.left;
@@ -275,14 +296,6 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		        pending.push(t);
 		        t = t.left;
 		    }
-		}
-		
-		private Node immediateSuccessor(HexTile t) {
-		    return null;
-		}
-
-		private Node immediatePredecessor(HexTile n) {
-		    return null;
 		}
 		
 		private void checkVersion() throws ConcurrentModificationException {
