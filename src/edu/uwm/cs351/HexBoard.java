@@ -114,3 +114,213 @@ public class HexBoard extends AbstractSet<HexTile> {
 
 	@Override // required by Java
 	public int size() {
+		assert wellFormed() : "in size";	
+		return size;
+	}
+	
+	@Override // required for efficiency
+	public boolean contains(Object o) {
+		assert wellFormed() : "in contains()";
+		if (o instanceof HexTile) {
+			HexTile h = (HexTile)o;
+			return terrainAt(h.getLocation()) == h.getTerrain();
+		}
+		return false;
+	}
+
+	@Override // required for correctness
+	public boolean add(HexTile e) {
+		assert wellFormed() : "in add()";
+		Node lag = null;
+		Node p = root;
+		int c = 0;
+		while (p != null) {
+			c = compare(e.getLocation(),p.loc);
+			if (c == 0) break;
+			lag = p;
+			if (c < 0) p = p.left;
+			else p = p.right;
+		}
+		if (p != null) { // found it!
+			if (p.terrain == e.getTerrain()) return false;
+			p.terrain = e.getTerrain();
+			// size doesn't increase...
+		} else {
+			p = new Node(e.getLocation(),e.getTerrain());
+			++size;
+			if (lag == null) root = p;
+			else if (c < 0) lag.left = p;
+			else lag.right = p;
+		}
+		++version;
+		assert wellFormed() : "after add()";
+		return true;
+	}
+
+	@Override // more efficient
+	public void clear() {
+		if (size > 0) {
+			root = null;
+			size = 0;
+			++version;
+		}
+	}
+
+	private Node doRemove(Node r, HexTile ht) {
+		int c = compare(ht.getLocation(),r.loc);
+		if (c == 0) {
+			if (r.left == null) return r.right;
+			if (r.right == null) return r.left;
+			Node sub = r.left;
+			while (sub.right != null) {
+				sub = sub.right;
+			}
+			r.loc = sub.loc;
+			r.terrain = sub.terrain;
+			r.left = doRemove(r.left, new HexTile(r.terrain,r.loc));
+		} else if (c < 0) {
+			r.left = doRemove(r.left, ht);
+		} else {
+			r.right = doRemove(r.right, ht);
+		}
+		return r;
+	}
+	
+	@Override // for efficiency and because the iterator uses this, for functionality
+	public boolean remove(Object x) {
+		assert wellFormed() : "invariant broken before remove()";
+		if (!(x instanceof HexTile)) return false;
+		HexTile ht = (HexTile)x;
+		if (!contains(ht)) return false;
+		root = doRemove(root,ht);
+		--size;
+		++version;
+		assert wellFormed() : "invariant broken after remove";
+		return true;
+	}
+	
+	/**
+	 * Return a set backed by this hex board that
+	 * has all the tiles in the given row.
+	 * The result is <i>backed</i> by this hex board;
+	 * changes to either are reflected in the other.
+	 * @param r row number.
+	 * @return set of hextiles with the given row
+	 */
+	public Set<HexTile> row(int r) {
+		return null; // TODO
+	}
+	
+	/**
+	 * Return a view of this hex board as a map from hex coordinates to terrain.
+	 * It is as efficient as the hex board itself.
+	 * @return
+	 */
+	public Map<HexCoordinate,Terrain> asMap() {
+		return null; // TODO
+	}
+	
+	// TODO: add nested classes to implement map, entry set, and row.
+	// The map and entry set classes must not have any fields!
+	// The row class may only have a "final" field (for the row number).
+	// Assuming you can use a separate constructor for MyIterator,
+	// this class can be used for row iterators too.
+	private class MyIterator implements Iterator<HexTile> {
+		// Separate this into two classes:
+		// One an entry set iterator, and the other a wrapper
+		// around it that returns hex tiles up to a particular row number.
+		private Stack<Node> pending = new Stack<>();
+		private HexTile current; // if can be removed
+		private int myVersion = version;
+		
+		private boolean wellFormed() {
+			if (!HexBoard.this.wellFormed()) return false;
+			if (version == myVersion) {
+				@SuppressWarnings("unchecked")
+				Stack<Node> clone = (Stack<Node>) pending.clone();
+				Node p = null;
+				if (current != null) {
+					boolean found = false;
+					for (Node r=root; r != null; ) {
+						if (compare(current.getLocation(),r.loc) < 0) {
+							p = r; // remember GT ancestor
+							r = r.left;
+						} else {
+							if (r.loc.equals(current.getLocation()) && current.getTerrain() == r.terrain) found = true;
+							r = r.right;
+						}
+					}
+					if (!found) return report("didn't find current in tree.");
+					if (p == null) {
+						if (!clone.isEmpty()) return report("stack isn't empty, but hextile is last");
+					} else {
+						if (clone.isEmpty()) return report("stack is empty, but hextile is not last");
+						if (clone.peek() != p) return report("top of stack is not next node from current");
+					}
+				}
+				p = null;
+				while (!clone.isEmpty()) {
+					Node q = clone.pop();
+					if (q == null) return report("Found null on stack");
+					Node r = q.left;
+					while (r != p && r != null) {
+						r = r.right;
+					}
+					if (r != p) return report("Found bad node " + q + " on stack");
+					p = q;
+				}				
+				if (p != null) {
+					Node r = root;
+					while (r != p && r != null) {
+						r = r.right;
+					}
+					if (r != p) return report("Bottom node on stack not a right descendant of root: " + p);
+				}
+			}
+			return true;
+		}
+		
+		private void pushNodes(Node p) {
+			while (p != null) {
+				pending.push(p);
+				p = p.left;
+			}
+		}
+			
+		private void checkVersion() {
+			if (version != myVersion) throw new ConcurrentModificationException("stale");
+		}
+
+		private MyIterator() {
+			pushNodes(root);
+			assert wellFormed();
+		}
+		
+		@Override // required by Java
+		public boolean hasNext() {
+			checkVersion();
+			return !pending.isEmpty();
+		}
+
+		@Override // required by Java
+		public HexTile next() {
+			if (!hasNext()) throw new NoSuchElementException("no more");
+			Node p = pending.pop();
+			pushNodes(p.right);
+			current = new HexTile(p.terrain,p.loc);
+			assert wellFormed() : "invariant broken at end of next()";
+			return current;
+		}
+
+		@Override // required for functionality
+		public void remove() {
+			assert wellFormed() : "invariant broken at start of remove()";
+			checkVersion();
+			if (current == null) throw new IllegalStateException("nothing to remove");
+			HexBoard.this.remove(current);
+			myVersion = version;
+			current = null;
+			assert wellFormed() : "invariant broken at end of remove()";
+		}
+	}
+}
