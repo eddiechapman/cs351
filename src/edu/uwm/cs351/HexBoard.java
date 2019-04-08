@@ -322,10 +322,9 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		private MyIterator(boolean ignored) {} // do not change, and do not use in your code
 		
 		private void processSubTree(Node n) { 
-		    Node t = n.right;
-		    while (t != null) {
-		        pending.push(t);
-		        t = t.left;
+		    while (n != null) {
+		        pending.push(n);
+		        n = n.left;
 		    }
 		}
 		
@@ -335,7 +334,6 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		}
 
 		private MyIterator() {
-		    pending.push(root);
 			processSubTree(root);
 			assert wellFormed();
 		}
@@ -353,7 +351,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		    checkVersion();
 		    if (!hasNext()) throw new NoSuchElementException("Iterator exhausted");
 		    Node next = pending.pop();
-		    processSubTree(next);
+		    processSubTree(next.right);
 		    current = new HexTile(next.terrain, next.loc);
 		    assert wellFormed() : "at end of next";
 			return current;
