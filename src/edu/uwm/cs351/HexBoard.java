@@ -27,6 +27,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
     public HexBoard() {
         root = null;
         size = 0;
+        version = 0;
         assert wellFormed() : "in constructor";
     }
     
@@ -220,7 +221,6 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		private HexTile current; // if can be removed
 		private int myVersion = version;
 		
-		
 		/**
 		 * Inspect the ADT's data structure, pointers, and redundant fields 
 		 * for breaches in the invariant.
@@ -273,7 +273,6 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		        if (!pending.empty() && (immediateSuccessor != pending.peek())) {
 	                    return report("Stack top is not immediate successor to current HexTile");
 	            }
-		        
 		    }
 		    
     		// Pending stack must include only GT ancestors of stack's top node. 	
@@ -323,8 +322,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		private MyIterator(boolean ignored) {} // do not change, and do not use in your code
 		
 		private void processSubTree(Node n) { 
-		    pending.push(n);
-		    Node t = n.left;
+		    Node t = n.right;
 		    while (t != null) {
 		        pending.push(t);
 		        t = t.left;
@@ -337,7 +335,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		}
 
 		private MyIterator() {
-//		    pending.push(root);
+		    pending.push(root);
 			processSubTree(root);
 			assert wellFormed();
 		}
