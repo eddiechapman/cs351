@@ -44,7 +44,7 @@ public class TestHexBoard extends TestCollection<HexTile> {
 	protected void initCollections() {
 		c = hb = new HexBoard();
 		map = hb.asMap();
-		set = map.entrySet();
+		set = map == null ? null : map.entrySet();
 		e = new HexTile[]{
 				new HexTile(Terrain.INACCESSIBLE,h(0,0)),
 				new HexTile(Terrain.LAND,h(1,0)),
