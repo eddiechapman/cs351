@@ -14,6 +14,13 @@ import junit.framework.TestCase;
  * there can never be two tiles at the same location.
  * 
  * @author Eddie Chapman (chapman4@uwm.edu)
+ * 
+ * I completed this assignment by referencing the assigned readings, lecture notes,
+ * and the Oracle documentation. 
+ * 
+ * I discussed invariant #4 with Mason Baran regarding the different states that
+ * could appear. 
+ * 
  */
 public class HexBoard extends AbstractCollection<HexTile> {
 
