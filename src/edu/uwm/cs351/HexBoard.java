@@ -17,31 +17,26 @@ import junit.framework.TestCase;
  */
 public class HexBoard extends AbstractCollection<HexTile> {
 
-	/**
-	 * Determines the order of two HexCoordinates.
-	 * 
-	 * @param h1       a HexCoordinate that is being compared
-	 * @param h2       a HexCoordinate that h1 is being compared to
-	 * @return         -1 if h1 comes first, 0 if they are equal, and 1 if 
-	 *                 h1 comes second.             
-	 */
-    private static int compare(HexCoordinate h1, HexCoordinate h2) {
-		if (h1.b() == h2.b()) {
-			return h1.a() - h2.a();
-		}
-		return h1.b() - h2.b();
-	}
-	
-	private static class Node {
-		HexCoordinate loc;
-		Terrain terrain;
-		Node left, right;
-		Node(HexCoordinate l, Terrain t) { loc = l; terrain = t; }
-	}
-	
 	private Node root;
 	private int size;
 	private int version;
+	
+	/**
+     * Create an empty hex board.
+     */
+    public HexBoard() {
+        root = null;
+        size = 0;
+        assert wellFormed() : "in constructor";
+    }
+    
+    private static class Node {
+        HexCoordinate loc;
+        Terrain terrain;
+        Node left, right;
+        Node(HexCoordinate l, Terrain t) { loc = l; terrain = t; }
+    }
+    
 	
 	private static boolean doReport = true; 
 	private static boolean report(String s) {
@@ -89,15 +84,22 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		return true;
 	}
 	
+
 	/**
-	 * Create an empty hex board.
-	 */
-	public HexBoard() {
-		root = null;
-		size = 0;
-		assert wellFormed() : "in constructor";
-	}
-	
+     * Determines the order of two HexCoordinates.
+     * 
+     * @param h1       a HexCoordinate that is being compared
+     * @param h2       a HexCoordinate that h1 is being compared to
+     * @return         -1 if h1 comes first, 0 if they are equal, and 1 if 
+     *                 h1 comes second.             
+     */
+    private static int compare(HexCoordinate h1, HexCoordinate h2) {
+        if (h1.b() == h2.b()) {
+            return h1.a() - h2.a();
+        }
+        return h1.b() - h2.b();
+    }
+    
 	/** 
 	 * Return the terrain at the given coordinate or null if nothing at this 
 	 * coordinate.
@@ -145,7 +147,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		Node p = root;
 		int c = 0;
 		while (p != null) {
-			c = compare(e.getLocation(),p.loc);
+			c = compare(e.getLocation(), p.loc);
 			if (c == 0) break;
 			lag = p;
 			if (c < 0) p = p.left;
@@ -156,7 +158,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 			p.terrain = e.getTerrain();
 			// size doesn't increase...
 		} else {
-			p = new Node(e.getLocation(),e.getTerrain());
+			p = new Node(e.getLocation(), e.getTerrain());
 			++size;
 			if (lag == null) root = p;
 			else if (c < 0) lag.left = p;
@@ -211,7 +213,6 @@ public class HexBoard extends AbstractCollection<HexTile> {
 	    return n;   
 	}
     
-
     private class MyIterator implements Iterator<HexTile> 
 	{
 		// new data structure for iterator:
@@ -223,6 +224,9 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		/**
 		 * Inspect the ADT's data structure, pointers, and redundant fields 
 		 * for breaches in the invariant.
+		 * 
+		 * After checking the HexBoard's invariant, iterator-specific
+		 * testing only continues if the iterator is not stale.
 		 * 
 		 * <ol>
 		 *    <li>Check the outer invariant (see new syntax in homework 
@@ -240,57 +244,86 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		 * @return        True if invariant applies to current state, false 
 		 *                if not.
 		 */
-		private boolean wellFormed() {
-			if (!HexBoard.this.wellFormed()) return report("HexBoard invariant failed in interator.");
+		@SuppressWarnings("unchecked")
+        private boolean wellFormed() {
+		    
+		    // HexBoard invariant
+			if (!HexBoard.this.wellFormed()) {
+			    return report("HexBoard invariant failed in interator.");
+			}
 			
+			// Stop testing invariant if the iterator is stale 
 			try {
 			    checkVersion();
 			} catch (ConcurrentModificationException e) {
-			    return true;
-			}
-			
-			if ((current != null) && (!contains(current))) return report("Current is missing from the tree.");
-			    
-			if ((current != null) && (!pending.empty())) {
-			    if (!immediateSuccessor(current.getLocation()).equals(pending.peek())) 
-			        return report("Stack top is not immediate successor to current HexTile");
-			}
-			
+			    return true;  
+			} 
+		    
+		    if (current != null) {
+		        
+		        // Current tile should appear in HexBoard.
+		        if (!contains(current)) 
+		            return report("Current is missing from the tree.");
+		        
+		        // The next node after 'current' should be the top of the 'pending' stack.
+		        Node immediateSuccessor = immediateSuccessor(current.getLocation());
+		        if (pending.empty() && immediateSuccessor != null) {
+		            return report("Current HexTile with empty stack is not final node in tree.");
+		        }
+		        if (!pending.empty() && (immediateSuccessor != pending.peek())) {
+	                    return report("Stack top is not immediate successor to current HexTile");
+	            }
+		        
+		    }
+		    
+    		// Pending stack must include only GT ancestors of stack's top node. 	
 			if (!pending.empty()) {
-			    Stack<Node> temp = new Stack<Node>();		     
-			    for (Node t = root; t != null;) {
-			        switch (compare(t.loc, pending.peek().loc)) {
-			            case -1:
-			                t = t.right;
-			                break;          
-			            case 0:     
-			            case 1:
-			                temp.push(t);
-			                t = t.left;
-			                break;
-			        }
-			    }   
-			    if (!pending.equals(temp) || pending.contains(null)) 
-			        return report("Pending does not contain all GT ancestors stack top.");   
+			    
+			    if (pending.contains(null)) 
+			        return report("No nulls allowed in pending.");
+			    
+                Stack<Node> temp = new Stack<Node>();
+                HexCoordinate stackTop = pending.peek().loc;
+                for (Node n = root; n != null;) {
+                    int c = compare(n.loc, stackTop);
+                    if (c < 0) n = n.right;
+                    else {
+                        temp.push(n);
+                        n = n.left;
+                    }
+                }
+                if (temp.size() != pending.size()) {
+                    return report("Non-GT nodes in the pending stack.");
+                } else {
+                    Stack<Node> pendingClone = (Stack<Node>)pending.clone();
+                    while (!pendingClone.empty()) {
+                        if (temp.pop() != pendingClone.pop()) {
+                            return report("Non-GT nodes in the pending stack.");
+                        }
+                    }
+                }
 			}
-		    return true;
+		    return true;  // The invariant is intact.
 		}
 		
 		private Node immediateSuccessor(HexCoordinate t) {
 		    Node immediateSuccessor = null;
 		    for (Node n = root; n != null;) {
 		        int c = compare(n.loc, t);
-		        if (c <= 0) n = n.right;
-		        else
-		            n = n.left;
+		        if (c <= 0) { 
+		            n = n.right;
+		        } else {
 		            immediateSuccessor = n;
+		            n = n.left;
+		        }
 		    }
 		    return immediateSuccessor;
 		}
 		
 		private MyIterator(boolean ignored) {} // do not change, and do not use in your code
 		
-		private void processSubTree(Node n) {
+		private void processSubTree(Node n) { 
+		    pending.push(n);
 		    Node t = n.left;
 		    while (t != null) {
 		        pending.push(t);
@@ -304,7 +337,7 @@ public class HexBoard extends AbstractCollection<HexTile> {
 		}
 
 		private MyIterator() {
-		    pending.push(root);
+//		    pending.push(root);
 			processSubTree(root);
 			assert wellFormed();
 		}
