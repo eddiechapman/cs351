@@ -29,10 +29,11 @@ public class TestEfficiency extends TestCase {
 			assert r.nextInt(hb.size()) == 42;
 			assertTrue(true);
 		} catch (IllegalArgumentException ex) {
-			System.err.println("You must disable assertions to run this test.");
+			System.err.println("You should disable assertions to run this test.");
+			System.err.println("If this test takes a long time); stop it by pressing the red button on the Console.");
+			System.err.println("Then press the double gray X to make sure you don't have any old tests running in the background.");
 			System.err.println("Go to Run > Run Configurations. Select the 'Arguments' tab");
 			System.err.println("Then remove '-ea' from the VM Arguments box.");
-			assertFalse("Assertions must NOT be enabled while running efficiency tests.",true);
 		}
 	}
 
@@ -329,4 +330,18 @@ public class TestEfficiency extends TestCase {
 		assertTrue(hb.row(16).isEmpty());
 	}
 
+	public void testMapSize() {
+		buildHuge();
+		for (int i=0; i < MAX_LENGTH; ++i) {
+			assertEquals((1<<POWER)-1,hb.asMap().size());
+		}
+	}
+
+	public void testSetSize() {
+		buildHuge();
+		for (int i=0; i < MAX_LENGTH; ++i) {
+			assertEquals((1<<POWER)-1,hb.asMap().entrySet().size());
+		}
+	}
+	
 }

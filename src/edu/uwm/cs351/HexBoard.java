@@ -18,7 +18,7 @@ import edu.uwm.cs351.util.AbstractEntry;
  * A hex board is a collection of hex tiles except that there can 
  * never be two tiles at the same location. 
  */
-public class HexBoard extends AbstractSet<HexTile> {
+public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 
 	private static int compare(HexCoordinate h1, HexCoordinate h2) {
 		if (h1.b() == h2.b()) {
@@ -159,11 +159,13 @@ public class HexBoard extends AbstractSet<HexTile> {
 
 	@Override // more efficient
 	public void clear() {
+		assert wellFormed() : "invariant broken before clear()";
 		if (size > 0) {
 			root = null;
 			size = 0;
 			++version;
 		}
+		assert wellFormed() : "invariant broken by clear()";
 	}
 
 	private Node doRemove(Node r, HexTile ht) {

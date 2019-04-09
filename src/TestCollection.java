@@ -508,7 +508,7 @@ public abstract class TestCollection<E> extends LockedTestCase {
 		it.next();
 		it.remove();
 		assertFalse(it.hasNext());
-		testcol(c,"{1} after remove(15)");
+		testcol(c,"{1} after remove(1)");
 	}
 	
 	public void test51() {
