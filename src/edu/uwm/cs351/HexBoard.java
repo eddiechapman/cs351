@@ -206,8 +206,10 @@ public class HexBoard extends AbstractSet<HexTile> {
 	private class EntrySetIterator implements Iterator<Entry<HexCoordinate,Terrain>> {
 		
 		private boolean wellFormed() {
-			// Only checking outer class invariant:
-			return HexBoard.this.wellFormed();
+			if (!HexBoard.this.wellFormed()) return false;
+			// OPTIONAL: define an invariant on the iterator
+			// (Only check if the iterator is not stale!)
+			return true;
 		}
 
 		private EntrySetIterator() {
