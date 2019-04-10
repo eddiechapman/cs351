@@ -209,10 +209,6 @@ public class HexBoard extends AbstractSet<HexTile> {
 			// Only checking outer class invariant:
 			return HexBoard.this.wellFormed();
 		}
-			
-		private void checkVersion() {
-			if (version != myVersion) throw new ConcurrentModificationException("stale");
-		}
 
 		private EntrySetIterator() {
 			// TODO
