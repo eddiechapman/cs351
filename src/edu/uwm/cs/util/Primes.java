@@ -24,7 +24,7 @@ public class Primes {
 	 * @return largest prime less than the argument (or 2).
 	 */
 	public static int prevPrime(int n) {
-		if (n <= 5) return 2;
+		if (n <= 3) return 2;
 		// also very simple
 		for (;;) {
 			if (isPrime(--n)) return n;
