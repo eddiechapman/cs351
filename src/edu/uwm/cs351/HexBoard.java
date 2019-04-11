@@ -13,10 +13,9 @@ import java.util.Stack;
 import edu.uwm.cs351.util.AbstractEntry;
 
 /**
- * An implementation of the HexBoard ADT using 
- * a binary search tree implementation.
- * A hex board is a collection of hex tiles except that there can 
- * never be two tiles at the same location. 
+ * An implementation of the HexBoard ADT using a binary search tree 
+ * implementation. A hex board is a collection of hex tiles except 
+ * that there can never be two tiles at the same location. 
  */
 public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 
@@ -47,27 +46,29 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 	}
 	
 	/**
-	 * Return true if the nodes in this BST are properly
-	 * ordered with respect to the {@link #compare(HexCoordinate, HexCoordinate)}
-	 * method.  If a problem is found, it should be reported (once).
-	 * @param r subtree to check (may be null)
-	 * @param lo lower bound (if any)
-	 * @param hi upper bound (if any)
-	 * @return whether there are any problems in the tree.
+	 * Return true if the nodes in this BST are properly ordered with 
+	 * respect to the {@link #compare(HexCoordinate, HexCoordinate)} 
+	 * method. If a problem is found, it should be reported (once).
+	 * 
+	 * @param r    subtree to check (may be null)
+	 * @param lo   lower bound (if any)
+	 * @param hi   upper bound (if any)
+	 * @return     whether there are any problems in the tree.
 	 */
 	private static boolean isInProperOrder(Node r, HexCoordinate lo, HexCoordinate hi) {
 		if (r == null) return true;
 		if (r.loc == null) return report("null location in tree");
 		if (r.terrain == null) return report("null terrain for " + r.loc);
-		if (lo != null && compare(lo,r.loc) >= 0) return report("out of order " + r.loc + " <= " + lo);
-		if (hi != null && compare(hi,r.loc) <= 0) return report("out of order " + r.loc + " >= " + hi);
-		return isInProperOrder(r.left,lo,r.loc) && isInProperOrder(r.right,r.loc,hi);
+		if (lo != null && compare(lo, r.loc) >= 0) return report("out of order " + r.loc + " <= " + lo);
+		if (hi != null && compare(hi, r.loc) <= 0) return report("out of order " + r.loc + " >= " + hi);
+		return isInProperOrder(r.left, lo, r.loc) && isInProperOrder(r.right, r.loc, hi);
 	}
 	
 	/**
 	 * Return the count of the nodes in this subtree.
-	 * @param p subtree to count nodes for (may be null)
-	 * @return number of nodes in the subtree.
+	 * 
+	 * @param p    subtree to count nodes for (may be null)
+	 * @return     number of nodes in the subtree.
 	 */
 	private static int countNodes(Node p) {
 		if (p == null) return 0;
@@ -75,7 +76,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 	}
 	
 	private boolean wellFormed() {
-		if (!isInProperOrder(root,null,null)) return false;
+		if (!isInProperOrder(root, null, null)) return false;
 		int count = countNodes(root);
 		if (size != count) return report("size " + size + " wrong, should be " + count);
 		return true;
@@ -90,15 +91,17 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 		assert wellFormed() : "in constructor";
 	}
 	
-	/** Return the terrain at the given coordinate or null
-	 * if nothing at this coordinate.
-	 * @param c hex coordinate to look for (null OK but pointless)
-	 * @return terrain at that coordinate, or null if nothing
+	/** 
+	 * Return the terrain at the given coordinate or null if nothing 
+	 * at this coordinate.
+	 * 
+	 * @param l    hex coordinate to look for (null OK but pointless)
+	 * @return     terrain at that coordinate, or null if nothing
 	 */
 	public Terrain terrainAt(HexCoordinate l) {
 		assert wellFormed() : "in terrainAt";
 		for (Node p = root; p != null; ) {
-			int c = compare(l,p.loc);
+			int c = compare(l, p.loc);
 			if (c == 0) return p.terrain;
 			if (c < 0) p = p.left;
 			else p = p.right;
@@ -135,7 +138,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 		Node p = root;
 		int c = 0;
 		while (p != null) {
-			c = compare(e.getLocation(),p.loc);
+			c = compare(e.getLocation(), p.loc);
 			if (c == 0) break;
 			lag = p;
 			if (c < 0) p = p.left;
@@ -146,7 +149,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 			p.terrain = e.getTerrain();
 			// size doesn't increase...
 		} else {
-			p = new Node(e.getLocation(),e.getTerrain());
+			p = new Node(e.getLocation(), e.getTerrain());
 			++size;
 			if (lag == null) root = p;
 			else if (c < 0) lag.left = p;
@@ -169,7 +172,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 	}
 
 	private Node doRemove(Node r, HexTile ht) {
-		int c = compare(ht.getLocation(),r.loc);
+		int c = compare(ht.getLocation(), r.loc);
 		if (c == 0) {
 			if (r.left == null) return r.right;
 			if (r.right == null) return r.left;
@@ -179,7 +182,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 			}
 			r.loc = sub.loc;
 			r.terrain = sub.terrain;
-			r.left = doRemove(r.left, new HexTile(r.terrain,r.loc));
+			r.left = doRemove(r.left, new HexTile(r.terrain, r.loc));
 		} else if (c < 0) {
 			r.left = doRemove(r.left, ht);
 		} else {
@@ -194,7 +197,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 		if (!(x instanceof HexTile)) return false;
 		HexTile ht = (HexTile)x;
 		if (!contains(ht)) return false;
-		root = doRemove(root,ht);
+		root = doRemove(root, ht);
 		--size;
 		++version;
 		assert wellFormed() : "invariant broken after remove";
@@ -202,20 +205,21 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 	}
 	
 	/**
-	 * Return a set backed by this hex board that
-	 * has all the tiles in the given row.
-	 * The result is <i>backed</i> by this hex board;
+	 * Return a set backed by this hex board that has all the tiles in 
+	 * the given row. The result is <i>backed</i> by this hex board; 
 	 * changes to either are reflected in the other.
-	 * @param r row number.
-	 * @return set of hextiles with the given row
+	 * 
+	 * @param r    row number.
+	 * @return     set of hextiles with the given row
 	 */
 	public Set<HexTile> row(int r) {
 		return null; // TODO
 	}
 	
 	/**
-	 * Return a view of this hex board as a map from hex coordinates to terrain.
-	 * It is as efficient as the hex board itself.
+	 * Return a view of this hex board as a map from hex coordinates to 
+	 * terrain. It is as efficient as the hex board itself.
+	 * 
 	 * @return
 	 */
 	public Map<HexCoordinate,Terrain> asMap() {
@@ -244,7 +248,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 				if (current != null) {
 					boolean found = false;
 					for (Node r=root; r != null; ) {
-						if (compare(current.getLocation(),r.loc) < 0) {
+						if (compare(current.getLocation(), r.loc) < 0) {
 							p = r; // remember GT ancestor
 							r = r.left;
 						} else {
