@@ -125,7 +125,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 	@Override // required by Java
 	public Iterator<HexTile> iterator() {
 		assert wellFormed() : "in iterator";
-		return new EntrySetIterator();
+		return new MyIterator();
 	}
 
 	@Override // required by Java
@@ -245,6 +245,27 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 	// The row class may only have a "final" field (for the row number).
 	// Assuming you can use a separate constructor for MyIterator,
 	// this class can be used for row iterators too.
+	
+	private class MyIterator implements Iterator<HexTile> {
+	    private EntrySetIterator it = new EntrySetIterator();
+
+        @Override  // required by Java
+        public boolean hasNext() {
+            return it.hasNext();
+        }
+
+        @Override  // required by Java
+        public HexTile next() {
+            Node p = it.next();
+            return new HexTile(p.terrain, p.loc);
+        }
+
+        @Override  // required for functionality
+        public void remove() {
+            it.remove();
+        } 
+	}
+	
 	private class EntrySetIterator implements Iterator<Node> {
 		// Separate this into two classes:
 		// One an entry set iterator, and the other a wrapper
@@ -323,13 +344,13 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 		}
 
 		@Override // required by Java
-		public HexTile next() {
+		public Node next() {
 			if (!hasNext()) throw new NoSuchElementException("no more");
 			Node p = pending.pop();
 			pushNodes(p.right);
 			current = new HexTile(p.terrain,p.loc);
 			assert wellFormed() : "invariant broken at end of next()";
-			return current;
+			return p;
 		}
 
 		@Override // required for functionality
