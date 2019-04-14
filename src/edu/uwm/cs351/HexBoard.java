@@ -31,7 +31,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 		Terrain terrain;
 		Node left, right;
 		
-		public Node(HexCoordinate l, Terrain t) { 
+		public Node(HexCoordinate l, Terrain t) {
 		    loc = l; 
 		    terrain = t; 
 		}
@@ -237,12 +237,14 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 	 *             terrain.
 	 */
 	public Map<HexCoordinate,Terrain> asMap() {
+	    assert wellFormed() : "At beginning of asMap()";
 		return new MyMap(); 
 	}
 	
 	private class EntrySet extends AbstractSet<Entry<HexCoordinate,Terrain>> {
         @Override  // required by Java
         public Iterator<Entry<HexCoordinate, Terrain>> iterator() {
+            assert wellFormed(): "At beginning of EntrySet.Iterator";
             return new EntrySetIterator();
         }
 
@@ -255,8 +257,17 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 	private class MyMap extends AbstractMap<HexCoordinate, Terrain> {
         @Override  // required by Java
         public Set<Entry<HexCoordinate,Terrain>> entrySet() {
+            assert wellFormed() : "At beginning of MyMap.entrySet";
             return new HexBoard.EntrySet();
         }
+
+//        @Override  // required for functionality
+//        public Terrain put(HexCoordinate key, Terrain value) {
+//            if (key == null) throw new NullPointerException("Cannot put null value in map.");
+//            Terrain t = terrainAt(key);
+//            
+//            return super.put(key, value);
+//        }
 	    
 	}
 	
@@ -277,12 +288,15 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
         @Override  // required by Java
         public HexTile next() {
             Node p = it.next();
+            assert wellFormed() : "in MyIterator.next";
             return new HexTile(p.terrain, p.loc);
         }
 
         @Override  // required for functionality
         public void remove() {
+            assert wellFormed() : "at beginning of MyIterator.remove";
             it.remove();
+            assert wellFormed() : "at end of MyIterator.remove";
         } 
 	}
 	
