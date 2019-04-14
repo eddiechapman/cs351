@@ -48,12 +48,11 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 
         @Override  // required for functionality
         public Terrain setValue(Terrain v) {
+            if (v == null) throw new IllegalArgumentException("Terrain may not be set to null");
             Terrain t = terrain;
             terrain = v;
             return t;
-        }
-        
-        
+        } 
 	}
 	
 	private Node root;
