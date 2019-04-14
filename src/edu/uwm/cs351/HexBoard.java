@@ -26,12 +26,25 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 		return h1.b() - h2.b();
 	}
 	
-	private static class Node 
-	{
+	private static class Node extends AbstractEntry<HexCoordinate, Terrain> {
 		HexCoordinate loc;
 		Terrain terrain;
 		Node left, right;
-		Node(HexCoordinate l, Terrain t) { loc = l; terrain = t; }
+		
+		public Node(HexCoordinate l, Terrain t) { 
+		    loc = l; 
+		    terrain = t; 
+		}
+		
+        @Override  // required by abstract class 
+        public HexCoordinate getKey() {
+            return loc;
+        }
+        
+        @Override // required by abstract class 
+        public Terrain getValue() {
+            return terrain;
+        }
 	}
 	
 	private Node root;
@@ -112,7 +125,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 	@Override // required by Java
 	public Iterator<HexTile> iterator() {
 		assert wellFormed() : "in iterator";
-		return new MyIterator();
+		return new EntrySetIterator();
 	}
 
 	@Override // required by Java
@@ -232,7 +245,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 	// The row class may only have a "final" field (for the row number).
 	// Assuming you can use a separate constructor for MyIterator,
 	// this class can be used for row iterators too.
-	private class MyIterator implements Iterator<HexTile> {
+	private class EntrySetIterator implements Iterator<Node> {
 		// Separate this into two classes:
 		// One an entry set iterator, and the other a wrapper
 		// around it that returns hex tiles up to a particular row number.
@@ -298,7 +311,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 			if (version != myVersion) throw new ConcurrentModificationException("stale");
 		}
 
-		private MyIterator() {
+		private EntrySetIterator() {
 			pushNodes(root);
 			assert wellFormed();
 		}
