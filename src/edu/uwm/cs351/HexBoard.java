@@ -261,14 +261,22 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
             return new HexBoard.EntrySet();
         }
 
-//        @Override  // required for functionality
-//        public Terrain put(HexCoordinate key, Terrain value) {
-//            if (key == null) throw new NullPointerException("Cannot put null value in map.");
-//            Terrain t = terrainAt(key);
-//            
-//            return super.put(key, value);
-//        }
-	    
+        @Override  // required for functionality
+        public Terrain put(HexCoordinate key, Terrain value) {
+            assert wellFormed() : "At beginning of MyMap.put";
+            if (key == null) throw new NullPointerException("Cannot put null value in map.");
+            Terrain t = terrainAt(key);
+            if (t == null) add(new HexTile(value, key));
+            else {
+                Iterator<Entry<HexCoordinate, Terrain>> it = entrySet().iterator();
+                while (it.hasNext()) {
+                    Entry<HexCoordinate, Terrain> e = it.next();
+                    if (key.equals(e.getKey())) e.setValue(value);
+                }
+            } 
+            assert wellFormed();
+            return t;
+        }
 	}
 	
 	// TODO: add nested classes to implement map, entry set, and row.
