@@ -36,15 +36,24 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 		    terrain = t; 
 		}
 		
-        @Override  // required by abstract class 
+        @Override  // required by Java
         public HexCoordinate getKey() {
             return loc;
         }
         
-        @Override // required by abstract class 
+        @Override  // required by Java
         public Terrain getValue() {
             return terrain;
         }
+
+        @Override  // required for functionality
+        public Terrain setValue(Terrain v) {
+            Terrain t = terrain;
+            terrain = v;
+            return t;
+        }
+        
+        
 	}
 	
 	private Node root;
