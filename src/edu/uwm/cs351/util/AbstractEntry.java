@@ -4,7 +4,10 @@ import java.util.Map;
 
 /**
  * An entry in a Map
- * @see {@link java.util.Map.Entry}
+ * 
+ * @param <K>   key type 
+ * @param <V>   value type
+ * @see         {@link java.util.Map.Entry}
  */
 public abstract class AbstractEntry<K,V> implements Map.Entry<K,V> {
 

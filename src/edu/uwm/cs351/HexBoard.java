@@ -220,7 +220,8 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 	 * Return a view of this hex board as a map from hex coordinates to 
 	 * terrain. It is as efficient as the hex board itself.
 	 * 
-	 * @return
+	 * @return     a view of this hex board as a map from hex coordinates to
+	 *             terrain.
 	 */
 	public Map<HexCoordinate,Terrain> asMap() {
 		return null; // TODO
