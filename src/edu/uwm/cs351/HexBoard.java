@@ -240,6 +240,18 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 		return null; // TODO
 	}
 	
+	private class EntrySet extends AbstractSet<Node> {
+        @Override  // required by Java
+        public Iterator<Node> iterator() {
+            return new EntrySetIterator();
+        }
+
+        @Override  // required by Java
+        public int size() {
+            return size;
+        }
+	}
+	
 	// TODO: add nested classes to implement map, entry set, and row.
 	// The map and entry set classes must not have any fields!
 	// The row class may only have a "final" field (for the row number).
