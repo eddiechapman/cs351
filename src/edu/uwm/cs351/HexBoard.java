@@ -237,7 +237,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 	 *             terrain.
 	 */
 	public Map<HexCoordinate,Terrain> asMap() {
-		return null; // TODO
+		return new MyMap(); 
 	}
 	
 	private class EntrySet extends AbstractSet<Entry<HexCoordinate,Terrain>> {
