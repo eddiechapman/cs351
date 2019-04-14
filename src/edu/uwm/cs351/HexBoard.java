@@ -240,9 +240,9 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 		return null; // TODO
 	}
 	
-	private class EntrySet extends AbstractSet<Node> {
+	private class EntrySet extends AbstractSet<Entry<HexCoordinate,Terrain>> {
         @Override  // required by Java
-        public Iterator<Node> iterator() {
+        public Iterator<Entry<HexCoordinate, Terrain>> iterator() {
             return new EntrySetIterator();
         }
 
@@ -250,6 +250,14 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
         public int size() {
             return size;
         }
+	}
+	
+	private class MyMap extends AbstractMap<HexCoordinate, Terrain> {
+        @Override  // required by Java
+        public Set<Entry<HexCoordinate,Terrain>> entrySet() {
+            return new HexBoard.EntrySet();
+        }
+	    
 	}
 	
 	// TODO: add nested classes to implement map, entry set, and row.
@@ -278,7 +286,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
         } 
 	}
 	
-	private class EntrySetIterator implements Iterator<Node> {
+	private class EntrySetIterator implements Iterator<Entry<HexCoordinate,Terrain>> {
 		// Separate this into two classes:
 		// One an entry set iterator, and the other a wrapper
 		// around it that returns hex tiles up to a particular row number.
