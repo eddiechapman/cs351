@@ -410,9 +410,14 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 		
 		private EntrySetIterator(int row) {
 		    for (Node p = root; p != null; ) {
-		        if (row == p.loc.b()) pending.push(p); 
-		        if (row > p.loc.b()) p = p.right;
-	            else p = p.left; 
+	            if (row > p.loc.b()) p = p.right;
+	            else {
+	                pending.push(p); 
+	                p = p.left;
+	            }
+//		        if (row == p.loc.b()) pending.push(p); 
+//		        if (row > p.loc.b()) p = p.right;
+//	            else p = p.left; 
 		    }
 		    assert wellFormed() : "at end of EntrySetIterator alternate constructor";
 		}
