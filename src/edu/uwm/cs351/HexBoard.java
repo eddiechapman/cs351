@@ -254,7 +254,13 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 
         @Override  // required by Java
         public int size() {
-            return size;
+            int count = 0;
+            Iterator<HexTile> it = iterator();
+            while (it.hasNext()) {
+                it.next();
+                ++count;
+            }
+            return count;
         }
 
         @Override  // required to avoid more complicated implementation of size.
