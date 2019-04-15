@@ -287,7 +287,19 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 	// this class can be used for row iterators too.
 	
 	private class MyIterator implements Iterator<HexTile> {
-	    private EntrySetIterator it = new EntrySetIterator();
+	    private EntrySetIterator it;
+	    private int row;
+	    
+	    public MyIterator() {
+	        it = new EntrySetIterator();
+	        assert wellFormed() : "at end of MyIterator default constructor.";
+	    }
+	    
+	    public MyIterator(int row) {
+	        this.row = row;
+	        this.it = new EntrySetIterator(row);
+	        assert wellFormed() : "at end of MyIterator alternate constructor.";
+	    }
 
         @Override  // required by Java
         public boolean hasNext() {
@@ -297,7 +309,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
         @Override  // required by Java
         public HexTile next() {
             Node p = it.next();
-            assert wellFormed() : "in MyIterator.next";
+            assert wellFormed() : "at end of MyIterator.next";
             return new HexTile(p.terrain, p.loc);
         }
 
@@ -386,6 +398,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 	            if (row > p.loc.b()) p = p.right;
 	            else p = p.left;
 		    }
+		    assert wellFormed() : "at end of EntrySetIterator alternate constructor";
 		}
 		
 		@Override // required by Java
@@ -394,7 +407,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 			return !pending.isEmpty();
 		}
 		
-		public boolean hasNextInRow(int row) {
+		public boolean hasNext(int row) {
 		    checkVersion();
 		    return pending.peek().loc.b() == row;
 		}
