@@ -234,7 +234,28 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 	 * @return     set of hextiles with the given row
 	 */
 	public Set<HexTile> row(int r) {
-		return null; // TODO
+	    assert wellFormed() : "at beginning of HexBoard.row.";
+	    return new Row(r);
+	}
+	
+	private class Row extends AbstractSet<HexTile> {
+	    private final int row;
+	    
+	    public Row(int row) {
+	        this.row = row;
+	        assert wellFormed() : "at end of Row constructor.";
+	    }
+
+        @Override  // required by Java
+        public Iterator<HexTile> iterator() {
+            assert wellFormed() : "at beginning of Row.iterator.";
+            return new MyIterator(row);
+        }
+
+        @Override  // required by Java
+        public int size() {
+            return size;
+        } 
 	}
 	
 	/**
@@ -280,15 +301,8 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
         }
 	}
 	
-	// TODO: add nested classes to implement map, entry set, and row.
-	// The map and entry set classes must not have any fields!
-	// The row class may only have a "final" field (for the row number).
-	// Assuming you can use a separate constructor for MyIterator,
-	// this class can be used for row iterators too.
-	
 	private class MyIterator implements Iterator<HexTile> {
 	    private EntrySetIterator it;
-	    private int row;
 	    
 	    public MyIterator() {
 	        it = new EntrySetIterator();
@@ -296,8 +310,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 	    }
 	    
 	    public MyIterator(int row) {
-	        this.row = row;
-	        this.it = new EntrySetIterator(row);
+	        it = new EntrySetIterator(row);
 	        assert wellFormed() : "at end of MyIterator alternate constructor.";
 	    }
 
@@ -322,9 +335,6 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 	}
 	
 	private class EntrySetIterator implements Iterator<Entry<HexCoordinate,Terrain>> {
-		// Separate this into two classes:
-		// One an entry set iterator, and the other a wrapper
-		// around it that returns hex tiles up to a particular row number.
 		private Stack<Node> pending = new Stack<>();
 		private HexTile current; // if can be removed
 		private int myVersion = version;
