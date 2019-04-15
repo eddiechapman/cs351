@@ -270,7 +270,8 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 
         @Override
         public boolean add(HexTile e) {
-            return HexBoard.this.add(e);
+            if (e.getLocation().b() != row) throw new IllegalArgumentException("Row must match.");
+            else return HexBoard.this.add(e);
         }   
 	}
 	
