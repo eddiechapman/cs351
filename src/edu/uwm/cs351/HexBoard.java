@@ -266,8 +266,12 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
         @Override  // required to avoid more complicated implementation of size.
         public boolean isEmpty() {
             return !iterator().hasNext();
-        } 
-        
+        }
+
+        @Override
+        public boolean add(HexTile e) {
+            return HexBoard.this.add(e);
+        }   
 	}
 	
 	/**
