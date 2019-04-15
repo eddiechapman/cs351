@@ -241,8 +241,8 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 	private class Row extends AbstractSet<HexTile> {
 	    private final int row;
 	    
-	    public Row(int row) {
-	        this.row = row;
+	    public Row(int r) {
+	        row = r;
 	        assert wellFormed() : "at end of Row constructor.";
 	    }
 
@@ -255,7 +255,13 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
         @Override  // required by Java
         public int size() {
             return size;
+        }
+
+        @Override  // required to avoid more complicated implementation of size.
+        public boolean isEmpty() {
+            return !iterator().hasNext();
         } 
+        
 	}
 	
 	/**
@@ -404,9 +410,9 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 		
 		private EntrySetIterator(int row) {
 		    for (Node p = root; p != null; ) {
-		        if (row == p.loc.b()) pushNodes(p);
-	            if (row > p.loc.b()) p = p.right;
-	            else p = p.left;
+		        if (row == p.loc.b()) pending.push(p); 
+		        if (row > p.loc.b()) p = p.right;
+	            else p = p.left; 
 		    }
 		    assert wellFormed() : "at end of EntrySetIterator alternate constructor";
 		}
