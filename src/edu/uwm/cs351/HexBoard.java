@@ -15,7 +15,7 @@ import junit.framework.TestCase;
 
 /**
  * An implementation of the HexBoard ADT using 
- * a binary search tree implementation.
+ * a hash table implementation.
  * A hex board is a collection of hex tiles except that there can 
  * never be two tiles at the same location. 
  */
