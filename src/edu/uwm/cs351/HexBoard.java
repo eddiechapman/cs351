@@ -274,14 +274,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
             assert wellFormed() : "At beginning of MyMap.put";
             if (key == null) throw new IllegalArgumentException("Cannot put null value in map.");
             Terrain t = terrainAt(key);
-            if (t == null) add(new HexTile(value, key));
-            else {
-                Iterator<Entry<HexCoordinate, Terrain>> it = entrySet().iterator();
-                while (it.hasNext()) {
-                    Entry<HexCoordinate, Terrain> e = it.next();
-                    if (key.equals(e.getKey())) e.setValue(value);
-                }
-            } 
+            add(new HexTile(value, key)); 
             assert wellFormed();
             return t;
         }
