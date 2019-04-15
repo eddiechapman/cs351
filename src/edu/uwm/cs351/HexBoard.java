@@ -380,10 +380,23 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 			assert wellFormed();
 		}
 		
+		private EntrySetIterator(int row) {
+		    for (Node p = root; p != null; ) {
+		        if (row == p.loc.b()) pushNodes(p);
+	            if (row > p.loc.b()) p = p.right;
+	            else p = p.left;
+		    }
+		}
+		
 		@Override // required by Java
 		public boolean hasNext() {
 			checkVersion();
 			return !pending.isEmpty();
+		}
+		
+		public boolean hasNextInRow(int row) {
+		    checkVersion();
+		    return pending.peek().loc.b() == row;
 		}
 
 		@Override // required by Java
