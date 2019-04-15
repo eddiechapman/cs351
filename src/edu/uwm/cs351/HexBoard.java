@@ -309,20 +309,24 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 	
 	private class MyIterator implements Iterator<HexTile> {
 	    private EntrySetIterator it;
+	    private Integer row;
 	    
 	    public MyIterator() {
 	        it = new EntrySetIterator();
+	        row = null;
 	        assert wellFormed() : "at end of MyIterator default constructor.";
 	    }
 	    
-	    public MyIterator(int row) {
-	        it = new EntrySetIterator(row);
+	    public MyIterator(int r) {
+	        it = new EntrySetIterator(r);
+	        row = r;
 	        assert wellFormed() : "at end of MyIterator alternate constructor.";
 	    }
 
         @Override  // required by Java
         public boolean hasNext() {
-            return it.hasNext();
+            if (row == null) return it.hasNext();
+            else return it.hasNext(row);
         }
 
         @Override  // required by Java
@@ -415,9 +419,6 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 	                pending.push(p); 
 	                p = p.left;
 	            }
-//		        if (row == p.loc.b()) pending.push(p); 
-//		        if (row > p.loc.b()) p = p.right;
-//	            else p = p.left; 
 		    }
 		    assert wellFormed() : "at end of EntrySetIterator alternate constructor";
 		}
@@ -430,7 +431,10 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 		
 		public boolean hasNext(int row) {
 		    checkVersion();
-		    return pending.peek().loc.b() == row;
+		    if (pending.empty()) 
+		        return false;
+		    else
+		        return pending.peek().loc.b() == row;
 		}
 
 		@Override // required by Java
