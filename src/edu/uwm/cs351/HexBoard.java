@@ -343,6 +343,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 
         @Override  // required by Java
         public HexTile next() {
+            if ((row != null) && !it.hasNext(row)) throw new NoSuchElementException("no more");
             Node p = it.next();
             assert wellFormed() : "at end of MyIterator.next";
             return new HexTile(p.terrain, p.loc);
