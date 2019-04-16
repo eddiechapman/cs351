@@ -371,13 +371,13 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
             if (key instanceof HexCoordinate) {
                 HexCoordinate h = (HexCoordinate)key;
                 Terrain t = terrainAt(h);
-                HexBoard.this.remove(new HexTile(t, h));
+                if (t != null) {
+                    HexBoard.this.remove(new HexTile(t, h));
+                }
                 return t;
             }
             return null;
-        }
-        
-        
+        } 
 	}
 	
 	private class MyIterator implements Iterator<HexTile> {
