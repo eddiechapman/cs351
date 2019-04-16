@@ -268,7 +268,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
             return !iterator().hasNext();
         }
 
-        @Override
+        @Override  // for functionality
         public boolean add(HexTile e) {
             if ((e == null) || (e.getLocation().b() != row)) 
                 throw new IllegalArgumentException("Row must match.");
@@ -323,6 +323,15 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
             add(new HexTile(value, key)); 
             assert wellFormed();
             return t;
+        }
+
+        @Override  // for efficiency
+        public boolean containsKey(Object key) {
+            if (key instanceof HexCoordinate) {
+                HexCoordinate h = (HexCoordinate)key;
+                return terrainAt(h) != null;
+            }
+            return false;
         }
 	}
 	
