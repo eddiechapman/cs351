@@ -273,7 +273,14 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
             if ((e == null) || (e.getLocation().b() != row)) 
                 throw new IllegalArgumentException("Row must match.");
             else return HexBoard.this.add(e);
-        }   
+        }
+
+        @Override  // required for efficiency
+        public boolean contains(Object o) {
+            return HexBoard.this.contains(o);
+        }
+        
+        
 	}
 	
 	/**
