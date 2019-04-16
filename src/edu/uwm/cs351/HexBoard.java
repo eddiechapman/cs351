@@ -356,6 +356,15 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
             }
             return false;
         }
+
+        @Override  // required for efficiency
+        public Terrain get(Object key) {
+            if (key instanceof HexCoordinate) {
+                HexCoordinate h = (HexCoordinate)key;
+                return terrainAt(h);
+            }
+            return null;
+        }
 	}
 	
 	private class MyIterator implements Iterator<HexTile> {
