@@ -306,6 +306,17 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
         public int size() {
             return size;
         }
+
+        @Override  // required for efficiency
+        public boolean contains(Object o) {
+            if (!(o instanceof Map.Entry<?,?>)) return false;
+            Entry<?,?> e = (Entry<?,?>)o;
+            if (!((e.getKey() instanceof HexCoordinate) && (e.getValue() instanceof Terrain))) 
+                return false;
+            HexCoordinate h = (HexCoordinate)e.getKey();
+            Terrain t = (Terrain)e.getValue();
+            return terrainAt(h) == t;
+        }
 	}
 	
 	private class MyMap extends AbstractMap<HexCoordinate, Terrain> {
