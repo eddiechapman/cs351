@@ -365,6 +365,19 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
             }
             return null;
         }
+
+        @Override  // required for efficiency
+        public Terrain remove(Object key) {
+            if (key instanceof HexCoordinate) {
+                HexCoordinate h = (HexCoordinate)key;
+                Terrain t = terrainAt(h);
+                HexBoard.this.remove(new HexTile(t, h));
+                return t;
+            }
+            return null;
+        }
+        
+        
 	}
 	
 	private class MyIterator implements Iterator<HexTile> {
