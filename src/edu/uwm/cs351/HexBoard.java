@@ -16,6 +16,15 @@ import edu.uwm.cs351.util.AbstractEntry;
  * An implementation of the HexBoard ADT using a binary search tree 
  * implementation. A hex board is a collection of hex tiles except 
  * that there can never be two tiles at the same location. 
+ * 
+ * @author Eddie Chapman (chapman4@uwm.edu)
+ * 
+ * I completed this assignment by referencing the lecture notes and 
+ * Oracle documentation. 
+ * 
+ * I discussed the assignment with Mason Baran in terms of high level
+ * goals and concepts to focus on, but we did not share code or
+ * implementation details. 
  */
 public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 
@@ -241,6 +250,11 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 	private class Row extends AbstractSet<HexTile> {
 	    private final int row;
 	    
+	    /**
+	     * Create a view of a single row in the HexBoard.
+	     * 
+	     * @param r    the row number
+	     */
 	    public Row(int r) {
 	        row = r;
 	        assert wellFormed() : "at end of Row constructor.";
@@ -254,6 +268,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 
         @Override  // required by Java
         public int size() {
+            assert wellFormed() : "at the beginning of Row.size.";
             int count = 0;
             Iterator<HexTile> it = iterator();
             while (it.hasNext()) {
@@ -265,18 +280,21 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 
         @Override  // required to avoid more complicated implementation of size.
         public boolean isEmpty() {
+            assert wellFormed() : "at the beginning of Row.isEmpty.";
             return !iterator().hasNext();
         }
 
         @Override  // for functionality
         public boolean add(HexTile e) {
+            assert wellFormed() : "at the beginning of Row.add.";
             if ((e == null) || (e.getLocation().b() != row)) 
                 throw new IllegalArgumentException("Row must match.");
-            else return HexBoard.this.add(e);
+            return HexBoard.this.add(e);
         }
 
         @Override  // required for efficiency
         public boolean contains(Object o) {
+            assert wellFormed() : "at the beginning of Row.contains.";
             if (!(o instanceof HexTile)) return false;
             HexTile ht = (HexTile)o;
             if (ht.getLocation().b() != row) return false;
@@ -285,6 +303,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 
         @Override // required for efficiency
         public boolean remove(Object o) {
+            assert wellFormed() : "at the beginning of Row.remove.";
             if (!(o instanceof HexTile)) return false;
             HexTile ht = (HexTile)o;
             if (ht.getLocation().b() != row) return false;
@@ -318,6 +337,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 
         @Override  // required for efficiency
         public boolean contains(Object o) {
+            assert wellFormed() : "at the beginning of EntrySet.contains.";
             if (!(o instanceof Map.Entry<?,?>)) return false;
             Entry<?,?> e = (Entry<?,?>)o;
             if (!((e.getKey() instanceof HexCoordinate) && (e.getValue() instanceof Terrain))) 
@@ -329,6 +349,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 
         @Override  // required for efficiency
         public boolean remove(Object o) {
+            assert wellFormed() : "at the beginning of EntrySet.remove.";
             if (!(o instanceof Map.Entry<?,?>)) return false;
             Entry<?,?> e = (Entry<?,?>)o;
             if (!((e.getKey() instanceof HexCoordinate) && (e.getValue() instanceof Terrain))) 
@@ -358,6 +379,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 
         @Override  // for efficiency
         public boolean containsKey(Object key) {
+            assert wellFormed() : "at the beginning of MyMap.containsKey.";
             if (key instanceof HexCoordinate) {
                 HexCoordinate h = (HexCoordinate)key;
                 return terrainAt(h) != null;
@@ -367,6 +389,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 
         @Override  // required for efficiency
         public Terrain get(Object key) {
+            assert wellFormed() : "at the beginning of MyMap.get.";
             if (key instanceof HexCoordinate) {
                 HexCoordinate h = (HexCoordinate)key;
                 return terrainAt(h);
@@ -376,14 +399,17 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
 
         @Override  // required for efficiency
         public Terrain remove(Object key) {
+            assert wellFormed() : "at the beginning of MyMap.remove.";
             if (key instanceof HexCoordinate) {
                 HexCoordinate h = (HexCoordinate)key;
                 Terrain t = terrainAt(h);
                 if (t != null) {
                     HexBoard.this.remove(new HexTile(t, h));
                 }
+                assert wellFormed() : "at the end of MyMap.remove.";
                 return t;
             }
+            assert wellFormed() : "at the end of MyMap.remove.";
             return null;
         } 
 	}
