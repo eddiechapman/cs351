@@ -278,9 +278,7 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
         @Override  // required for efficiency
         public boolean contains(Object o) {
             return HexBoard.this.contains(o);
-        }
-        
-        
+        } 
 	}
 	
 	/**
@@ -316,6 +314,17 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
             HexCoordinate h = (HexCoordinate)e.getKey();
             Terrain t = (Terrain)e.getValue();
             return terrainAt(h) == t;
+        }
+
+        @Override  // required for efficiency
+        public boolean remove(Object o) {
+            if (!(o instanceof Map.Entry<?,?>)) return false;
+            Entry<?,?> e = (Entry<?,?>)o;
+            if (!((e.getKey() instanceof HexCoordinate) && (e.getValue() instanceof Terrain))) 
+                return false;
+            HexCoordinate h = (HexCoordinate)e.getKey();
+            Terrain t = (Terrain)e.getValue();
+            return HexBoard.this.remove(new HexTile(t, h));
         }
 	}
 	
