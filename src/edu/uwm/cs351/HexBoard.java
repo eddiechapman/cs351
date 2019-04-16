@@ -281,7 +281,15 @@ public class HexBoard extends AbstractSet<HexTile> implements Cloneable {
             HexTile ht = (HexTile)o;
             if (ht.getLocation().b() != row) return false;
             return HexBoard.this.contains(ht);
-        } 
+        }
+
+        @Override // required for efficiency
+        public boolean remove(Object o) {
+            if (!(o instanceof HexTile)) return false;
+            HexTile ht = (HexTile)o;
+            if (ht.getLocation().b() != row) return false;
+            return HexBoard.this.remove(ht);
+        }  
 	}
 	
 	/**
