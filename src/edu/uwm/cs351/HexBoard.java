@@ -22,7 +22,8 @@ public class HexBoard extends AbstractSet<HexTile> {
 	
     private static class Node
 	extends AbstractEntry<HexCoordinate,Terrain> {
-		Node(boolean ignored) {} // don't change this constructor (but you can add a different one)
+
+        Node(boolean ignored) {} // don't change this constructor (but you can add a different one)
 
 		HexTile tile;
 		Node next;
@@ -44,6 +45,11 @@ public class HexBoard extends AbstractSet<HexTile> {
 			tile = new HexTile(v, getKey());
 			return result;
 		}
+		
+		@Override
+        public int hashCode() {
+            return tile.getLocation().hashCode();
+        }
 	}
 	
 	// data structure
@@ -59,6 +65,7 @@ public class HexBoard extends AbstractSet<HexTile> {
 	}
 	
 	// TODO: helper methods
+	private int hash()
 	
 	private boolean wellFormed() {
 		// TODO check data structure
