@@ -72,7 +72,9 @@ public class HexBoard extends AbstractSet<HexTile> {
 	 * Create an empty hex board.
 	 */
 	public HexBoard() {
-		// TODO
+		array = new Node[7];
+		size = 0;
+		version = 0;
 		assert wellFormed() : "in constructor";
 	}
 	
