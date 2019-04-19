@@ -41,7 +41,7 @@ public class HexBoard extends AbstractSet<HexTile> {
 		public Terrain setValue(Terrain v) {
 			if (v == null) throw new IllegalArgumentException("can't have a null terrain!");
 			Terrain result = getValue();
-			// TODO
+			tile = new HexTile(v, getKey());
 			return result;
 		}
 	}
