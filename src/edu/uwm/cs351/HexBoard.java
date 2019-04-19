@@ -65,8 +65,8 @@ public class HexBoard extends AbstractSet<HexTile> {
 	}
 	
 	// TODO: helper methods
-	private int hash(Node n) {
-	    return n.hashCode() % size;
+	private int hash(HexCoordinate h) {
+	    return h.hashCode() % size;
 	}
 	
 	private boolean wellFormed() {
@@ -96,7 +96,7 @@ public class HexBoard extends AbstractSet<HexTile> {
 	 */
 	public Terrain terrainAt(HexCoordinate l) {
 		assert wellFormed() : "in terrainAt";
-		// TODO
+		
 		return null;
 	}
 
