@@ -96,8 +96,7 @@ public class HexBoard extends AbstractSet<HexTile> {
 	 */
 	public Terrain terrainAt(HexCoordinate l) {
 		assert wellFormed() : "in terrainAt";
-		
-		return null;
+		return array[hash(l)].getValue();
 	}
 
 	@Override // required by Java
