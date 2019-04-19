@@ -69,6 +69,20 @@ public class HexBoard extends AbstractSet<HexTile> {
 	    return h.hashCode() % size;
 	}
 	
+//	private void ensureCapacity(int minimumCapacity) {
+//	    if (minimumCapacity < (size * 0.75)) return;
+//	    int newCapacity = Primes.nextPrime(size * 2);
+//	    Node[] newArray = new Node[newCapacity];
+//	    for (Node n: array) {
+//	        do {
+//	            int i = hash(n.getKey());
+//	            newArray[i] = n;
+//	            n = n.next;
+//	        }
+//	        while (n.next != null);
+//	    }    
+//	}
+	
 	private boolean wellFormed() {
 		// TODO check data structure
 		return true;
