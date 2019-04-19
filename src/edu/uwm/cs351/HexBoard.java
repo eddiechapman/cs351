@@ -65,7 +65,9 @@ public class HexBoard extends AbstractSet<HexTile> {
 	}
 	
 	// TODO: helper methods
-	private int hash()
+	private int hash(Node n) {
+	    return n.hashCode() % size;
+	}
 	
 	private boolean wellFormed() {
 		// TODO check data structure
