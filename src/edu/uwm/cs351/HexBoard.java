@@ -14,22 +14,19 @@ import edu.uwm.cs.util.Primes;
 import junit.framework.TestCase;
 
 /**
- * An implementation of the HexBoard ADT using 
- * a hash table implementation.
- * A hex board is a collection of hex tiles except that there can 
- * never be two tiles at the same location. 
+ * An implementation of the HexBoard ADT using a hash table 
+ * implementation. A hex board is a collection of hex tiles except that 
+ * there can never be two tiles at the same location. 
  */
 public class HexBoard extends AbstractSet<HexTile> {
-
-	private static class Node 
-	extends AbstractEntry<HexCoordinate,Terrain> 
-	{
+	
+    private static class Node 
+	extends AbstractEntry<HexCoordinate,Terrain> {
 		Node(boolean ignored) {} // don't change this constructor (but you can add a different one)
-		
+
 		HexTile tile;
 		Node next;
 
-		
 		@Override
 		public HexCoordinate getKey() {
 			return null; // TODO
@@ -79,10 +76,12 @@ public class HexBoard extends AbstractSet<HexTile> {
 		assert wellFormed() : "in constructor";
 	}
 	
-	/** Return the terrain at the given coordinate or null
-	 * if nothing at this coordinate.
-	 * @param c hex coordinate to look for (null OK but pointless)
-	 * @return terrain at that coordinate, or null if nothing
+	/** 
+	 * Return the terrain at the given coordinate or null if nothing at 
+	 * this coordinate.
+	 * 
+	 * @param c    hex coordinate to look for (null OK but pointless)
+	 * @return     terrain at that coordinate, or null if nothing
 	 */
 	public Terrain terrainAt(HexCoordinate l) {
 		assert wellFormed() : "in terrainAt";
@@ -104,9 +103,10 @@ public class HexBoard extends AbstractSet<HexTile> {
 	
 		
 	/**
-	 * Return a view of this hex board as a map from hex coordinates to terrain.
-	 * It is as efficient as the hex board itself.
-	 * @return
+	 * Return a view of this hex board as a map from hex coordinates to 
+	 * terrain. It is as efficient as the hex board itself.
+	 * 
+	 * @return     view of HexBoard as map ADT. 
 	 */
 	public Map<HexCoordinate,Terrain> asMap() {
 		return new MyMap();
