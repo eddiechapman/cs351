@@ -34,7 +34,7 @@ public class HexBoard extends AbstractSet<HexTile> {
 		
 		@Override
 		public Terrain getValue() {
-			return null; // TODO
+			return tile.getTerrain();
 		}
 		
 		@Override
