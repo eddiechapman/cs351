@@ -20,7 +20,7 @@ import junit.framework.TestCase;
  */
 public class HexBoard extends AbstractSet<HexTile> {
 	
-    private static class Node 
+    private static class Node
 	extends AbstractEntry<HexCoordinate,Terrain> {
 		Node(boolean ignored) {} // don't change this constructor (but you can add a different one)
 
@@ -29,7 +29,7 @@ public class HexBoard extends AbstractSet<HexTile> {
 
 		@Override
 		public HexCoordinate getKey() {
-			return null; // TODO
+			return tile.getLocation();
 		}
 		
 		@Override
