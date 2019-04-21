@@ -186,6 +186,29 @@ public class HexBoard extends AbstractSet<HexTile> {
         assert wellFormed() : "at end of add";
         return true;
     }
+    
+
+    @Override // required for functionality
+    public boolean remove(Object o) {
+        assert wellFormed() : "in remove()";
+        if (!(o instanceof HexTile)) return false;
+        HexTile t = (HexTile)o;
+        int i = hash(t.getLocation());
+        Node lag = null;
+        for (Node n = array[i]; n != null; ) {
+            if (n.tile.equals(t)) {
+                if (lag != null) lag.next = n.next;
+                else array[i] = n.next;
+                --size;
+                ++version;
+                assert wellFormed() : "at end of remove";
+                return true;
+            }
+            lag = n;
+            n = n.next;
+        }
+        return false;
+    }
 
     /**
 	 * Return a view of this hex board as a map from hex coordinates to 
