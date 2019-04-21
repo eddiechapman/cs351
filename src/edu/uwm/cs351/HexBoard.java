@@ -75,19 +75,26 @@ public class HexBoard extends AbstractSet<HexTile> {
 	    return h.hashCode() % array.length;
 	}
 	
-//	private void ensureCapacity(int minimumCapacity) {
-//	    if (minimumCapacity < (size * 0.75)) return;
-//	    int newCapacity = Primes.nextPrime(size * 2);
-//	    Node[] newArray = new Node[newCapacity];
-//	    for (Node n: array) {
-//	        do {
-//	            int i = hash(n.getKey());
-//	            newArray[i] = n;
-//	            n = n.next;
-//	        }
-//	        while (n.next != null);
-//	    }    
-//	}
+	private int hash(HexTile t) {
+	    return t.getLocation().hashCode() % array.length;
+	}
+	
+	private int hash(Node n) {
+        return n.hashCode() % array.length;
+    }
+	
+	private void ensureCapacity(int minimumCapacity) {
+	    if (minimumCapacity < (size * 0.75)) return;
+	    int newCapacity = Primes.nextPrime(size * 2);
+	    Node[] newArray = new Node[newCapacity];
+	    for (int i = 0; i < array.length; ++i) {
+            Node n = array[i];
+            while (n != null) {
+                array[hash(n.tile.getLocation())] =    
+                n = n.next;
+            }
+        }   
+	}
 	
 	/**
 	 * HexBoard invariant:
