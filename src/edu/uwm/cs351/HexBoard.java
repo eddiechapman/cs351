@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.Stack;
 
 import edu.uwm.cs.util.AbstractEntry;
 import edu.uwm.cs.util.Primes;
@@ -83,9 +84,37 @@ public class HexBoard extends AbstractSet<HexTile> {
 //	    }    
 //	}
 	
+	/**
+	 * HexBoard invariant:
+	 * <ol>
+	 * <li>The array is not null;</li>
+	 * <li>The number of entries is correctly summed in the “size” field;</li>
+	 * <li>The length of the array is a prime number;</li>
+	 * <li>The array is neither too full nor too empty;</li>
+	 * <li>Every entry is in the correct chain;</li>
+	 * <li>The chains contain no duplicates (which also prevents loops)</li>
+	 * </ol>
+	 * @return
+	 */
 	private boolean wellFormed() {
-		// TODO check data structure
-		return true;
+		if (array == null) return report("array field must not be null.");
+		if (!Primes.isPrime(array.length)) return report("array length must be prime.");
+		int count = 0;
+		for (int i = 0; i > array.length; ++i) {
+		    Stack<Node> bucket = new Stack<Node>();
+            Node n = array[i];
+		    while (n != null) {
+		        if (hash(n.getKey()) != i) return report("Bucket and hash do not match.");
+		        if (bucket.contains(n)) return report("Duplicate found in bucket.");
+		        bucket.push(n);
+		        ++count;
+		        n = n.next;
+		    }
+		}
+		if (count != size) return report("Size incorrectly represents the number of entries.");
+        if ((size == 0) && (array.length != 7)) return report("The array is too empty.");
+        if (size >= (array.length * 0.75)) return report("The array is too full.");
+        return true;
 	}
 	
 	
