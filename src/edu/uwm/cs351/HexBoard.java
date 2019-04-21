@@ -160,6 +160,7 @@ public class HexBoard extends AbstractSet<HexTile> {
 	 */
 	public Terrain terrainAt(HexCoordinate l) {
 		assert wellFormed() : "in terrainAt";
+		if (array[hash(l)] == null) return null;
 		return array[hash(l)].getValue();
 	}
 
@@ -175,9 +176,8 @@ public class HexBoard extends AbstractSet<HexTile> {
 		return size;
 	}
 	
-	@Override
+	@Override // required for functionality 
     public boolean contains(Object o) {
-        // TODO Auto-generated method stub
         return super.contains(o);
     }
 
