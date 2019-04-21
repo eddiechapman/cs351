@@ -67,7 +67,7 @@ public class HexBoard extends AbstractSet<HexTile> {
 	
 	// TODO: helper methods
 	private int hash(HexCoordinate h) {
-	    return h.hashCode() % size;
+	    return h.hashCode() % array.length;
 	}
 	
 //	private void ensureCapacity(int minimumCapacity) {
@@ -100,14 +100,14 @@ public class HexBoard extends AbstractSet<HexTile> {
 		if (array == null) return report("array field must not be null.");
 		if (!Primes.isPrime(array.length)) return report("array length must be prime.");
 		int count = 0;
-		for (int i = 0; i > array.length; ++i) {
+		for (int i = 0; i < array.length; ++i) {
 		    Stack<Node> bucket = new Stack<Node>();
             Node n = array[i];
 		    while (n != null) {
+		        ++count;
 		        if (hash(n.getKey()) != i) return report("Bucket and hash do not match.");
 		        if (bucket.contains(n)) return report("Duplicate found in bucket.");
 		        bucket.push(n);
-		        ++count;
 		        n = n.next;
 		    }
 		}
