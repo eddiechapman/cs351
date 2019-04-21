@@ -51,11 +51,6 @@ public class HexBoard extends AbstractSet<HexTile> {
 			tile = new HexTile(v, getKey());
 			return result;
 		}
-		
-		@Override
-        public int hashCode() {
-            return tile.getLocation().hashCode();
-        }
 	}
 	
 	// data structure
@@ -71,20 +66,12 @@ public class HexBoard extends AbstractSet<HexTile> {
 	}
 	
 	// TODO: helper methods
-	private int hash(HexCoordinate h) {
-	    return h.hashCode() % array.length;
-	}
-	
-	private int hash(HexTile t) {
-	    return t.getLocation().hashCode() % array.length;
-	}
-	
-	private int hash(Node n) {
-        return n.hashCode() % array.length;
+	private int hash(HexCoordinate h, int length) {
+        return h.hashCode() % length;
     }
 	
-	private int hash(Node n, int length) {
-	    return n.hashCode() % length;
+	private int hash(HexCoordinate h) {
+	    return hash(h, array.length);
 	}
 	
 	private void ensureCapacity(int minimumCapacity) {
@@ -94,7 +81,7 @@ public class HexBoard extends AbstractSet<HexTile> {
 	    for (int i = 0; i < array.length; ++i) {
             Node n = array[i];
             while (n != null) {
-                int newIndex = hash(n, newCapacity);
+                int newIndex = hash(n.getKey(), newCapacity);
                 Node next = n.next;
                 n.next = newArray[newIndex];
                 newArray[newIndex] = n;
