@@ -101,13 +101,14 @@ public class HexBoard extends AbstractSet<HexTile> {
 		if (!Primes.isPrime(array.length)) return report("array length must be prime.");
 		int count = 0;
 		for (int i = 0; i < array.length; ++i) {
-		    Stack<Node> bucket = new Stack<Node>();
+		    Stack<HexCoordinate> bucket = new Stack<HexCoordinate>();
             Node n = array[i];
 		    while (n != null) {
+		        HexCoordinate h = n.getKey();
+		        if (hash(h) != i) return report("Bucket and hash do not match.");
+		        if (bucket.contains(h)) return report("Duplicate found in bucket.");
+		        bucket.push(h);
 		        ++count;
-		        if (hash(n.getKey()) != i) return report("Bucket and hash do not match.");
-		        if (bucket.contains(n)) return report("Duplicate found in bucket.");
-		        bucket.push(n);
 		        n = n.next;
 		    }
 		}
