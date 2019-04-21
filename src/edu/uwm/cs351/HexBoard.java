@@ -28,6 +28,11 @@ public class HexBoard extends AbstractSet<HexTile> {
 
 		HexTile tile;
 		Node next;
+		
+		public Node(HexTile tile, Node next) {
+		    this.tile = tile;
+		    this.next = next;
+		}
 
 		@Override
 		public HexCoordinate getKey() {
@@ -155,8 +160,21 @@ public class HexBoard extends AbstractSet<HexTile> {
 		return size;
 	}
 	
-		
-	/**
+	@Override
+    public boolean add(HexTile e) {
+        assert wellFormed() : "at start of add";
+        if (e == null) throw new NullPointerException("HexTile must not be null");
+        if (contains(e)) return false;
+        ensureCapacity(size() + 1);
+        int i = hash(e.getLocation());
+        array[i] = new Node(e, array[i]);
+        ++size;
+        ++version;
+        assert wellFormed() : "at end of add";
+        return true;
+    }
+
+    /**
 	 * Return a view of this hex board as a map from hex coordinates to 
 	 * terrain. It is as efficient as the hex board itself.
 	 * 
