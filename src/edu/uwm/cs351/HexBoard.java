@@ -163,9 +163,14 @@ public class HexBoard extends AbstractSet<HexTile> {
 		return size;
 	}
 	
-	@Override // required for functionality 
+	@Override // required for efficiency
     public boolean contains(Object o) {
-        return super.contains(o);
+	    assert wellFormed() : "in contains()";
+        if (o instanceof HexTile) {
+            HexTile h = (HexTile)o;
+            return terrainAt(h.getLocation()) == h.getTerrain();
+        }
+        return false;
     }
 
     @Override  // required for functionality
