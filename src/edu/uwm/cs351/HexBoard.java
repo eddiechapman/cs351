@@ -104,12 +104,12 @@ public class HexBoard extends AbstractSet<HexTile> {
 		    Stack<HexCoordinate> bucket = new Stack<HexCoordinate>();
             Node n = array[i];
 		    while (n != null) {
-		        HexCoordinate h = n.getKey();
-		        if (hash(h) != i) return report("Bucket and hash do not match.");
-		        if (bucket.contains(h)) return report("Duplicate found in bucket.");
-		        bucket.push(h);
-		        ++count;
+		        if (n.tile == null) return report("Bad node found in array.");
+		        if (hash(n.getKey()) != i) return report("Bucket and hash do not match.");
+		        if (bucket.contains(n.getKey())) return report("Duplicate found in bucket.");
+		        bucket.push(n.getKey());
 		        n = n.next;
+		        ++count;
 		    }
 		}
 		if (count != size) return report("Size incorrectly represents the number of entries.");
