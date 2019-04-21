@@ -83,6 +83,10 @@ public class HexBoard extends AbstractSet<HexTile> {
         return n.hashCode() % array.length;
     }
 	
+	private int hash(Node n, int length) {
+	    return n.hashCode() % length;
+	}
+	
 	private void ensureCapacity(int minimumCapacity) {
 	    if (minimumCapacity < (size * 0.75)) return;
 	    int newCapacity = Primes.nextPrime(size * 2);
@@ -90,10 +94,14 @@ public class HexBoard extends AbstractSet<HexTile> {
 	    for (int i = 0; i < array.length; ++i) {
             Node n = array[i];
             while (n != null) {
-                array[hash(n.tile.getLocation())] =    
-                n = n.next;
+                int newIndex = hash(n, newCapacity);
+                Node next = n.next;
+                n.next = newArray[newIndex];
+                newArray[newIndex] = n;
+                n = next;
             }
-        }   
+        }
+	    array = newArray;
 	}
 	
 	/**
@@ -168,6 +176,12 @@ public class HexBoard extends AbstractSet<HexTile> {
 	}
 	
 	@Override
+    public boolean contains(Object o) {
+        // TODO Auto-generated method stub
+        return super.contains(o);
+    }
+
+    @Override  // required for functionality
     public boolean add(HexTile e) {
         assert wellFormed() : "at start of add";
         if (e == null) throw new NullPointerException("HexTile must not be null");
