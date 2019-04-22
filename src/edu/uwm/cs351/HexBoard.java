@@ -75,7 +75,7 @@ public class HexBoard extends AbstractSet<HexTile> {
 	}
 	
 	private void ensureCapacity(int minimumCapacity) {
-	    if (minimumCapacity < (size * 0.75)) return;
+	    if (minimumCapacity < (array.length * 0.75)) return;
 	    int newCapacity = Primes.nextPrime(size * 2);
 	    Node[] newArray = new Node[newCapacity];
 	    for (int i = 0; i < array.length; ++i) {
@@ -182,10 +182,18 @@ public class HexBoard extends AbstractSet<HexTile> {
         assert wellFormed() : "at start of add";
         if (e == null) throw new NullPointerException("HexTile must not be null");
         if (contains(e)) return false;
-        ensureCapacity(size() + 1);
-        int i = hash(e.getLocation());
-        array[i] = new Node(e, array[i]);
-        ++size;
+        int index = hash(e.getLocation());
+        if (terrainAt(e.getLocation()) == null) {
+            ensureCapacity(size + 1);
+            array[index] = new Node(e, array[index]);
+            ++ size;
+        } else {
+            Node n = array[index];
+            while (n != null) {
+                if (n.getKey().equals(e.getLocation())) n.setValue(e.getTerrain());
+                n = n.next;
+            }
+        }
         ++version;
         assert wellFormed() : "at end of add";
         return true;
