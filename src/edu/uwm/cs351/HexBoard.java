@@ -182,13 +182,12 @@ public class HexBoard extends AbstractSet<HexTile> {
         assert wellFormed() : "at start of add";
         if (e == null) throw new NullPointerException("HexTile must not be null");
         if (contains(e)) return false;
-        int index = hash(e.getLocation());
         if (terrainAt(e.getLocation()) == null) {
             ensureCapacity(size + 1);
-            array[index] = new Node(e, array[index]);
+            array[hash(e.getLocation())] = new Node(e, array[hash(e.getLocation())]);
             ++ size;
         } else {
-            Node n = array[index];
+            Node n = array[hash(e.getLocation())];
             while (n != null) {
                 if (n.getKey().equals(e.getLocation())) n.setValue(e.getTerrain());
                 n = n.next;
