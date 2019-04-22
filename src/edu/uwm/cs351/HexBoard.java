@@ -340,7 +340,7 @@ public class HexBoard extends AbstractSet<HexTile> {
 		@Override // required by Java
 		public boolean hasNext() {
 		    checkVersion(); 
-		    if (current.next != null) return true;
+		    if ((current != null) && (current.next != null)) return true;
 	        for (int i = index + 1; i <= array.length; ++i) {
 	            if (array[i] != null) return true;
 	        }
