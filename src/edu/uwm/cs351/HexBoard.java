@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
-import java.util.Queue;
+
 import java.util.Set;
 import java.util.Stack;
 
@@ -18,7 +18,17 @@ import junit.framework.TestCase;
 /**
  * An implementation of the HexBoard ADT using a hash table 
  * implementation. A hex board is a collection of hex tiles except that 
- * there can never be two tiles at the same location. 
+ * there can never be two tiles at the same location.
+ * 
+ * @author Eddie Chapman (chapman4@uwm.edu)
+ * 
+ * I completed this assignment by referencing the lecture notes and 
+ * Oracle documentation. 
+ * 
+ * I discussed the assignment with Mason Baran regarding the use of 
+ * Math.floorMod instead of the remainder operator (as revealed in
+ * test95 and test96.
+ *  
  */
 public class HexBoard extends AbstractSet<HexTile> {
 	
@@ -67,14 +77,13 @@ public class HexBoard extends AbstractSet<HexTile> {
 	}
 	
 	private int hash(HexCoordinate h, int length) {
-        return h.hashCode() % length;
+        return Math.floorMod(h.hashCode(), length);
     }
 	
 	private int hash(HexCoordinate h) {
 	    return hash(h, array.length);
 	}
-	
-	
+
 	private void ensureCapacity(int minimumCapacity) {
 	    if (minimumCapacity < (array.length * 0.75)) return;
 	    int newCapacity = Primes.nextPrime(array.length * 2);
@@ -126,7 +135,6 @@ public class HexBoard extends AbstractSet<HexTile> {
         return true;
 	}
 	
-	
 	private HexBoard(boolean ignored) {} // do not change this constructor!
 	
 	/**
@@ -167,7 +175,6 @@ public class HexBoard extends AbstractSet<HexTile> {
 		assert wellFormed() : "in size";	
 		return size;
 	}
-	
 
     @Override // required for efficiency
     public boolean contains(Object o) {
@@ -322,16 +329,18 @@ public class HexBoard extends AbstractSet<HexTile> {
 			it = new EntrySetIterator();
 		}
 		
-		@Override
+		@Override // Required by Java
 		public boolean hasNext() {
 			return it.hasNext();
 		}
 		
+		@Override // Required by Java
 		public HexTile next() {
 			Entry<HexCoordinate,Terrain> n = it.next();
 			return new HexTile(n.getValue(), n.getKey());
 		}
 		
+		@Override //Required for functionality 
 		public void remove() {
 			it.remove();
 		}
