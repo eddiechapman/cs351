@@ -315,6 +315,7 @@ public class HexBoard extends AbstractSet<HexTile> {
 	private class EntrySetIterator implements Iterator<Entry<HexCoordinate,Terrain>> {
 		private int index;
 		private Node current;
+		private boolean canRemove;
 	    
 		private boolean wellFormed() {
 			if (!HexBoard.this.wellFormed()) return false;
@@ -326,6 +327,7 @@ public class HexBoard extends AbstractSet<HexTile> {
 		private EntrySetIterator() {
 			index = -1;
 			current = null;
+			canRemove = false;
 			assert wellFormed();
 		}
 		
@@ -346,12 +348,15 @@ public class HexBoard extends AbstractSet<HexTile> {
 			    ++index;
 			    current = array[index];
 			}
+			canRemove = true;
 			return current;
 		}
 
 		@Override // required for functionality
 		public void remove() {
-			// TODO
+			if (!canRemove) throw new IllegalStateException("Remove can only be called a single time following next()");
+			canRemove = false;
+			HexBoard.this.remove(current.tile);
 		}
 	}
 	
