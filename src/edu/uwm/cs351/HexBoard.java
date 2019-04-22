@@ -210,6 +210,14 @@ public class HexBoard extends AbstractSet<HexTile> {
         return false;
     }
 
+    @Override  // required for functionality
+    public void clear() {
+        array = new Node[7];
+        size = 0;
+        ++version;
+        assert wellFormed() : "at end of clear";
+    }
+
     /**
 	 * Return a view of this hex board as a map from hex coordinates to 
 	 * terrain. It is as efficient as the hex board itself.
