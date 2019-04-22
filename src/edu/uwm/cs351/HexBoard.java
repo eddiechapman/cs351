@@ -234,6 +234,8 @@ public class HexBoard extends AbstractSet<HexTile> {
 
     @Override  // required for functionality
     public void clear() {
+        assert wellFormed() : "at start of clear";
+        if (isEmpty()) return;
         array = new Node[7];
         size = 0;
         ++version;
