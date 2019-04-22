@@ -362,7 +362,7 @@ public class HexBoard extends AbstractSet<HexTile> {
 		public boolean hasNext() {
 		    checkVersion(); 
 		    if ((current != null) && (current.next != null)) return true;
-	        for (int i = index + 1; i <= array.length; ++i) {
+	        for (int i = index + 1; i < array.length; ++i) {
 	            if (array[i] != null) return true;
 	        }
 			return false;
