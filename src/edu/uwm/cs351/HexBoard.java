@@ -248,6 +248,7 @@ public class HexBoard extends AbstractSet<HexTile> {
 
 		@Override // needed for functionality
 		public Terrain put(HexCoordinate key, Terrain value) {
+		    if (key == null || value == null) throw new IllegalArgumentException();
 			Terrain t = terrainAt(key);
 			add(new HexTile(value,key));
 			return t;
