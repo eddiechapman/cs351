@@ -167,7 +167,13 @@ public class HexBoard extends AbstractSet<HexTile> {
 		return size;
 	}
 	
-	@Override // required for efficiency
+
+	@Override  // for convenience
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    @Override // required for efficiency
     public boolean contains(Object o) {
 	    assert wellFormed() : "in contains()";
         if (o instanceof HexTile) {
@@ -212,6 +218,7 @@ public class HexBoard extends AbstractSet<HexTile> {
                 else array[i] = n.next;
                 --size;
                 ++version;
+                ensureCapacity(size);
                 assert wellFormed() : "at end of remove";
                 return true;
             }
