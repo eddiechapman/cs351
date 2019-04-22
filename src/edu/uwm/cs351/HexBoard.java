@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
+import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
@@ -142,7 +143,7 @@ public class HexBoard extends AbstractSet<HexTile> {
 	 * Return the terrain at the given coordinate or null if nothing at 
 	 * this coordinate.
 	 * 
-	 * @param c    hex coordinate to look for (null OK but pointless)
+	 * @param l    hex coordinate to look for (null OK but pointless)
 	 * @return     terrain at that coordinate, or null if nothing
 	 */
 	public Terrain terrainAt(HexCoordinate l) {
@@ -312,7 +313,9 @@ public class HexBoard extends AbstractSet<HexTile> {
 	}
 	
 	private class EntrySetIterator implements Iterator<Entry<HexCoordinate,Terrain>> {
-		
+		private int index;
+		private Node current;
+	    
 		private boolean wellFormed() {
 			if (!HexBoard.this.wellFormed()) return false;
 			// OPTIONAL: define an invariant on the iterator
@@ -321,18 +324,29 @@ public class HexBoard extends AbstractSet<HexTile> {
 		}
 
 		private EntrySetIterator() {
-			// TODO
+			index = -1;
+			current = null;
 			assert wellFormed();
 		}
 		
 		@Override // required by Java
 		public boolean hasNext() {
-			return false; // TODO
+		    if (current.next != null) return true;
+	        for (int i = index + 1; i <= array.length; ++i) {
+	            if (array[i] != null) return true;
+	        }
+			return false;
 		}
 
 		@Override // required by Java
 		public Entry<HexCoordinate,Terrain> next() {
-			return null; // TODO
+		    if (!hasNext()) throw new NoSuchElementException("Exhausted");
+			if (current != null) current = current.next;
+			while (current == null) {
+			    ++index;
+			    current = array[index];
+			}
+			return current;
 		}
 
 		@Override // required for functionality
