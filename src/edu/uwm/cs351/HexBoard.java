@@ -80,7 +80,7 @@ public class HexBoard extends AbstractSet<HexTile> {
 	
 	private void ensureCapacity(int minimumCapacity) {
 	    if (minimumCapacity < (array.length * 0.75)) return;
-	    int newCapacity = Primes.nextPrime(size * 2);
+	    int newCapacity = Primes.nextPrime(array.length * 2);
 	    Node[] newArray = new Node[newCapacity];
 	    for (int i = 0; i < array.length; ++i) {
             Node n = array[i];
