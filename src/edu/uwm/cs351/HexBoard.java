@@ -74,9 +74,6 @@ public class HexBoard extends AbstractSet<HexTile> {
 	    return hash(h, array.length);
 	}
 	
-	private void shrinkIfEmpty() {
-	    if (isEmpty()) array = new Node[7];  
-	}
 	
 	private void ensureCapacity(int minimumCapacity) {
 	    if (minimumCapacity < (array.length * 0.75)) return;
@@ -172,11 +169,6 @@ public class HexBoard extends AbstractSet<HexTile> {
 	}
 	
 
-	@Override  // for convenience
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
     @Override // required for efficiency
     public boolean contains(Object o) {
 	    assert wellFormed() : "in contains()";
@@ -195,7 +187,7 @@ public class HexBoard extends AbstractSet<HexTile> {
         if (terrainAt(e.getLocation()) == null) {
             ensureCapacity(size + 1);
             array[hash(e.getLocation())] = new Node(e, array[hash(e.getLocation())]);
-            ++ size;
+            ++size;
         } else {
             Node n = array[hash(e.getLocation())];
             while (n != null) {
@@ -222,7 +214,7 @@ public class HexBoard extends AbstractSet<HexTile> {
                 else array[i] = n.next;
                 --size;
                 ++version;
-                shrinkIfEmpty();
+                if (size == 0) array = new Node[7];
                 assert wellFormed() : "at end of remove";
                 return true;
             }
