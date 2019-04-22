@@ -66,7 +66,6 @@ public class HexBoard extends AbstractSet<HexTile> {
 		return false;
 	}
 	
-	// TODO: helper methods
 	private int hash(HexCoordinate h, int length) {
         return h.hashCode() % length;
     }
@@ -317,6 +316,7 @@ public class HexBoard extends AbstractSet<HexTile> {
 		private int index;
 		private Node current;
 		private boolean canRemove;
+		private int myVersion;
 	    
 		private boolean wellFormed() {
 			if (!HexBoard.this.wellFormed()) return false;
@@ -324,16 +324,22 @@ public class HexBoard extends AbstractSet<HexTile> {
 			// (Only check if the iterator is not stale!)
 			return true;
 		}
+		
+		private void checkVersion() {
+            if (version != myVersion) throw new ConcurrentModificationException("stale");
+        }
 
 		private EntrySetIterator() {
 			index = -1;
 			current = null;
 			canRemove = false;
+			myVersion = version;
 			assert wellFormed();
 		}
 		
 		@Override // required by Java
 		public boolean hasNext() {
+		    checkVersion(); 
 		    if (current.next != null) return true;
 	        for (int i = index + 1; i <= array.length; ++i) {
 	            if (array[i] != null) return true;
@@ -343,6 +349,7 @@ public class HexBoard extends AbstractSet<HexTile> {
 
 		@Override // required by Java
 		public Entry<HexCoordinate,Terrain> next() {
+		    checkVersion();
 		    if (!hasNext()) throw new NoSuchElementException("Exhausted");
 			if (current != null) current = current.next;
 			while (current == null) {
@@ -355,9 +362,11 @@ public class HexBoard extends AbstractSet<HexTile> {
 
 		@Override // required for functionality
 		public void remove() {
+		    checkVersion();
 			if (!canRemove) throw new IllegalStateException("Remove can only be called a single time following next()");
-			canRemove = false;
 			HexBoard.this.remove(current.tile);
+			++myVersion;
+			canRemove = false;
 		}
 	}
 	
