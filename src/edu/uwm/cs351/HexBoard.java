@@ -147,8 +147,12 @@ public class HexBoard extends AbstractSet<HexTile> {
 	 */
 	public Terrain terrainAt(HexCoordinate l) {
 		assert wellFormed() : "in terrainAt";
-		if (array[hash(l)] == null) return null;
-		return array[hash(l)].getValue();
+		Node n = array[hash(l)];
+		while (n != null) {
+		    if (n.getKey().equals(l)) return n.getValue();
+		    n = n.next;
+		}
+		return null;
 	}
 
 	@Override // required by Java
