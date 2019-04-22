@@ -74,6 +74,10 @@ public class HexBoard extends AbstractSet<HexTile> {
 	    return hash(h, array.length);
 	}
 	
+	private void shrinkIfEmpty() {
+	    if (isEmpty()) array = new Node[7];  
+	}
+	
 	private void ensureCapacity(int minimumCapacity) {
 	    if (minimumCapacity < (array.length * 0.75)) return;
 	    int newCapacity = Primes.nextPrime(size * 2);
@@ -218,7 +222,7 @@ public class HexBoard extends AbstractSet<HexTile> {
                 else array[i] = n.next;
                 --size;
                 ++version;
-                ensureCapacity(size);
+                shrinkIfEmpty();
                 assert wellFormed() : "at end of remove";
                 return true;
             }
