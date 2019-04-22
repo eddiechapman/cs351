@@ -292,23 +292,24 @@ public class HexBoard extends AbstractSet<HexTile> {
 	}
 		
 	private class MyIterator implements Iterator<HexTile> {
-		// TODO: choose easy implementation
+		private Iterator<Entry<HexCoordinate, Terrain>> it;
 		
 		MyIterator() {
-			// TODO
+			it = new EntrySetIterator();
 		}
 		
 		@Override
 		public boolean hasNext() {
-			return false; // TODO
+			return it.hasNext();
 		}
 		
 		public HexTile next() {
-			return null; // TODO
+			Entry<HexCoordinate,Terrain> n = it.next();
+			return new HexTile(n.getValue(), n.getKey());
 		}
 		
 		public void remove() {
-			// TODO
+			it.remove();
 		}
 	}
 	
