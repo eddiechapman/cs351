@@ -37,8 +37,9 @@ public class HexPath {
 		// 1. The last location is never null.
 		// 2. If the previous path is null, then size is 0.
 		// 3. If the previous path is not null, then:
-		//    (a) this size is one more than that of the previous path
-		//    (b) the last coordinate of the previous path is next to the this last coordinate.
+		//    (a) the previous path must be well formed 
+		//    (b) this size is one more than that of the previous path
+		//    (c) the last coordinate of the previous path is next to the this last coordinate.
 		return true;
 	}
 	
