@@ -114,6 +114,11 @@ public class HexPath {
 	 */
 	public int size() { return size; }
 	
+	/**
+	 * The location of the coordinates at the end of the path.
+	 * 
+	 * @return         HexCoordinate of the path's destination.
+	 */
 	public HexCoordinate last() { return last; }
 	
 	/**
