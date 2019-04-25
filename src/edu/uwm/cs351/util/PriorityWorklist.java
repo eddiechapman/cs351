@@ -1,5 +1,6 @@
 package edu.uwm.cs351.util;
 
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
@@ -12,13 +13,15 @@ import java.util.PriorityQueue;
 public class PriorityWorklist<E> implements Worklist<E> {
     private PriorityQueue<E> worklist;
     
+    
     /**
      * Initialize a new PriorityWorklist.
      * 
+     * @param comp      Comparator of type E used to order Worklist.
      * @postcondition   The Worklist is empty.
      */
-    public PriorityWorklist() {
-        worklist = new PriorityQueue<E>();
+    public PriorityWorklist(Comparator<E> comp) {
+        worklist = new PriorityQueue<E>(comp);
     }
 
     @Override
