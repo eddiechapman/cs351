@@ -130,7 +130,12 @@ public class HexPath {
 	 */
 	@Override
 	public String toString() {
-		// TODO: COmplete this method
+	    String[] result = new String[size + 1];
+	    for (HexPath p = this; p != null;) {
+            result[p.size()] = p.last().toString();
+            p = p.previous;
+        }
+	    return String.join(" -> ", result);
 	}
 
 	/**
