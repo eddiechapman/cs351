@@ -1,5 +1,6 @@
 package edu.uwm.cs351;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
 /**
@@ -18,11 +19,14 @@ public class HexPathCoster implements Comparator<HexPath> {
 	 * Construct a coster in which all Terrain have the same cost (1)
 	 * except {@link Terrain#INACCESSIBLE} which costs the maximum 
 	 * legal amount.
+	 * 
+	 * @param b        HexBoard containing terrain of varying costs.
 	 */
 	public HexPathCoster(HexBoard b) {
 		board = b;
 		costs = new int[Terrain.values().length];
-		// TODO: initialize the costs.
+		Arrays.fill(costs, 1);
+		setCost(Terrain.INACCESSIBLE, Integer.MAX_VALUE);
 	}
 	
 	/**
