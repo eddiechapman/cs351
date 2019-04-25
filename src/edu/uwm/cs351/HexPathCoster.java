@@ -3,11 +3,11 @@ package edu.uwm.cs351;
 import java.util.Comparator;
 
 /**
- * Compute the cost of a hex path
- * by looking at the terrains it crosses.
- * The sum of the costs of the terrains is computed,
- * with a path that goes into and out of a terrain costing double.
- * This coster can be used to compare legal hex paths.
+ * Compute the cost of a HexPath by looking at the Terrain it crosses.
+ * 
+ * The sum of the costs of the Terrain is computed, with a path that 
+ * goes into and out of a Terrain costing double. This coster can be 
+ * used to compare legal HexPaths.
  */
 public class HexPathCoster implements Comparator<HexPath> {
 
@@ -15,8 +15,9 @@ public class HexPathCoster implements Comparator<HexPath> {
 	private final int[] costs;
 	
 	/**
-	 * Construct a coster in which all terrains have the same cost (1)
-	 * except {@link Terrain#INACCESSIBLE} which costs the maximum legal amount.
+	 * Construct a coster in which all Terrain have the same cost (1)
+	 * except {@link Terrain#INACCESSIBLE} which costs the maximum 
+	 * legal amount.
 	 */
 	public HexPathCoster(HexBoard b) {
 		board = b;
@@ -26,8 +27,10 @@ public class HexPathCoster implements Comparator<HexPath> {
 	
 	/**
 	 * Return the cost used for this terrain.
-	 * @param t terrain (must not be null)
-	 * @return cost for entering or exiting a hex tile of this terrain.
+	 * 
+	 * @param t        Terrain (must not be null)
+	 * @return         cost for entering or exiting a HexTile of this 
+	 *                 Terrain.
 	 */
 	public int getCost(Terrain t) {
 		return costs[t.ordinal()];
@@ -35,20 +38,24 @@ public class HexPathCoster implements Comparator<HexPath> {
 	
 	/**
 	 * Change the cost associated with the given terrain
-	 * @param t terrain to change cost for (must not be null)
-	 * @param c cost
+	 * 
+	 * @param t        Terrain to change cost for (must not be null).
+	 * @param c        integer cost.
 	 */
 	public void setCost(Terrain t, int c) {
 		costs[t.ordinal()] = c;
 	}
 	
 	/**
-	 * Get the cost of a path: the cost for a hex path
-	 * counts the cost of the terrain for crossing HALF the hex tile.
-	 * So if the path crosses the hex tile, the cost of the terrain
-	 * is doubled.  If the cost would overflow, {@link Integer.MAX_VALUE}
-	 * is returned instead.  If the path would go across a coordinate
-	 * without a hex tile, -1 is returned (the path is illegal).
+	 * Get the cost of a path: the cost for a HexPath counts the cost 
+	 * of the Terrain for crossing HALF the HexTile.
+	 * 
+	 * So if the HexPath crosses the HexTile, the cost of the Terrain 
+	 * is doubled. If the cost would overflow, {@link Integer.MAX_VALUE} 
+	 * is returned instead. If the HexPath would go across a 
+	 * HexCoordinate without a HexTile, -1 is returned (the HexPath is 
+	 * illegal).
+	 * 
 	 * @param p
 	 * @return
 	 */

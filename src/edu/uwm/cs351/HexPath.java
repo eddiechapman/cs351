@@ -8,16 +8,17 @@ import junit.framework.TestCase;
 
 
 /**
- * An immutable class that represents a path on a hex board.
+ * An immutable class that represents a path on a HexBoard.
  */
 public class HexPath {
 	/*
-	 * We represent paths in a way that permit efficient "growing"
-	 * of paths at the end; each path is either an initial path,
-	 * ending at the same place it starts, or is an extension of a shorter path.
-	 * This class is <i>immutable</i> which means that once created,
-	 * none of the fields can change.  As a result, we don't need to check
-	 * the invariant after checking it in the constructor.
+	 * We represent paths in a way that permit efficient "growing" of 
+	 * paths at the end; each path is either an initial path, ending at 
+	 * the same place it starts, or is an extension of a shorter path.
+	 * 
+	 * This class is <i>immutable</i> which means that once created, 
+	 * none of the fields can change.  As a result, we don't need to 
+	 * check the invariant after checking it in the constructor.
 	 */
 	private final HexPath previous;
 	private final HexCoordinate last;
@@ -53,8 +54,12 @@ public class HexPath {
 	
 	
 	
-	/** Create an initial path, starting and stopping at one location (size = 0)
-	 * @param initial the initial location, must not be null
+	/** 
+	 * Create an initial HexPath, starting and stopping at one location 
+	 * (size = 0).
+	 * 
+	 * @param initial      the initial HexCoordinate location, must not 
+	 *                     be null.
 	 */
 	public HexPath(HexCoordinate initial) {
 		// NB: The following constructor calls the other constructor.
@@ -63,12 +68,16 @@ public class HexPath {
 	}
 	
 	/**
-	 * Create a path that extends an existing path with another location.
-	 * The new location must be next to the last location of the previous path
-	 * (if any).
-	 * @param p previous path, may be null
-	 * @param next, next location, must not be null, and must be adjacent to
-	 * last location of previous path.
+	 * Create a path that extends an existing path with another 
+	 * location. 
+	 * 
+	 * The new location must be next to the last location of the 
+	 * previous path (if any).
+	 * 
+	 * @param p        previous HexPath, may be null.
+	 * @param next     next HexCoordinate location, must not be null, 
+	 *                 and must be adjacent to last location of 
+	 *                 previous HexPath.
 	 */
 	public HexPath(HexPath p, HexCoordinate next) {
 		assert wellFormed() : "invariant failed after constructor";
@@ -78,9 +87,12 @@ public class HexPath {
 	public HexCoordinate last() { return last; }
 	
 	/**
-	 * Return a string of the form XX -> XX -> XX where each XX is a hex coordinate.
-	 * A size=1 path consists just of a single location.
-	 * @return string representing path
+	 * Return a string of the form XX -> XX -> XX where each XX is a 
+	 * HexCoordinate. 
+	 * 
+	 * A size=1 path consists just of a single HexCoordinate location.
+	 * 
+	 * @return         String representing the HexPath.
 	 */
 	@Override
 	public String toString() {
@@ -88,10 +100,12 @@ public class HexPath {
 	}
 
 	/**
-	 * Draw a path on a hex board (already rendered).
-	 * The path is drawn as a series of line segments between
-	 * the centers of hexagons on the path.  A size=0 path
-	 * doesn't show up. 
+	 * Draw a HexPath on a HexBoard (already rendered).
+	 * 
+	 * The path is drawn as a series of line segments between the 
+	 * centers of HexTiles on the path. A size=0 HexPath doesn't show 
+	 * up. 
+	 * 
 	 * @param g
 	 */
 	public void draw(Graphics g) {

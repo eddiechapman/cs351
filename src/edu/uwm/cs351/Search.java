@@ -9,15 +9,16 @@ import java.util.Set;
 import edu.uwm.cs351.util.Worklist;
 
 /**
- * Class to find paths across hex tile boards.
+ * Class to find paths across HexTile boards.
  */
 public class Search {
 	private final Worklist<HexPath> worklist;
 	private final Set<HexCoordinate> visited = new HashSet<HexCoordinate>();
 	
 	/**
-	 * Create a searcher that uses the given worklist.
-	 * @param w worklist to use to find path.
+	 * Create a searcher that uses the given Worklist.
+	 * 
+	 * @param w        Worklist to use to find HexPath.
 	 */
 	public Search(Worklist<HexPath> w) {
 		worklist = w;
@@ -29,10 +30,12 @@ public class Search {
 	
 	/**
 	 * Find a path through a hex board.
-	 * @param from coordinate to start from (must not be null)
-	 * @param to coordinate to reach (must not be null)
-	 * @param b hex board to traverse
-	 * @return a search state including a possible path, or null if no path is found.
+	 * 
+	 * @param from     HexCoordinate to start from (must not be null).
+	 * @param to       HexCoordinate to reach (must not be null).
+	 * @param b        HexBoard to traverse.
+	 * @return a       search state including a possible HexPath, or 
+	 *                 null if no path is found.
 	 */
 	public HexPath find(HexCoordinate from, HexCoordinate to, HexBoard b) {
 		clear();
@@ -43,8 +46,8 @@ public class Search {
 	}
 	
 	/**
-	 * For every node that was visited in the most recent search,
-	 * draw an X centered on the tile half the size of tiles.
+	 * For every node that was visited in the most recent search, draw 
+	 * an X centered on the tile half the size of tiles.
 	 */
 	public void markVisited(Graphics g) {
 		// TODO: Similar to what was done in Homework #5
