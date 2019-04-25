@@ -85,10 +85,17 @@ public class HexPath {
 	 * @param next     next HexCoordinate location, must not be null, 
 	 *                 and must be adjacent to last location of 
 	 *                 previous HexPath.
+	 * @throws         IllegalArgumentException when given a null 
+	 *                 HexCoordinate for the <code>next</code> 
+	 *                 argument.
+	 * @throws         IllegalArgumentException when the HexPath
+	 *                 <code>p</code> argument does not end in an
+	 *                 adjacent coordinate to the <code>next</code>
+	 *                 HexCoordinate argument. 
 	 */
 	public HexPath(HexPath p, HexCoordinate next) {
-	    if (next == null) throw new IllegalArgumentException("HexCoordinate locations must not be null");
-	    if ((p != null) && (p.last.distance(next) != 1)) throw new IllegalArgumentException("Path coordinates must be adjacent");
+	    if (next == null) throw new IllegalArgumentException("No null HexCoordinates");
+	    if ((p != null) && (p.last.distance(next) != 1)) throw new IllegalArgumentException("No non-adjacent path locations.");
 	    last = next;
 	    previous = p;
 	    if (previous == null) size = 0;
