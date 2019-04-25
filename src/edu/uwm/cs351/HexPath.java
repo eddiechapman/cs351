@@ -8,18 +8,17 @@ import junit.framework.TestCase;
 
 
 /**
- * An immutable class that represents a path on a HexBoard.
+ * <p>An immutable class that represents a path on a HexBoard.</p>
+ * 
+ * <p>We represent paths in a way that permit efficient "growing" of 
+ * paths at the end; each path is either an initial path, ending at the 
+ * same place it starts, or is an extension of a shorter path.</p>
+ * 
+ * <p>This class is <i>immutable</i> which means that once created, none 
+ * of the fields can change.  As a result, we don't need to check the 
+ * invariant after checking it in the constructor.</p>
  */
 public class HexPath {
-	/*
-	 * We represent paths in a way that permit efficient "growing" of 
-	 * paths at the end; each path is either an initial path, ending at 
-	 * the same place it starts, or is an extension of a shorter path.
-	 * 
-	 * This class is <i>immutable</i> which means that once created, 
-	 * none of the fields can change.  As a result, we don't need to 
-	 * check the invariant after checking it in the constructor.
-	 */
 	private final HexPath previous;
 	private final HexCoordinate last;
 	private final int size;
@@ -32,15 +31,25 @@ public class HexPath {
 		return false;
 	}
 	
-	// since the class is immutable, we only need to check the invariant
-	// at the end of the constructor.
+	/**
+	 * Check the invariant of the ADT.
+	 * <p>
+	 * Since the class is immutable, we only need to check the invariant 
+	 * at the end of the constructor.
+	 * <ol>
+	 * <li>The last location is never null.</li>
+     * <li>If the previous path is null, then size is 0.</li>
+     * <li>If the previous path is not null, then:<ul>
+     * <li>the previous path must be well formed </li>
+     * <li>this size is one more than that of the previous path</li>
+     * <li>the last coordinate of the previous path is next to the this 
+     * last coordinate.</li></ul></li></ol>
+	 *  
+	 *  
+	 * @return         <code>true</code> if the invariant is intact,
+	 *                 <code>false</code> otherwise.
+	 */
 	private boolean wellFormed() {
-		// 1. The last location is never null.
-		// 2. If the previous path is null, then size is 0.
-		// 3. If the previous path is not null, then:
-		//    (a) the previous path must be well formed 
-		//    (b) this size is one more than that of the previous path
-		//    (c) the last coordinate of the previous path is next to the this last coordinate.
 		return true;
 	}
 	
@@ -52,8 +61,6 @@ public class HexPath {
 		// don't check here (see TestInvariant)
 	}
 	
-	
-	
 	/** 
 	 * Create an initial HexPath, starting and stopping at one location 
 	 * (size = 0).
@@ -64,7 +71,7 @@ public class HexPath {
 	public HexPath(HexCoordinate initial) {
 		// NB: The following constructor calls the other constructor.
 		// Therefore we don't need to check the invariant.
-		this(null,initial);
+		this(null, initial);
 	}
 	
 	/**
@@ -80,6 +87,12 @@ public class HexPath {
 	 *                 previous HexPath.
 	 */
 	public HexPath(HexPath p, HexCoordinate next) {
+	    if (next == null) throw new IllegalArgumentException("HexCoordinate locations must not be null");
+	    if ((p != null) && (p.last.distance(next) != 1)) throw new IllegalArgumentException("Path coordinates must be adjacent");
+	    last = next;
+	    previous = p;
+	    if (previous == null) size = 0;
+	    else size = previous.size() + 1;
 		assert wellFormed() : "invariant failed after constructor";
 	}
 	
