@@ -96,7 +96,17 @@ public class HexPath {
 		assert wellFormed() : "invariant failed after constructor";
 	}
 	
+	/**
+	 * The distance required to traverse the path from end to end.
+	 * 
+	 * The distance is measured in lengths between coordinates, so
+	 * a path with only a single coordinate has a length of 0.
+	 * 
+	 * @return         the size of the path in lengths between 
+	 *                 coordinates.         
+	 */
 	public int size() { return size; }
+	
 	public HexCoordinate last() { return last; }
 	
 	/**
