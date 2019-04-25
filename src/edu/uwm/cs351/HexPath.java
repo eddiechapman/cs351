@@ -38,17 +38,33 @@ public class HexPath {
 	 * at the end of the constructor.
 	 * <ol>
 	 * <li>The last location is never null.</li>
-     * <li>If the previous path is null, then size is 0.</li>
-     * <li>If the previous path is not null, then:<ul>
-     * <li>the previous path must be well formed </li>
-     * <li>this size is one more than that of the previous path</li>
-     * <li>the last coordinate of the previous path is next to the this 
-     * last coordinate.</li></ul></li></ol>
+	 * <li>If the previous path is null, then size is 0.</li>
+	 * <li>If the previous path is not null, then:
+	 *     <ul>
+	 *     <li>the previous path must be well formed</li>
+	 *     <li>this size is one more than that of the previous path</li>
+	 *     <li>the last coordinate of the previous path is next to the 
+	 *         last coordinate.</li>
+	 *     </ul>
+	 * </li>
+	 * </ol>
 	 *   
 	 * @return         <code>true</code> if the invariant is intact,
 	 *                 <code>false</code> otherwise.
 	 */
 	private boolean wellFormed() {
+	    HexPath path = this;
+	    HexPath next = null;
+	    while (path != null) {
+	        if (path.last == null) return report("The last location cannot be null");
+	        if ((path.previous == null) && (path.size != 0)) return report("A path without a previous path must have size 0");
+	        if (next != null) {
+	            if (path.size != (next.size - 1)) return report("Path size must decrease by one at each location");
+	            if (path.last.distance(next.last) != 1) return report("Path locations must be adjacent");
+	        }
+	        next = path;
+	        path = path.previous;
+	    }
 		return true;
 	}
 	
