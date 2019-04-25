@@ -1,9 +1,7 @@
-package edu.uwm.cs351;
+package edu.uwm.cs351.util;
 
 import java.util.NoSuchElementException;
 import java.util.Stack;
-
-import edu.uwm.cs351.util.Worklist;
 
 /**
  * A Worklist whose most recent addition is the first to be accessed.
