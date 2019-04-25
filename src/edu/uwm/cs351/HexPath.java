@@ -44,8 +44,7 @@ public class HexPath {
      * <li>this size is one more than that of the previous path</li>
      * <li>the last coordinate of the previous path is next to the this 
      * last coordinate.</li></ul></li></ol>
-	 *  
-	 *  
+	 *   
 	 * @return         <code>true</code> if the invariant is intact,
 	 *                 <code>false</code> otherwise.
 	 */
@@ -77,7 +76,7 @@ public class HexPath {
 	/**
 	 * Create a path that extends an existing path with another 
 	 * location. 
-	 * 
+	 * <p>
 	 * The new location must be next to the last location of the 
 	 * previous path (if any).
 	 * 
@@ -105,7 +104,7 @@ public class HexPath {
 	
 	/**
 	 * The distance required to traverse the path from end to end.
-	 * 
+	 * <p>
 	 * The distance is measured in lengths between coordinates, so
 	 * a path with only a single coordinate has a length of 0.
 	 * 
@@ -124,7 +123,7 @@ public class HexPath {
 	/**
 	 * Return a string of the form XX -> XX -> XX where each XX is a 
 	 * HexCoordinate. 
-	 * 
+	 * <p>
 	 * A size=1 path consists just of a single HexCoordinate location.
 	 * 
 	 * @return         String representing the HexPath.
@@ -136,7 +135,7 @@ public class HexPath {
 
 	/**
 	 * Draw a HexPath on a HexBoard (already rendered).
-	 * 
+	 * <p>
 	 * The path is drawn as a series of line segments between the 
 	 * centers of HexTiles on the path. A size=0 HexPath doesn't show 
 	 * up. 
