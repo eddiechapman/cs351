@@ -65,6 +65,7 @@ public class HexPathCoster implements Comparator<HexPath> {
 	 * @return         The integer value for traveling the path.
 	 */
 	public int getCost(HexPath p) {
+	    if (p.size() == 0) return 0;
 		int sum = 0;
 	    HexCoordinate[] path = p.toArray();
 	    HexCoordinate first = path[0];
@@ -73,8 +74,8 @@ public class HexPathCoster implements Comparator<HexPath> {
             Terrain t = board.terrainAt(h);
             if (t == null) return -1;
             int cost = getCost(t);
+            if (cost == Integer.MAX_VALUE || (cost * 2) + sum >= Integer.MAX_VALUE ) return Integer.MAX_VALUE;
             if ((h != first) && (h != last)) cost = cost * 2;
-            if ((cost + sum) > Integer.MAX_VALUE) return Integer.MAX_VALUE;
             sum += cost;
         }
 		return sum;
