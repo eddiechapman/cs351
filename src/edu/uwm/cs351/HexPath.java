@@ -147,9 +147,18 @@ public class HexPath {
 		// (Do not render locations, just the path!)
 	}
 	
+	/**
+	 * Create an array representing the HexCoordinates in the path.
+	 * 
+	 * @return         An array of adjacent HexCoordinates from the
+	 *                 start of the path to the destination.
+	 */
 	public HexCoordinate[] toArray() {
 		HexCoordinate[] result = new HexCoordinate[size+1];
-		// TODO: Complete this method (our solution uses a recursive helper method)
+		for (HexPath p = this; p != null;) {
+		    result[p.size()] = p.last();
+		    p = p.previous;
+		}
 		return result;
 	}
 	
