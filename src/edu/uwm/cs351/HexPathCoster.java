@@ -82,6 +82,7 @@ public class HexPathCoster implements Comparator<HexPath> {
 
 	@Override
 	public int compare(HexPath arg0, HexPath arg1) {
+	    return Integer.compare(getCost(arg0), getCost(arg1)); 
 		// TODO: implement this, a one-liner using getCost(HexPath)
 		// Useful fact: the difference of two non-negative integers never overflows
 		// MAXINT - 0 = MAXINT
