@@ -60,14 +60,23 @@ public class HexPathCoster implements Comparator<HexPath> {
 	 * HexCoordinate without a HexTile, -1 is returned (the HexPath is 
 	 * illegal).
 	 * 
-	 * @param p
-	 * @return
+	 * @param p        A HexPath across the board whose cost will be 
+	 *                 calculated.
+	 * @return         The integer value for traveling the path.
 	 */
 	public int getCost(HexPath p) {
 		int sum = 0;
-		// TODO: Implement this method.
-		// Remember to account internal terrains twice.
-		// Make sure to avoid overflow, return Integer.MAX_VALUE if more than this
+	    HexCoordinate[] path = p.toArray();
+	    HexCoordinate first = path[0];
+	    HexCoordinate last = path[path.length-1];
+	    for (HexCoordinate h : path) {
+            Terrain t = board.terrainAt(h);
+            if (t == null) return -1;
+            int cost = getCost(t);
+            if ((h != first) && (h != last)) cost = cost * 2;
+            if ((cost + sum) > Integer.MAX_VALUE) return Integer.MAX_VALUE;
+            sum += cost;
+        }
 		return sum;
 	}
 
