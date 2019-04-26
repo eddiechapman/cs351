@@ -6,7 +6,7 @@ public enum HexDirection {
 	EAST(1, 0),
 	SOUTHEAST(1, 1),
 	SOUTHWEST(0, 1),
-	WEST(-1, 0),
+	WEST(-1, 0), 
 	NORTHWEST(-1, -1);
 
 	private final int da, db;
