@@ -25,7 +25,10 @@ public class Search {
 	}
 	
 	private void clear() {
-		// TODO: empty worklist and visited set
+		visited.clear();
+		while (!worklist.hasNext()) {
+		    worklist.next();
+		}
 	}
 	
 	/**
