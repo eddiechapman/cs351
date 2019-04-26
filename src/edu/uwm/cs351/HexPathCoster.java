@@ -11,7 +11,7 @@ import java.util.Comparator;
  * used to compare legal HexPaths.
  */
 public class HexPathCoster implements Comparator<HexPath> {
-
+    private static final int MAX = Integer.MAX_VALUE;
 	private final HexBoard board;
 	private final int[] costs;
 	
@@ -26,7 +26,7 @@ public class HexPathCoster implements Comparator<HexPath> {
 		board = b;
 		costs = new int[Terrain.values().length];
 		Arrays.fill(costs, 1);
-		setCost(Terrain.INACCESSIBLE, Integer.MAX_VALUE);
+		setCost(Terrain.INACCESSIBLE, MAX);
 	}
 	
 	/**
@@ -68,14 +68,13 @@ public class HexPathCoster implements Comparator<HexPath> {
 	    if (p.size() == 0) return 0;
 		int sum = 0;
 	    HexCoordinate[] path = p.toArray();
-	    HexCoordinate first = path[0];
-	    HexCoordinate last = path[path.length-1];
 	    for (HexCoordinate h : path) {
+	        if (sum < 0) return MAX;
             Terrain t = board.terrainAt(h);
             if (t == null) return -1;
             int cost = getCost(t);
-            if (cost == Integer.MAX_VALUE || (cost * 2) + sum >= Integer.MAX_VALUE ) return Integer.MAX_VALUE;
-            if ((h != first) && (h != last)) cost = cost * 2;
+            if (cost == MAX) return MAX;
+            if ((h != path[0]) && (h != path[path.length-1])) cost = cost * 2;
             sum += cost;
         }
 		return sum;
@@ -84,9 +83,5 @@ public class HexPathCoster implements Comparator<HexPath> {
 	@Override
 	public int compare(HexPath arg0, HexPath arg1) {
 	    return Integer.compare(getCost(arg0), getCost(arg1)); 
-		// TODO: implement this, a one-liner using getCost(HexPath)
-		// Useful fact: the difference of two non-negative integers never overflows
-		// MAXINT - 0 = MAXINT
-		// 0 - MAXINT = -MAXINT = MININT+1
 	}
 }
