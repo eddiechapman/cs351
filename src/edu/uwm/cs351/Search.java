@@ -64,26 +64,27 @@ public class Search {
 	 * an X centered on the tile half the size of tiles.
 	 */
 	public void markVisited(Graphics g) {
+//	    int xbar = HexTile.WIDTH / 4;
+//        int diffPos = xbar / 2;
+//        int diffNeg = -(xbar / 2);
+        
 		for (HexCoordinate h : visited) {
-		    int xbar = HexTile.WIDTH / 4;
-		    int diffPos = xbar / 2;
-		    int diffNeg = -(xbar / 2);
-		    
-		    Point p = h.toPoint(xbar);
-		    Point sw = p.getLocation();
-		    Point nw = p.getLocation();
-		    Point ne = p.getLocation();
-		    Point se = p.getLocation();
-		     
-		    nw.translate(diffNeg, diffPos);
-		    ne.translate(diffPos, diffPos);
-		    se.translate(diffPos, diffNeg);
-		    sw.translate(diffNeg, diffNeg);
-		    
-		    g.drawLine(p.x, p.y, nw.x, nw.y);
-		    g.drawLine(p.x, p.y, ne.x, ne.y);
-		    g.drawLine(p.x, p.y, se.x, se.y);
-		    g.drawLine(p.x, p.y, sw.x, sw.y);
+		    Point p = h.toPoint(HexTile.WIDTH);
+		    g.drawString("x", p.x, p.y);
+//		    Point sw = p.getLocation();
+//		    Point nw = p.getLocation();
+//		    Point ne = p.getLocation();
+//		    Point se = p.getLocation();
+//		     
+//		    nw.translate(diffNeg, diffPos);
+//		    ne.translate(diffPos, diffPos);
+//		    se.translate(diffPos, diffNeg);
+//		    sw.translate(diffNeg, diffNeg);
+//		    
+//		    g.drawLine(p.x, p.y, nw.x, nw.y);
+//		    g.drawLine(p.x, p.y, ne.x, ne.y);
+//		    g.drawLine(p.x, p.y, se.x, se.y);
+//		    g.drawLine(p.x, p.y, sw.x, sw.y);
 		}
 	}
 }
