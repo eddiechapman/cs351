@@ -173,7 +173,7 @@ public class HexPath {
 		    xPoints[i] = p.x;
 		    yPoints[i] = p.y;
 		}
-		g.drawPolyline(xPoints, yPoints, size);
+		g.drawPolyline(xPoints, yPoints, path.length);
 	}
 	
 	/**
