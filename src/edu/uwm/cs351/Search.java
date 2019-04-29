@@ -26,7 +26,7 @@ public class Search {
 	
 	private void clear() {
 		visited.clear();
-		while (!worklist.hasNext()) {
+		while (worklist.hasNext()) {
 		    worklist.next();
 		}
 	}
@@ -38,16 +38,28 @@ public class Search {
 	 * @param to       HexCoordinate to reach (must not be null).
 	 * @param b        HexBoard to traverse.
 	 * @return a       search state including a possible HexPath, or 
-	 *                 null if no path is found.
+	 *                 null if no path is found.                     
 	 */
 	public HexPath find(HexCoordinate from, HexCoordinate to, HexBoard b) {
 		clear();
 		Terrain initial = b.terrainAt(from);
 		if (initial == null || initial == Terrain.INACCESSIBLE) return null; // can't go anywhere
-		// TODO: Use worklist to find path to "to"
+		visited.add(from);
+		worklist.add(new HexPath(from));
+		while (worklist.hasNext()) {
+		    HexPath p = worklist.next();
+		    visited.add(p.last());
+		    if (p.last().equals(to)) return p;
+		    for (HexDirection d : HexDirection.values()) {
+                HexCoordinate h = d.applyTo(p.last());
+                Terrain t = b.terrainAt(h);
+                if ((t != null) && (t != Terrain.INACCESSIBLE) && (!(visited.contains(h)))) 
+                    worklist.add(new HexPath(p, h));
+            }
+		}
 		return null;
 	}
-	
+
 	/**
 	 * For every node that was visited in the most recent search, draw 
 	 * an X centered on the tile half the size of tiles.
