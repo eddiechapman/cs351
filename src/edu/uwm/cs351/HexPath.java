@@ -164,8 +164,16 @@ public class HexPath {
 	 * @param g
 	 */
 	public void draw(Graphics g) {
-		// TODO: Draw path.
-		// (Do not render locations, just the path!)
+		if (size == 0) return;
+		HexCoordinate[] path = toArray();
+		int[] xPoints = new int[path.length];
+		int[] yPoints = new int[path.length];
+		for (int i = 0; i < size; ++i) {
+		    Point p = path[i].toPoint(HexTile.WIDTH);
+		    xPoints[i] = p.x;
+		    yPoints[i] = p.y;
+		}
+		g.drawPolyline(xPoints, yPoints, size);
 	}
 	
 	/**
