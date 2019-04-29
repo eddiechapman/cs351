@@ -168,7 +168,7 @@ public class HexPath {
 		HexCoordinate[] path = toArray();
 		int[] xPoints = new int[path.length];
 		int[] yPoints = new int[path.length];
-		for (int i = 0; i < size; ++i) {
+		for (int i = 0; i < path.length; ++i) {
 		    Point p = path[i].toPoint(HexTile.WIDTH);
 		    xPoints[i] = p.x;
 		    yPoints[i] = p.y;
