@@ -6,7 +6,14 @@ import java.util.Stack;
 /**
  * A Worklist whose most recent addition is the first to be accessed.
  * 
- * @author Eddie Chapman
+ * @author Eddie Chapman (chapman4@uwm.edu)
+ * 
+ * I completed this assignment by referencing the lecture notes, 
+ * textbook, Oracle documentation, and text adventure example. 
+ * 
+ * I discussed the assignment with Mason Baran regarding how to 
+ * interpret the text adventure in the context of search. 
+ * 
  * @param <E>       The type of element to be stored in the Worklist.
  */
 public class LIFOWorklist<E> implements Worklist<E> {

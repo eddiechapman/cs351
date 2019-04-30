@@ -10,6 +10,14 @@ import edu.uwm.cs351.util.Worklist;
 
 /**
  * Class to find paths across HexTile boards.
+ * 
+ * @author Eddie Chapman (chapman4@uwm.edu)
+ * 
+ * I completed this assignment by referencing the lecture notes, 
+ * textbook, Oracle documentation, and text adventure example. 
+ * 
+ * I discussed the assignment with Mason Baran regarding how to 
+ * interpret the text adventure in the context of search. 
  */
 public class Search {
 	private final Worklist<HexPath> worklist;

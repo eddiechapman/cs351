@@ -17,6 +17,14 @@ import junit.framework.TestCase;
  * <p>This class is <i>immutable</i> which means that once created, none 
  * of the fields can change.  As a result, we don't need to check the 
  * invariant after checking it in the constructor.</p>
+ * 
+ * @author Eddie Chapman (chapman4@uwm.edu)
+ * 
+ * I completed this assignment by referencing the lecture notes, 
+ * textbook, Oracle documentation, and text adventure example. 
+ * 
+ * I discussed the assignment with Mason Baran regarding how to 
+ * interpret the text adventure in the context of search. 
  */
 public class HexPath {
 	private final HexPath previous;

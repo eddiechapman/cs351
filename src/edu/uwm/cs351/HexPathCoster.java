@@ -9,6 +9,14 @@ import java.util.Comparator;
  * The sum of the costs of the Terrain is computed, with a path that 
  * goes into and out of a Terrain costing double. This coster can be 
  * used to compare legal HexPaths.
+ * 
+ * @author Eddie Chapman (chapman4@uwm.edu)
+ * 
+ * I completed this assignment by referencing the lecture notes, 
+ * textbook, Oracle documentation, and text adventure example. 
+ * 
+ * I discussed the assignment with Mason Baran regarding how to 
+ * interpret the text adventure in the context of search. 
  */
 public class HexPathCoster implements Comparator<HexPath> {
     private static final int MAX = Integer.MAX_VALUE;
