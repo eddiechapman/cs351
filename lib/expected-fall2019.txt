@@ -1,0 +1,25 @@
+COMPSCI-241: C Programming for Embedded Systems; LEC 401 conflicts with COMPSCI-361: Introduction to Software Engineering; LEC 401
+COMPSCI-250: Introductory Computer Programming; LEC 401 conflicts with COMPSCI-395: Social, Professional, and Ethical Issues; LEC 002
+COMPSCI-657: Topics in Computer Science:; LEC 001 conflicts with COMPSCI-658: Topics in Applied Computing:; LEC 402
+COMPSCI-657: Topics in Computer Science:; LEC 001 conflicts with COMPSCI-712: Image Processing; LEC 001
+COMPSCI-657: Topics in Computer Science:; LEC 001 conflicts with COMPSCI-720: Computational Models of Decision Making; LEC 001
+COMPSCI-657: Topics in Computer Science:; LEC 001 conflicts with COMPSCI-732: Type Systems for Programming Languages; LEC 001
+COMPSCI-657: Topics in Computer Science:; LEC 001 conflicts with COMPSCI-755: Information and Coding Theory; LEC 001
+COMPSCI-657: Topics in Computer Science:; LEC 001 conflicts with COMPSCI-790: Advanced Topics in Computer Science:; LEC 001
+COMPSCI-658: Topics in Applied Computing:; LEC 001 conflicts with COMPSCI-704: Analysis of Algorithms; LEC 001
+COMPSCI-658: Topics in Applied Computing:; LEC 001 conflicts with COMPSCI-710: Artificial Intelligence; LEC 001
+COMPSCI-658: Topics in Applied Computing:; LEC 001 conflicts with COMPSCI-730: Advanced Computer Networks; LEC 001
+COMPSCI-658: Topics in Applied Computing:; LEC 001 conflicts with COMPSCI-805: Randomized Algorithms; Pseudorandom Numbers; LEC 001
+COMPSCI-658: Topics in Applied Computing:; LEC 402 conflicts with COMPSCI-712: Image Processing; LEC 001
+COMPSCI-658: Topics in Applied Computing:; LEC 402 conflicts with COMPSCI-732: Type Systems for Programming Languages; LEC 001
+COMPSCI-658: Topics in Applied Computing:; LEC 402 conflicts with COMPSCI-790: Advanced Topics in Computer Science:; LEC 001
+COMPSCI-704: Analysis of Algorithms; LEC 001 conflicts with COMPSCI-730: Advanced Computer Networks; LEC 001
+COMPSCI-710: Artificial Intelligence; LEC 001 conflicts with COMPSCI-805: Randomized Algorithms; Pseudorandom Numbers; LEC 001
+COMPSCI-712: Image Processing; LEC 001 conflicts with COMPSCI-732: Type Systems for Programming Languages; LEC 001
+COMPSCI-712: Image Processing; LEC 001 conflicts with COMPSCI-790: Advanced Topics in Computer Science:; LEC 001
+COMPSCI-720: Computational Models of Decision Making; LEC 001 conflicts with COMPSCI-732: Type Systems for Programming Languages; LEC 001
+COMPSCI-720: Computational Models of Decision Making; LEC 001 conflicts with COMPSCI-755: Information and Coding Theory; LEC 001
+COMPSCI-720: Computational Models of Decision Making; LEC 001 conflicts with COMPSCI-790: Advanced Topics in Computer Science:; LEC 001
+COMPSCI-732: Type Systems for Programming Languages; LEC 001 conflicts with COMPSCI-755: Information and Coding Theory; LEC 001
+COMPSCI-732: Type Systems for Programming Languages; LEC 001 conflicts with COMPSCI-790: Advanced Topics in Computer Science:; LEC 001
+COMPSCI-755: Information and Coding Theory; LEC 001 conflicts with COMPSCI-790: Advanced Topics in Computer Science:; LEC 001
