@@ -12,6 +12,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import edu.uwm.cs.util.XMLTokenType;
 import edu.uwm.cs.util.XMLTokenizer;
 import edu.uwm.cs351.util.XMLTokenizerUtil;
@@ -22,7 +24,9 @@ import edu.uwm.cs351.util.XMLTokenizerUtil;
 public class ImportUWMSchedule {
 	private static final String SCHEDULE_URL_FORMAT = "http://www4.uwm.edu/schedule/index.cfm?a1=subject_details&subject=%s&strm=%d";
 
-	private static URL makeURL(Term term, String code) {
+	private static URL makeURL(Term term, String code) throws IOException {
+		int result = JOptionPane.showConfirmDialog(null, "This will open a network connection to the UWM web pages.\nProceed?", "Network Query", JOptionPane.OK_CANCEL_OPTION);
+		if (result == JOptionPane.CANCEL_OPTION) throw new IOException("Not opening network connection");
 		try {
 			return new URL(String.format(SCHEDULE_URL_FORMAT,code.toUpperCase(),term.getId()));
 		} catch (MalformedURLException e) {

@@ -47,15 +47,15 @@ public class TestCheckSchedule extends LockedTestCase {
 	/// locked tests
 	
 	public void test0() {
-		Section s1 = Section.fromString(cs150,"LEC 001");
-		Section s2 = Section.fromString(cs251,"LEC 401");
-		Section s3 = Section.fromString(ger101,"LEC 101");
+		Section s1 = Section.fromString(cs150,"LEC 001"); // COMPSCI-150
+		Section s2 = Section.fromString(cs251,"LEC 401"); // COMPSCI-251
+		Section s3 = Section.fromString(ger101,"LEC 001"); // GERMAN-101
 		CheckSchedule check = new CheckSchedule(ss(s1,s2,s3));
 		// do online/asynchronous courses conflict?
 		assertEquals(Ti(2037782835),check.checkOverlap().size());
 		s1.addPeriod(mw11);
-		s2.addPeriod(mw930);
-		s3.addPeriod(mtwrf9);
+		s2.addPeriod(mw930); // 9:30-10:45am
+		s3.addPeriod(mtwrf9); // 9-9:50am
 		List<Pair<Section,Section>> pairs = check.checkOverlap();
 		// how many pairs of conflicts ?
 		assertEquals(Ti(1128066613),pairs.size());
@@ -67,7 +67,7 @@ public class TestCheckSchedule extends LockedTestCase {
 	private void test0Cont(boolean ignored) {
 		Section s1 = Section.fromString(cs251,"LEC 401");
 		Section s2 = Section.fromString(cs251,"LAB 803");
-		Section s3 = Section.fromString(ger101,"LEC 101");
+		Section s3 = Section.fromString(ger101,"LEC 001");
 		s1.addPeriod(mw11);
 		s2.addPeriod(w9);
 		s2.addPeriod(w10);

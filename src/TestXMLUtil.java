@@ -45,19 +45,19 @@ public class TestXMLUtil extends LockedTestCase {
 	public void test01(){
 		// Good! Now for some true/false questions...
 		
-		// T/F: Text is legal content of an XML element.
+		// true/false: Text is legal content of an XML element.
 			Tb(236098543);
 				
-		// T/F: The element <orange/> might have contents.
+		// true/false: The element <orange/> might have contents.
 			Tb(2112063273);
 				
-		// T/F: <cake> <cake> cream filling </cake> </cake>     ...is valid XML.
+		// true/false: <cake> <cake> cream filling </cake> </cake>     ...is valid XML.
 			Tb(1083105664);
 						
-		// T/F: <bread> peanut butter & jelly </bread>     ...is valid XML.
+		// true/false: <bread> peanut butter & jelly </bread>     ...is valid XML.
 			Tb(440449791);
 			
-		// T/F: An XML document may have multiple root elements.
+		// true/false: An XML document may have multiple root elements.
 			Tb(90068664);
 	}
 	
