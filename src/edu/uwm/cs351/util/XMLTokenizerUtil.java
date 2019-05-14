@@ -20,7 +20,6 @@ public class XMLTokenizerUtil {
 	public XMLTokenizerUtil(XMLTokenizer t) {
 		tokenizer = t;
 	}
-
 	
 	/**
 	 * Read tokens until we get an OPEN token for the given name.
@@ -63,7 +62,30 @@ public class XMLTokenizerUtil {
 	 */
 	public String skipElement() {
 		StringBuilder sb = new StringBuilder();
-		// TODO
+		XMLTokenType firstToken = tokenizer.current();
+		while (tokenizer.hasNext()) {
+            switch (tokenizer.next()) {
+                case ATTR:
+                    sb.append(tokenizer.getCurrentText());
+                    break;
+                case CLOSE:
+                    return sb.toString();
+                case ECLOSE:
+                    return sb.toString();
+                case ERROR:
+                    return sb.toString();
+                case ETAG:
+                    if (firstToken != XMLTokenType.OPEN) tokenizer.saveToken();
+                    return sb.toString();
+                case OPEN:
+                    break;
+                case TEXT:
+                    sb.append(tokenizer.getCurrentText());
+                    break;
+                default:
+                    break;
+            }
+        }
 		return sb.toString();
 	}
 	
