@@ -106,31 +106,25 @@ public class XMLTokenizerUtil {
 	 * @return strings for each table data entries.
 	 */
 	public List<String> readTR() {
-		List<String> result = new ArrayList<>();
-		while (tokenizer.hasNext()) {
+	    List<String> result = new ArrayList<>(); 
+        while (tokenizer.hasNext()) {
             switch (tokenizer.next()) {
-                case ATTR:
-                    break;
-                case CLOSE:
-                    break;
                 case ECLOSE:
                     break;
                 case ERROR:
                     return result;
                 case ETAG:
-                    if (tokenizer.getCurrentName().equals("tr")) return result;
-                    break;
+                    if (tokenizer.getCurrentName().equals("tr")) 
+                        return result;
                 case OPEN:
-                    break;
-                case TEXT:
-                    if (tokenizer.getCurrentText().trim().length() > 0)
-                        result.add(tokenizer.getCurrentText());
+                    if (tokenizer.getCurrentName().equals("td")) 
+                        result.add(skipElement());
                     break;
                 default:
                     break;
             }
         }
-		return result;
+        return result;
 	}
 
 }
