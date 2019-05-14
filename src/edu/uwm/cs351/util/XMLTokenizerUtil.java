@@ -69,7 +69,7 @@ public class XMLTokenizerUtil {
                     sb.append(tokenizer.getCurrentText());
                     break;
                 case CLOSE:
-                    return sb.toString();
+                    break;
                 case ECLOSE:
                     return sb.toString();
                 case ERROR:
