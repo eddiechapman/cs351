@@ -102,7 +102,28 @@ public class XMLTokenizerUtil {
 	 */
 	public List<String> readTR() {
 		List<String> result = new ArrayList<>();
-		// TODO
+		while (tokenizer.hasNext()) {
+            switch (tokenizer.next()) {
+                case ATTR:
+                    break;
+                case CLOSE:
+                    break;
+                case ECLOSE:
+                    break;
+                case ERROR:
+                    return result;
+                case ETAG:
+                    if (tokenizer.getCurrentName().equals("tr")) return result;
+                    break;
+                case OPEN:
+                    break;
+                case TEXT:
+                    result.add(tokenizer.getCurrentText());
+                    break;
+                default:
+                    break;
+            }
+        }
 		return result;
 	}
 
