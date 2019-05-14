@@ -63,21 +63,24 @@ public class XMLTokenizerUtil {
 	 */
 	public String skipElement() {
 		StringBuilder sb = new StringBuilder();
-		XMLTokenType firstToken = tokenizer.current();
-		while (tokenizer.hasNext()) {
+		String elemName = tokenizer.getCurrentName();
+		String lastOpen = tokenizer.getCurrentName();
+		while (tokenizer.hasNext()) {   
             switch (tokenizer.next()) {
                 case ATTR:
                     break;
                 case CLOSE:
                     break;
                 case ECLOSE:
-                    return sb.toString();
+                    if (lastOpen.equals(elemName)) return sb.toString();
+                    break;
                 case ERROR:
                     return sb.toString();
                 case ETAG:
-                    if (firstToken != XMLTokenType.OPEN) tokenizer.saveToken();
-                    return sb.toString();
+                    if (tokenizer.getCurrentName().equals(elemName)) return sb.toString();
+                    break;
                 case OPEN:
+                    lastOpen = tokenizer.getCurrentName();
                     break;
                 case TEXT:
                     sb.append(tokenizer.getCurrentText());
