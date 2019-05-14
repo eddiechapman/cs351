@@ -42,6 +42,7 @@ public class XMLTokenizerUtil {
                 case OPEN:
                     if (elemName == null) return;
                     if (tokenizer.getCurrentName().equals(elemName)) return;
+                    break;
                 default:
                     break;
 		    }
