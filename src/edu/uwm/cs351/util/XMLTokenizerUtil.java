@@ -65,6 +65,7 @@ public class XMLTokenizerUtil {
 		StringBuilder sb = new StringBuilder();
 		String elemName = tokenizer.getCurrentName();
 		String lastOpen = tokenizer.getCurrentName();
+		List<String> open = new ArrayList<>();
 		while (tokenizer.hasNext()) {   
             switch (tokenizer.next()) {
                 case ATTR:
@@ -78,9 +79,14 @@ public class XMLTokenizerUtil {
                     return sb.toString();
                 case ETAG:
                     if (tokenizer.getCurrentName().equals(elemName)) return sb.toString();
+                    if (open.remove(tokenizer.getCurrentName()) == false) { 
+                        tokenizer.saveToken();
+                        return sb.toString();
+                    }
                     break;
                 case OPEN:
                     lastOpen = tokenizer.getCurrentName();
+                    open.add(lastOpen);
                     break;
                 case TEXT:
                     sb.append(tokenizer.getCurrentText());
