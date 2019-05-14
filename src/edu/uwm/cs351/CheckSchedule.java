@@ -8,24 +8,30 @@ import java.util.List;
 import edu.uwm.cs.util.Pair;
 
 /**
- * Check a list of sections for problems.  Currently
- * we only perform one check: finding conflicting lecture sections.
+ * Check a list of sections for problems.  
+ * 
+ * Currently we only perform one check: finding conflicting lecture 
+ * sections.
  */
 public class CheckSchedule {
 	private final List<Section> sections;
 	
 	/**
 	 * Initialize the list of sections under review.
-	 * @param ss sections to check, must not be null
+	 * 
+	 * @param ss       sections to check, must not be null
 	 */
 	public CheckSchedule(List<Section> ss) {
 		sections = new ArrayList<>(ss);
 	}
 	
 	/**
-	 * Return a list of all pairs of lecture sections
-	 * that have conflicting periods.
-	 * Each pair is listed only once (with the earlier lecture section listed first).
+	 * Return a list of all pairs of lecture sections that have 
+	 * conflicting periods.
+	 * 
+	 * Each pair is listed only once (with the earlier lecture section 
+	 * listed first).
+	 * 
 	 * @return new list of conflicting pairs.
 	 */
 	public List<Pair<Section,Section>> checkOverlap() {
