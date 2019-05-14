@@ -40,9 +40,11 @@ public class ImportUWMSchedule {
 	private final XMLTokenizerUtil util;
 	
 	/**
-	 * Read UWM schedule information for a particular curricular code and term.
-	 * @param term UWM term, must not be null
-	 * @param code curricular code, e.g. "COMPSCI", must not be null
+	 * Read UWM schedule information for a particular curricular code 
+	 * and term.
+	 * 
+	 * @param term     UWM term, must not be null
+	 * @param code     curricular code, e.g. "COMPSCI", must not be null
 	 * @throws IOException problem opening the web page
 	 */
 	public ImportUWMSchedule(Term term, String code) throws IOException {
@@ -51,8 +53,10 @@ public class ImportUWMSchedule {
 	
 	/**
 	 * Read UWM schedule information from the given URL.
-	 * @param url source of data, must not be null
-	 * @throws IOException if the URL cannot be opened and a few bytes read.
+	 * 
+	 * @param url      source of data, must not be null
+	 * @throws IOException if the URL cannot be opened and a few bytes 
+	 *     read.
 	 */
 	public ImportUWMSchedule(URL url) throws IOException {
 		this(new InputStreamReader(url.openStream(),UTF8));
@@ -60,7 +64,8 @@ public class ImportUWMSchedule {
 	
 	/**
 	 * Use the given stream to read UWM schedule information.
-	 * @param r a reader, not necessarily buffered
+	 * 
+	 * @param r        a reader, not necessarily buffered
 	 */
 	public ImportUWMSchedule(Reader r) {
 		tokenizer = new XMLTokenizer(new BufferedReader(r));
@@ -74,10 +79,12 @@ public class ImportUWMSchedule {
 	
 
 	/**
-	 * Read the HTML and return the list of sections found.
+	 * Read the HTML and return the list of sections found. 
+	 * 
 	 * If there is an error, we may stop prematurely.
+	 * 
 	 * @see {@link #getError()}.
-	 * @return
+	 * @return 
 	 */
 	public List<Section> read() {
 		// skip until we reach <html>
@@ -87,8 +94,10 @@ public class ImportUWMSchedule {
 	}
 	
 	/**
-	 * Return an error message if reading stopped prematurely.
+	 * Return an error message if reading stopped prematurely. 
+	 * 
 	 * If there was no error, return null.
+	 * 
 	 * @return error message, or null if no error.
 	 */
 	public String getError() {
@@ -115,7 +124,9 @@ public class ImportUWMSchedule {
 
 	/**
 	 * Import sections according to the specification in args:
-	 * @param args main arguments: either TERM CODE or filename of HTML.
+	 * 
+	 * @param args     main arguments: either TERM CODE or filename of 
+	 *                 HTML.
 	 * @return list of sections, or null if bad arguments
 	 * @throws FileNotFoundException if file is read
 	 * @throws IOException problem reading
