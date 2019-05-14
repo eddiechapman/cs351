@@ -66,22 +66,22 @@ public class XMLTokenizerUtil {
 		Stack<String> open = new Stack<String>();
 		tokenizer.saveToken();
 		while (tokenizer.hasNext()) {
-		    tokenizer.next();
-		    String name = tokenizer.getCurrentName();
-            switch (tokenizer.current()) {
+            switch (tokenizer.next()) {
                 case ECLOSE:
                     open.pop();
                     break;
                 case ERROR:
                     return sb.toString();
                 case ETAG:
-                    if (open.search(name) == -1) tokenizer.saveToken();
+                    if (open.search(tokenizer.getCurrentName()) == -1) 
+                        tokenizer.saveToken();
                     while(!open.isEmpty()) {
+                        String name = open.pop();
                         if (open.pop().equals(name)) break;
                     }
                     break;
                 case OPEN:
-                    open.push(name);
+                    open.push(tokenizer.getCurrentName());
                     break;
                 case TEXT:
                     sb.append(tokenizer.getCurrentText());
