@@ -36,7 +36,17 @@ public class XMLTokenizerUtil {
 	 *                     stop at the <em>first</em> OPEN token.
 	 */
 	public void skipUntilOpen(String elemName) {
-		// TODO: Write this method.
+		while (tokenizer.hasNext()) {
+		    switch (tokenizer.next()) {
+                case ERROR:
+                    return;
+                case OPEN:
+                    if (elemName == null) return;
+                    if (tokenizer.getCurrentName().equals(elemName)) return;
+                default:
+                    break;
+		    }
+		}
 	}
 	
 	/**
