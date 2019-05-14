@@ -67,7 +67,6 @@ public class XMLTokenizerUtil {
 		while (tokenizer.hasNext()) {
             switch (tokenizer.next()) {
                 case ATTR:
-                    sb.append(tokenizer.getCurrentText());
                     break;
                 case CLOSE:
                     break;
