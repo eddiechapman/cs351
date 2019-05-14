@@ -63,33 +63,25 @@ public class XMLTokenizerUtil {
 	 */
 	public String skipElement() {
 		StringBuilder sb = new StringBuilder();
-		String elemName = tokenizer.getCurrentName();
-		String lastOpen = tokenizer.getCurrentName();
-		List<String> open = new ArrayList<>();
-		open.add(elemName);
-		while (tokenizer.hasNext()) {   
-            switch (tokenizer.next()) {
-                case ATTR:
-                    break;
-                case CLOSE:
-                    break;
+		Stack<String> open = new Stack<String>();
+		tokenizer.saveToken();
+		while (tokenizer.hasNext()) {
+		    tokenizer.next();
+		    String name = tokenizer.getCurrentName();
+            switch (tokenizer.current()) {
                 case ECLOSE:
-                    open.remove(lastOpen);
-                    if (!open.contains(elemName)) return sb.toString();
+                    open.pop();
                     break;
                 case ERROR:
                     return sb.toString();
                 case ETAG:
-                    if (open.remove(tokenizer.getCurrentName()) == false) {
-                        tokenizer.saveToken();
-                        return sb.toString();
+                    if (open.search(name) == -1) tokenizer.saveToken();
+                    while(!open.isEmpty()) {
+                        if (open.pop().equals(name)) break;
                     }
-                    if (!open.contains(elemName)) 
-                        return sb.toString();
                     break;
                 case OPEN:
-                    lastOpen = tokenizer.getCurrentName();
-                    open.add(lastOpen);
+                    open.push(name);
                     break;
                 case TEXT:
                     sb.append(tokenizer.getCurrentText());
@@ -97,6 +89,7 @@ public class XMLTokenizerUtil {
                 default:
                     break;
             }
+            if (open.isEmpty()) break;
         }
 		return sb.toString();
 	}
@@ -130,7 +123,8 @@ public class XMLTokenizerUtil {
                 case OPEN:
                     break;
                 case TEXT:
-                    result.add(tokenizer.getCurrentText());
+                    if (tokenizer.getCurrentText().trim().length() > 0)
+                        result.add(tokenizer.getCurrentText());
                     break;
                 default:
                     break;
