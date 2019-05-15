@@ -87,9 +87,28 @@ public class ImportUWMSchedule {
 	 * @return         list of sections found.
 	 */
 	public List<Section> read() {
-		// skip until we reach <html>
 		util.skipUntilOpen("html");
-		// TODO 
+		while (tokenizer.hasNext()) {
+		    util.skipUntilOpen("span");
+		    tokenizer.next();
+		    if (tokenizer.getCurrentText().equals("subhead")) {
+		        tokenizer.next();
+		        tokenizer.next();
+		        if (tokenizer.getCurrentText().startsWith("COMPSCI")) {
+		            String text = tokenizer.getCurrentText().trim();
+		            String curriculumCode = text.substring(0, text.indexOf("-")).trim();
+		            String courseNumberString = text.substring(text.indexOf("-") + 1, text.indexOf(":")).trim();
+		            if (courseNumberString.endsWith("G")) break;
+		            Integer courseNumber = Integer.parseInt(courseNumberString);
+		            String courseTitle = text.substring(text.indexOf(":") + 1).trim();
+		            Course c = new Course(curriculumCode, courseNumber);
+		            c.setTitle(courseTitle);
+		            System.out.println();
+		            System.out.println(c.toString());
+		            System.out.println();
+		        }
+		    }
+		}
 		return readSections;
 	}
 	
@@ -104,6 +123,7 @@ public class ImportUWMSchedule {
 		return error;
 	}
 	
+
 	public static void main(String[] args) throws MalformedURLException, IOException {
 		List<Section> sections = doImport(args);
 		if (sections == null) {
