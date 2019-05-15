@@ -19,7 +19,7 @@ public class CheckSchedule {
 	/**
 	 * Initialize the list of sections under review.
 	 * 
-	 * @param ss       sections to check, must not be null
+	 * @param ss           sections to check, must not be null
 	 */
 	public CheckSchedule(List<Section> ss) {
 		sections = new ArrayList<>(ss);
@@ -32,7 +32,7 @@ public class CheckSchedule {
 	 * Each pair is listed only once (with the earlier lecture section 
 	 * listed first).
 	 * 
-	 * @return new list of conflicting pairs.
+	 * @return             new list of conflicting pairs.
 	 */
 	public List<Pair<Section,Section>> checkOverlap() {
 		return null; // TODO

@@ -58,8 +58,8 @@ public class XMLTokenizerUtil {
 	 * ETAG, then we stop immediately and save the token. Stop 
 	 * immediately if an error is found or if the tokens end.
 	 * 
-	 * @return all the text found, concatenated into a single string, 
-	 *         never null
+	 * @return             all the text found, concatenated into a 
+	 *                     single string, never null
 	 */
 	public String skipElement() {
 		StringBuilder sb = new StringBuilder();
@@ -103,7 +103,7 @@ public class XMLTokenizerUtil {
 	 * Stop when an ERROR happens, the token stream ends or when 
 	 * <tt>&lt;/tr&gt;</tt> is encountered.
 	 * 
-	 * @return strings for each table data entries.
+	 * @return             strings for each table data entries.
 	 */
 	public List<String> readTR() {
 	    List<String> result = new ArrayList<>(); 

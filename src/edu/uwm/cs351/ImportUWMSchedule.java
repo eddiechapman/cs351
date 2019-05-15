@@ -45,7 +45,7 @@ public class ImportUWMSchedule {
 	 * 
 	 * @param term     UWM term, must not be null
 	 * @param code     curricular code, e.g. "COMPSCI", must not be null
-	 * @throws IOException problem opening the web page
+	 * @throws         IOException problem opening the web page
 	 */
 	public ImportUWMSchedule(Term term, String code) throws IOException {
 		this(makeURL(term,code));
@@ -55,8 +55,8 @@ public class ImportUWMSchedule {
 	 * Read UWM schedule information from the given URL.
 	 * 
 	 * @param url      source of data, must not be null
-	 * @throws IOException if the URL cannot be opened and a few bytes 
-	 *     read.
+	 * @throws         IOException if the URL cannot be opened and a few 
+	 *                 bytes read.
 	 */
 	public ImportUWMSchedule(URL url) throws IOException {
 		this(new InputStreamReader(url.openStream(),UTF8));
@@ -84,7 +84,7 @@ public class ImportUWMSchedule {
 	 * If there is an error, we may stop prematurely.
 	 * 
 	 * @see {@link #getError()}.
-	 * @return 
+	 * @return         list of sections found.
 	 */
 	public List<Section> read() {
 		// skip until we reach <html>
@@ -98,7 +98,7 @@ public class ImportUWMSchedule {
 	 * 
 	 * If there was no error, return null.
 	 * 
-	 * @return error message, or null if no error.
+	 * @return         error message, or null if no error.
 	 */
 	public String getError() {
 		return error;
@@ -127,9 +127,9 @@ public class ImportUWMSchedule {
 	 * 
 	 * @param args     main arguments: either TERM CODE or filename of 
 	 *                 HTML.
-	 * @return list of sections, or null if bad arguments
-	 * @throws FileNotFoundException if file is read
-	 * @throws IOException problem reading
+	 * @return         list of sections, or null if bad arguments
+	 * @throws         FileNotFoundException if file is read
+	 * @throws         IOException problem reading
 	 */
 	public static List<Section> doImport(String[] args) throws FileNotFoundException, IOException {
 		ImportUWMSchedule self;
