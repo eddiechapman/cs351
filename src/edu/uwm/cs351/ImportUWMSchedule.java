@@ -87,109 +87,97 @@ public class ImportUWMSchedule {
 	 * @return         list of sections found.
 	 */
 	public List<Section> read() {
+	    List<String> courseFields = new ArrayList<String>();
+	    String curriculumCode, courseNumberStr, courseTitle, text;
+	    Integer courseNumber;
+	    int sep1, sep2;
+	    Course c;
+	    
 		util.skipUntilOpen("html");
 		tokenizer.next();
+		
 		while (tokenizer.hasNext()) {
-		    
+
 		    // find the next course
-	        while (tokenizer.hasNext()) {
-	            util.skipUntilOpen("span");
+	        while (tokenizer.hasNext()) {   
 	            if ((tokenizer.next() == XMLTokenType.ATTR) &&
 	                (tokenizer.getCurrentName().equals("class")) &&
 	                (tokenizer.getCurrentText().equals("subhead")) &&
 	                (tokenizer.next() == XMLTokenType.CLOSE) &&
-	                (tokenizer.next() == XMLTokenType.TEXT)) break;             
+	                (tokenizer.next() == XMLTokenType.TEXT)) 
+	            { break; }
+	            util.skipUntilOpen("span");
 	        }
 	        
 	        // process the course info
-	        while (true) {
-	            String text = tokenizer.getCurrentText().trim();
-	            
-	            if (!text.contains("-") || !text.contains(":")) 
-	                throw new RuntimeException("help!! " + tokenizer); 
-	            
-	            int sep1 = text.indexOf("-");
-	            int sep2 = text.indexOf(":");
-	            
-	            String curriculumCode = text.substring(0, sep1);
-	            String courseTitle = text.substring(sep2 + 1);
-	            String courseNumberStr = text.substring(sep1 + 1, sep2);	            
-	            if (courseNumberStr.endsWith("G")) break;  // Don't need U/G courses
-	            Integer courseNumber = Integer.parseInt(courseNumberStr);
-	            
-	            Course c = new Course(curriculumCode, courseNumber);
-	            c.setTitle(courseTitle);
-	            System.out.println(c.toString());
-	            break;
-	        }
-	        
-    	}
+//	        while (tokenizer.hasNext()) {   
+            text = tokenizer.getCurrentText().trim();
+            sep1 = text.indexOf("-");
+            sep2 = text.indexOf(":");
+            
+            if ((sep1 == -1) || (sep2 == -1)) 
+                throw new RuntimeException("help!! " + tokenizer);
+            
+            curriculumCode = text.substring(0, sep1);
+            courseTitle = text.substring(sep2 + 1);
+            courseNumberStr = text.substring(sep1 + 1, sep2);	            
+            
+            // Skip courses with "G" in course numbers
+            try { 
+                courseNumber = Integer.parseInt(courseNumberStr);
+            } catch (NumberFormatException e) { 
+                break; 
+            }
+            
+            c = new Course(curriculumCode, courseNumber);
+            c.setTitle(courseTitle);
+            
+            // testing
+            System.out.println();
+            System.out.println("---------------------------");
+            System.out.println(c.toString());
+            
+            // Find the table containing rows of section info
+            while (tokenizer.hasNext()) {
+                util.skipUntilOpen("table");
+                if ((tokenizer.next() == XMLTokenType.ATTR) &&
+                    (tokenizer.getCurrentName().equals("border")) &&
+                    (tokenizer.getCurrentText().equals("0")) &&
+                    (tokenizer.next() == XMLTokenType.ATTR) &&
+                    (tokenizer.getCurrentName().equals("cellpadding")) &&
+                    (tokenizer.getCurrentText().equals("2")) &&
+                    (tokenizer.next() == XMLTokenType.ATTR) &&
+                    (tokenizer.getCurrentName().equals("cellspacing")) &&
+                    (tokenizer.getCurrentText().equals("0")) &&
+                    (tokenizer.next() == XMLTokenType.ATTR) &&
+                    (tokenizer.getCurrentName().equals("width")) &&
+                    (tokenizer.getCurrentText().equals("100%")))
+                { break; }
+            }
+
+            // Loop through all the rows of section info
+            while ((tokenizer.hasNext()) && (!tokenizer.getCurrentName().equals("table"))) {
+                tokenizer.next();
+                if ((tokenizer.current() == XMLTokenType.OPEN) &&
+                    (tokenizer.getCurrentName().equals("tr")) &&
+                    (tokenizer.next() == XMLTokenType.ATTR) &&
+                    (tokenizer.getCurrentName().equals("class")) &&
+                    (tokenizer.getCurrentText().equals("body copy"))) {
+
+                    courseFields = util.readTR();
+                    
+                    if (courseFields.size() != 11) 
+                        throw new RuntimeException("help!! " + tokenizer);
+                    
+                    for (String field : courseFields) {
+                        System.out.println(field.trim());
+                    }
+                    System.out.println();
+                }   
+            }
+		}
 		return readSections;
     }
-		
-		
-//		    util.skipUntilOpen("span");
-//		    tokenizer.next();
-//		    if (tokenizer.getCurrentText().equals("subhead")) {
-//		        tokenizer.next();
-//		        tokenizer.next(); 
-//		        
-//		        // Found a course
-//		        if (tokenizer.getCurrentText().startsWith("COMPSCI")) {  
-//		            String text = tokenizer.getCurrentText().trim();
-//		            String curriculumCode = text.substring(0, text.indexOf("-")).trim();
-//		            String courseNumberString = text.substring(text.indexOf("-") + 1, text.indexOf(":")).trim();
-//		            
-//		            // G denotes grad/undergrad course - not needed for assignment and breaks parseInt()
-//		            if (courseNumberString.endsWith("G")) 
-//		                break;  
-//		            
-//		            Integer courseNumber = Integer.parseInt(courseNumberString);
-//		            String courseTitle = text.substring(text.indexOf(":") + 1).trim();
-//		            Course c = new Course(curriculumCode, courseNumber);
-//		            c.setTitle(courseTitle);
-//		            
-//		            System.out.println(c.toString());
-//		            util.skipUntilOpen("tr");
-//		            tokenizer.next();
-//		            System.out.println(tokenizer.getCurrentName());
-//                    System.out.println(tokenizer.getCurrentText());
-//		            util.skipUntilOpen("tr");
-//		            tokenizer.next();
-//		            System.out.println(tokenizer.getCurrentName());
-//                    System.out.println(tokenizer.getCurrentText());
-//		            util.skipUntilOpen("tr");
-//                    tokenizer.next();
-//                    util.skipUntilOpen("tr");
-//                    System.out.println(tokenizer.getCurrentName());
-//                    System.out.println(tokenizer.getCurrentText());
-//                    tokenizer.next();
-//                    util.skipUntilOpen("tr");
-//                    System.out.println(tokenizer.getCurrentName());
-//                    System.out.println(tokenizer.getCurrentText());
-//                    tokenizer.next();
-//                    
-//		            List<String> courseInfo = new ArrayList<String>();
-//		            courseInfo = util.readTR();
-//		            for (String info : courseInfo) {
-//		                System.out.println(info);
-//		            }
-//		            System.out.println();
-//		            Integer sectionNo = Integer.parseInt(courseInfo.get(3));
-//		            String time = courseInfo.get(5);
-//		            String days = courseInfo.get(6);
-//		              <td>GER</td>
-//                    <td>&nbsp;</td>
-//                    <td>Units</td>
-//                    <td>Section</td>
-//                    <td>Class#</td>
-//                    <td>Hours</td>
-//                    <td>Days</td>
-//                    <td>Dates</td>
-//                    <td>Instructor</td>
-//                    <td>Room</td>
-//                    <td>Syllabus</td>
-		            
 
 	
 	/**
