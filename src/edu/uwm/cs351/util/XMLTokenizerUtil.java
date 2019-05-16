@@ -64,6 +64,7 @@ public class XMLTokenizerUtil {
 	public String skipElement() {
 		StringBuilder sb = new StringBuilder();
 		Stack<String> open = new Stack<String>();
+		String currentName;
 		tokenizer.saveToken();
 		while (tokenizer.hasNext()) {
             switch (tokenizer.next()) {
@@ -73,12 +74,9 @@ public class XMLTokenizerUtil {
                 case ERROR:
                     return sb.toString();
                 case ETAG:
-                    if (open.search(tokenizer.getCurrentName()) == -1) 
-                        tokenizer.saveToken();
-                    while(!open.isEmpty()) {
-                        String name = open.pop();
-                        if (open.pop().equals(name)) break;
-                    }
+                    currentName = tokenizer.getCurrentName();
+                    if (open.search(currentName) == -1) tokenizer.saveToken();
+                    while(!open.isEmpty() && !open.pop().equals(currentName)) { ; }
                     break;
                 case OPEN:
                     open.push(tokenizer.getCurrentName());
