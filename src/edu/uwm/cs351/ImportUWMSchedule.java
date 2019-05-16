@@ -20,6 +20,13 @@ import edu.uwm.cs351.util.XMLTokenizerUtil;
 
 /**
  * Import information off a UWM Schedule page for a department.
+ * 
+ * @Author Eddie Chapman chapman4@uwm.edu
+ * 
+ * I didn't get all the way through this assignment. I got as 
+ * far as collecting the fields of each course section in a list.
+ * 
+ * I used the XML handout and lecture notes to complete the assignment.
  */
 public class ImportUWMSchedule {
 	private static final String SCHEDULE_URL_FORMAT = "http://www4.uwm.edu/schedule/index.cfm?a1=subject_details&subject=%s&strm=%d";
@@ -96,6 +103,7 @@ public class ImportUWMSchedule {
 		util.skipUntilOpen("html");
 		tokenizer.next();
 		
+		// Loop through each course
 		while (tokenizer.hasNext()) {
 
 		    // find the next course
@@ -163,7 +171,7 @@ public class ImportUWMSchedule {
                     (tokenizer.next() == XMLTokenType.ATTR) &&
                     (tokenizer.getCurrentName().equals("class")) &&
                     (tokenizer.getCurrentText().equals("body copy"))) {
-
+                    
                     courseFields = util.readTR();
                     
                     if (courseFields.size() != 11) 
@@ -172,7 +180,9 @@ public class ImportUWMSchedule {
                     for (String field : courseFields) {
                         System.out.println(field.trim());
                     }
-                    System.out.println();
+                    
+                    // Make Course, Day, Days, Kind, Period, Section, Term, Time
+                    // from the entries in the courseFields list. 
                 }   
             }
 		}
